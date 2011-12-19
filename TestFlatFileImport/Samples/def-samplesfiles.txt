@@ -1,0 +1,70 @@
+modelos para teste de importacao
+
+dados de discos
+	- artista
+	- nome do album
+	- estilo
+	- ano
+	- quantidade de musicas
+	- avalicao
+	- mediapreco
+	- nacionalidade
+	- data de importacao
+	- lista de musicas
+
+dados de filme
+	- nome do filme
+	- estilos [acao, aventura, romance, epico, drama]
+	- ano producao
+	- elenco
+		- nome
+		- personagem
+		- data nascimetno
+		- filmes destaques
+			- nome
+			- ano producao
+			- data lancamento
+			- orçamento
+			
+	- diretor
+	- roterista
+	- produtor
+	- plot
+	- Censura
+	- Detalhes
+		- site oficial
+		- pais
+		- linguagem
+		- data de lancamento
+	- Detalhes tecnicos
+		- duracao
+		- tipo de som
+		- aspect ratio
+	- Faturamento
+		- Orcamento
+		- Final de semana de abertura USA
+		- Faturamento total 
+	
+contatos telefonicos
+	- nome completo	
+	- apelido
+	- data nascimento
+	- fone comercial	
+	- fone residencial
+	- fone celular
+	- grupo
+	- email
+	- sexo
+	- cpf
+	- rg
+	- logradouro
+	- numero
+	- bairro
+	- complemento
+	- cidade [codigo]
+	- cep
+	- estado [uf]
+	- pais [codigo]
+	- comentarios
+	
+	

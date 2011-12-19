@@ -44,7 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlueprintFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestImport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlatFileImport\FlatFileImport.csproj">
+      <Project>{BBEBA345-0679-4D30-A797-0889E37AAB90}</Project>
+      <Name>FlatFileImport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Blueprints\pipe-with-register.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Samples\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

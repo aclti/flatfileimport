@@ -1,0 +1,114 @@
+IMDBINF|IMDB|20111216|JACKSON PINTO
+	IMDB100|Imortais|acao,drama,fantasia|2011|Tarsem Singh
+		IMDB101|Vlas Parlapanides
+		IMDB101|Charley Parlapanides
+		IMDB110|Theseus is a mortal man chosen by Zeus to lead the fight against the ruthless King Hyperion, who is on a rampage across Greece to obtain a weapon that can destroy humanity.
+		IMDB120|www.immortalsmovie.com|USA|English,Greek|20113012
+		IMDB130|110|Dolby Digital,SDDS,DTS|1.85:1|16
+		IMDB140|75000000,00|32206425,00|79868732,00
+		IMDB150|Henry Cavill|Theseus
+			IMDB151|Stardust - O Mistério da Estrela|2007
+			IMDB151|The Tudors|2007
+			IMDB151|Tristão & Isolda|2006
+		IMDB150|Mickey Rourke|King Hyperion
+			IMDB151|O Lutador|2008
+			IMDB151|Homem de Ferro 2|2010
+			IMDB151|Coração Satânico|1987
+	IMDB999|16
+	IMDB100|O Lutador|drama,romance,esport|2008|Darren Aronofsky
+		IMDB101|Robert D. Siegel
+		IMDB110|A faded professional wrestler must retire, but finds his quest for a new life outside the ring a dispiriting struggle.IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB120|www.foxsearchlight.com/thewrestler|USA,France|English|20090213
+		IMDB130|109|DTS,SDDS,Dolby Digital|2.35:1|16
+		IMDB140|6000000,00|202714,00|26236603,00
+		IMDB150|Mickey Rourke|Randy 'The Ram' Robinson
+			IMDB151|Os Mercenários|2010
+			IMDB151|Sin City - A Cidade do Pecado|2005
+			IMDB151|Era Uma Vez no México|2003
+		IMDB150|Marisa Tomei|Cassidy
+			IMDB151|Do Que as Mulheres Gostam|2000
+			IMDB151|O Poder e a Lei|2011
+			IMDB151|Tratamento de Choque|2003
+		IMDB150|Evan Rachel Wood|Stephanie
+			IMDB151|Across the Universe|2007
+			IMDB151|Aos Treze|2003
+			IMDB151|Desaparecidas|2003
+	IMDB999|16
+	IMDB100|Desaparecidas|aventura,western|2003|Ron Howard
+		IMDB101|Thomas Eidson
+		IMDB101|Ken Kaufman
+		IMDB110|In 1885 New Mexico, a frontier medicine woman forms an uneasy alliance with her estranged father when her daughter is kidnapped by an Apache brujo.
+		IMDB120|www.imperial.com.pl/movie.php?id=375|USA|English,Apache,Spanish|20040313
+		IMDB130|137|SDDS,Dolby Digital,DTS|2.35:1|16
+		IMDB140|60000000,00|10833633,00|27011180 ,00
+		IMDB150|Tommy Lee Jones|Samuel Jones / Chaa-duu-ba-its-iidan
+			IMDB151|MIB - Homens de Preto|1997
+			IMDB151|Onde os Fracos não Têm Vez|2007
+			IMDB151|O Fugitivo|1993
+		IMDB150|Cate Blanchett|Magdalena Gilkeson
+			IMDB151|O Curioso Caso de Benjamin Button|2008
+			IMDB151|O Senhor dos Anéis: A Sociedade do Anel|2001
+			IMDB151|O Senhor dos Anéis: As Duas Torres|2002
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|Um Sonho de Liberdade|crime,drama|1994|Frank Darabont
+		IMDB101|Stephen King
+		IMDB101|Frank Darabont
+		IMDB110|Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|NOME  DO FILME|ESTILO,ESTILO|ANO|DIRETOR
+		IMDB101|NOME ROTERISTA
+		IMDB110|PLOT
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|NOME  DO FILME|ESTILO,ESTILO|ANO|DIRETOR
+		IMDB101|NOME ROTERISTA
+		IMDB110|PLOT
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|NOME  DO FILME|ESTILO,ESTILO|ANO|DIRETOR
+		IMDB101|NOME ROTERISTA
+		IMDB110|PLOT
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|NOME  DO FILME|ESTILO,ESTILO|ANO|DIRETOR
+		IMDB101|NOME ROTERISTA
+		IMDB110|PLOT
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS
+	
+	IMDB100|NOME  DO FILME|ESTILO,ESTILO|ANO|DIRETOR
+		IMDB101|NOME ROTERISTA
+		IMDB110|PLOT
+		IMDB120|SITE|PAIS|LINGUAGEM|LANCAMENTO
+		IMDB130|DURACAO|SOM|ASPECTO RATIO|CENSURA
+		IMDB140|ORCAMENTO|ABERTURA USA|TOTAL
+		IMDB150|ATOR|PERSONAGEM
+			IMDB151|NOME DO FILME DESTAQUE|ANO
+	IMDB999|TOTAL LINHAS		
+IMDBEND|TOTAL DE LINHAS
