@@ -55,11 +55,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Blueprints\pipe-with-register.xml" />
+    <Content Include="Blueprints\pipe-with-register.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Samples\def-samples-movies.txt" />
+    <Content Include="Samples\def-samplesfiles.txt" />
+    <Content Include="Samples\sample-movies-pipe.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Samples\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
