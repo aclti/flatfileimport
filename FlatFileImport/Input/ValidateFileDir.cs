@@ -5,9 +5,9 @@ using FlatFileImport.Validate;
 
 namespace FlatFileImport.Input
 {
-    public class ValidateFileDir : IValidate
+    class ValidateFileDir : IValidate
     {
-        private string _path;
+        private readonly string _path;
 
         public ValidateFileDir(string path)
         {

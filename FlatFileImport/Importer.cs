@@ -18,15 +18,13 @@ namespace FlatFileImport
 
         public void Process(FileInfo fileInfo, IObserver observer)
         {
-            Parser = new Parser(BlueprintFactoy.GetBluePrint(Type, fileInfo), fileInfo, observer);
+            Parser = new Parser(BlueprintFactoy.GetBlueprint(Type, fileInfo), fileInfo, observer);
             Parser.ProcessHeader();
 
             Console.WriteLine("".PadLeft(80, '*'));
             Console.WriteLine(String.Format("INICIO DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Comment));
             Console.WriteLine("".PadLeft(80, '*'));
 
-            //string l;
-            //while ((l = fileInfo.Stream.ReadLine()) != null)
             Parser.Process();
 
             Parser.UnRegisterObserver(observer);

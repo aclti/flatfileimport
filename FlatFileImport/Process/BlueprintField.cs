@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace FlatFileImport.Process
 {
-    public class BlueprintField
+    public class BlueprintField : IBlueprintField
     {
         public string Class { set; get; }
         public string Attribute { set; get; }

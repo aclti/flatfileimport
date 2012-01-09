@@ -9,7 +9,7 @@ using FlatFileImport.Exception;
 
 namespace FlatFileImport.Process
 {
-    public sealed class Blueprint
+    public sealed class Blueprint : IBlueprint
     {
         public BlueprintLine Header { get { return GetHeader(); } }
         public BlueprintLine Footer { get { return GetFooter(); } }
@@ -150,11 +150,11 @@ namespace FlatFileImport.Process
             return GetLines(nodes);
         }
 
-        private List<BlueprintField> GetListFieldParser(XmlNode line)
+        private List<IBlueprintField> GetListFieldParser(XmlNode line)
         {
             var nodes = line.SelectNodes("Fields/Field");
             var className = line.Attributes["class"].Value;
-            var fields = new List<BlueprintField>();
+            var fields = new List<IBlueprintField>();
             
             foreach (XmlNode node in nodes)
             {

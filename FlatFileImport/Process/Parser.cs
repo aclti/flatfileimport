@@ -17,7 +17,7 @@ namespace FlatFileImport.Process
         private FileInfo _fileInfo;
 
         // TODO: Mandar sinal que o processamento do arquivo acabou
-        private Blueprint _blueprint;
+        private IBlueprint _blueprint;
         private BlueprintLine _currentBlueprintLine;
         private BlueprintRegister _register;
 
@@ -28,7 +28,7 @@ namespace FlatFileImport.Process
 
         private string _rawLineData;
 
-        public Parser(Blueprint blueprint, FileInfo file, IObserver observer)
+        public Parser(IBlueprint blueprint, FileInfo file, IObserver observer)
         {
             RegisterObserver(observer);
             _fileInfo = file;

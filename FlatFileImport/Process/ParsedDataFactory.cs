@@ -8,7 +8,7 @@ namespace FlatFileImport.Process
 {
     public class ParsedDataFactory
     {
-        public static ParsedData GetParsedData(string rawData, BlueprintField blueprintField)
+        public static ParsedData GetParsedData(string rawData, IBlueprintField blueprintField)
         {
                 try
                 {

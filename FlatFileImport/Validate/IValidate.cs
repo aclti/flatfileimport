@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FlatFileImport.Validate
+﻿namespace FlatFileImport.Validate
 {
     public interface IValidate
     {
