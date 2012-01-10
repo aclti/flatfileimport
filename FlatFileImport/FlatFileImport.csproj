@@ -52,11 +52,13 @@
     <Compile Include="Exception\NotSupportedDataTypeException.cs" />
     <Compile Include="Exception\WrongTypeFileException.cs" />
     <Compile Include="Input\Enumeration.cs" />
+    <Compile Include="Input\FileExtension.cs" />
     <Compile Include="Input\FileInfo.cs" />
     <Compile Include="Input\Handler.cs" />
     <Compile Include="Input\HandlerDirectory.cs" />
     <Compile Include="Input\HandlerText.cs" />
     <Compile Include="Input\HandlerZip.cs" />
+    <Compile Include="Input\SupportedExtension.cs" />
     <Compile Include="Input\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="ISubject.cs" />
@@ -90,11 +92,6 @@
     <Compile Include="Validate\ValidateResult.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="Input\config-input.xml">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

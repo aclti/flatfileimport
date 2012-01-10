@@ -59,6 +59,7 @@
     <Compile Include="TestFileHandler.cs" />
     <Compile Include="TestImport.cs" />
     <Compile Include="TestParserRawLinePositionalCharacter.cs" />
+    <Compile Include="TestSuportedExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlatFileImport\FlatFileImport.csproj">
@@ -71,6 +72,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Blueprints\siafi.xml" />
+    <Content Include="Samples\config-extension-missconfig-attributecase.xml" />
+    <Content Include="Samples\config-extension-missconfig-tagcase.xml" />
+    <Content Include="Samples\config-extension.xml" />
     <Content Include="Samples\def-samples-movies.txt" />
     <Content Include="Samples\def-samplesfiles.txt" />
     <Content Include="Samples\defincao-siafi.txt" />

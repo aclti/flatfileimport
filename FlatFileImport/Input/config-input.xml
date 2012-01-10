@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Configuration Assembly="input">
-	<Extension type="text">.txt</Extension>
-	<Extension type="text">.web</Extension>
-	<Extension type="text">.ret</Extension>
-	<Extension type="binary">.zip</Extension>
-</Configuration>

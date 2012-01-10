@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Xml;
 using FlatFileImport.Exception;
 using FlatFileImport.Validate;
 
@@ -11,11 +10,12 @@ namespace FlatFileImport.Input
 {
     public abstract class Handler : IEnumerable<FileInfo>, IEnumerator<FileInfo>
     {
+        private static SupportedExtension _suporttedExtesions;
         private string _path;
         private int _pos;
         protected List<FileInfo> FileInfos;
 
-        public List<string> SupportedExtesion { get { return GetSupportedExtesion(); } }
+        public static ReadOnlyCollection<FileExtension> SupportedExtesion { get { return _suporttedExtesions.Extension; } }
         public IValidate Validate { get; private set; }
         public string Path
         {
@@ -23,8 +23,15 @@ namespace FlatFileImport.Input
             set { if (!Validate.IsValid())throw new FileNotFoundException(); _path = value; }
         }
 
+        static Handler()
+        {
+            if(_suporttedExtesions == null)
+                _suporttedExtesions = new SupportedExtension();
+        }
+
         protected Handler(string path)
         {
+            _suporttedExtesions = new SupportedExtension();
             Validate = new ValidateFileDir(path);
 
             if (!Validate.IsValid())
@@ -48,53 +55,29 @@ namespace FlatFileImport.Input
             throw new WrongTypeFileException(path);
         }
 
+        public static void AddExtension(string extension, FileType type)
+        {
+            _suporttedExtesions.AddExtension(extension, type);
+        }
+
+        public static void AddExtensionFromXml(string path)
+        {
+            _suporttedExtesions.AddExtensionFromXml(path);
+        }
+
         private static bool IsPlainText(string path)
         {
-            var l = GetSupportedExtesion(FileType.Text);
-            return l.Contains(System.IO.Path.GetExtension(path));
+            return _suporttedExtesions.IsSupported(System.IO.Path.GetExtension(path));
         }
 
         private static bool IsZipFile(string path)
         {
-            var l = GetSupportedExtesion(FileType.Binary);
-            return l.Contains(System.IO.Path.GetExtension(path));
+            return _suporttedExtesions.IsSupported(System.IO.Path.GetExtension(path));
         }
 
         private static bool IsDirectory(string path)
         {
             return Directory.Exists(path);
-        }
-
-        private static List<string> GetSupportedExtesion(FileType type)
-        {
-            var l = new List<string>();
-            var confPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config-input.xml");
-
-            var conf = new XmlDocument();
-            conf.Load(confPath);
-
-            var nodes = conf.SelectNodes("//Configuration/Extension[@type='" + type.ToString().ToLower() + "']");
-
-            if (nodes != null)
-                l.AddRange(from XmlNode n in nodes select n.InnerText);
-
-            return l;
-        }
-
-        private static List<string> GetSupportedExtesion()
-        {
-            var l = new List<string>();
-            var confPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config-input.xml");
-
-            var conf = new XmlDocument();
-            conf.Load(confPath);
-
-            var nodes = conf.SelectNodes("//Configuration/Extension");
-
-            if (nodes != null)
-                l.AddRange(from XmlNode n in nodes select n.InnerText);
-
-            return l;
         }
 
         #region IEnumerable<FileInfo> Members

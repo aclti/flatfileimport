@@ -1,4 +1,4 @@
 ﻿namespace FlatFileImport.Input
 {
-    enum FileType { Text, Binary }
+    public enum FileType { Text, Binary }
 }
