@@ -7,3 +7,4 @@
 /TestFlatFileImport/obj
 /FlatFileImport.6.0.ReSharper.user
 *.suo
+*.user

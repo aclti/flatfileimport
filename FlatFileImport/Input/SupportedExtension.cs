@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Xml;
 
@@ -19,10 +20,10 @@ namespace FlatFileImport.Input
         {
             _extension = new List<FileExtension>
                              {
-                                 new FileExtension { Extension = ".txt", Type = FileType.Text}
-                                 , new FileExtension { Extension = ".web", Type = FileType.Text}
-                                 , new FileExtension { Extension = ".ret", Type = FileType.Text}
-                                 , new FileExtension { Extension = ".zip", Type = FileType.Binary} 
+                                 new FileExtension(".txt", FileType.Text)
+                                 , new FileExtension(".web", FileType.Text) 
+                                 , new FileExtension(".ret", FileType.Text) 
+                                 , new FileExtension(".zip", FileType.Binary)
                              };
 
             Extension = _extension.AsReadOnly();
@@ -30,10 +31,9 @@ namespace FlatFileImport.Input
 
         public void AddExtension(string extension, FileType type)
         {
-            extension = NormalizeExtension(extension);
+            var newEx = new FileExtension(extension, type);
 
-            var newEx = new FileExtension {Extension = extension, Type = type};
-            if(!ExtensionExist(newEx))
+            if (!ExtensionExist(newEx))
                 _extension.Add(newEx);
         }
 
@@ -45,22 +45,18 @@ namespace FlatFileImport.Input
             conf.Load(confPath);
 
             var nodes = conf.SelectNodes("//Configuration/Extension");
-            
-            if(nodes == null || nodes.Count == 0)
+
+            if (nodes == null || nodes.Count == 0)
                 throw new NullReferenceException("Não foi possivel carregar o xml de configuração de extensões. Verifica a formatação");
 
             foreach (XmlNode node in nodes)
             {
-                if(node.Attributes == null || node.Attributes.Count == 0)
+                if (node.Attributes == null || node.Attributes.Count == 0)
                     throw new NullReferenceException("Erro na configuração dos atributos no xml de configuração de extensões");
 
                 try
                 {
-                    var aux = new FileExtension
-                              {
-                                  Extension = NormalizeExtension(node.InnerText),
-                                  Type = (FileType)Enum.Parse(typeof(FileType), node.Attributes["type"].Value)
-                              };
+                    var aux = new FileExtension(node.InnerText, (FileType)Enum.Parse(typeof(FileType), node.Attributes["type"].Value));
 
                     if (!ExtensionExist(aux))
                         _extension.Add(aux);
@@ -72,38 +68,30 @@ namespace FlatFileImport.Input
             }
         }
 
-        public bool IsSupported(string extension)
+        public FileExtension GetFileExtension(string path)
         {
-            return _extension.Any(e => e.Extension == extension.ToLower());
+            var extension = Path.GetExtension(path);
+            return String.IsNullOrEmpty(extension) ? null : _extension.FirstOrDefault(e => e.Extension == extension.ToLower());
+        }
+
+        public bool IsSupported(string extension, FileType type)
+        {   
+            return _extension.Any(e => e.Extension == extension.ToLower() && e.Type == type);
+        }
+
+        public bool IsSupported(FileExtension extension, FileType type)
+        {
+            return _extension.Any(e => e.Extension == extension.Extension && e.Type == type && extension.Type == type);// IsSupported(extension.Extension, type);
+        }
+
+        private bool ExtensionExist(string extension)
+        {
+            return _extension.Any(e => e.Extension == extension);
         }
 
         private bool ExtensionExist(FileExtension ex)
         {
-            return _extension.Any(e => e.Extension == ex.Extension && e.Type == ex.Type);
+            return ExtensionExist(ex.Extension);
         }
-
-        private string NormalizeExtension(string extension)
-        {
-            if (!extension.StartsWith("."))
-                extension = "." + extension;
-
-            return extension.ToLower();
-        }
-
-        //private List<string> GetSupportedExtesion(FileType type)
-        //{
-        //    var l = new List<string>();
-        //    var confPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config-input.xml");
-
-        //    var conf = new XmlDocument();
-        //    conf.Load(confPath);
-
-        //    var nodes = conf.SelectNodes("//Configuration/Extension[@type='" + type.ToString().ToLower() + "']");
-
-        //    if (nodes != null)
-        //        l.AddRange(from XmlNode n in nodes select n.InnerText);
-
-        //    return l;
-        //}
     }
 }

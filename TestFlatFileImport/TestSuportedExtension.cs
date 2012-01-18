@@ -75,5 +75,11 @@ namespace TestFlatFileImport
             Handler.AddExtensionFromXml(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\config-extension.xml"));
             Assert.AreEqual(7, l.Count);
         }
+
+        [Test]
+        public void TestGetExtension()
+        {
+            
+        }
     }
 }

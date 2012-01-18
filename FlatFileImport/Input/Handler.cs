@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using FlatFileImport.Exception;
 using FlatFileImport.Validate;
 
@@ -67,12 +68,14 @@ namespace FlatFileImport.Input
 
         private static bool IsPlainText(string path)
         {
-            return _suporttedExtesions.IsSupported(System.IO.Path.GetExtension(path));
+            var ex = _suporttedExtesions.GetFileExtension(path);
+            return SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
         }
 
         private static bool IsZipFile(string path)
         {
-            return _suporttedExtesions.IsSupported(System.IO.Path.GetExtension(path));
+            var ex = _suporttedExtesions.GetFileExtension(path);
+            return SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
         }
 
         private static bool IsDirectory(string path)
