@@ -17,8 +17,8 @@ namespace TestFlatFileImport
         public void Setup()
         {
             _pathSamples = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\Files");
-            _sigleDas = Path.Combine(_pathSamples, @"Dasn\Single");
-            _sigleDasn = Path.Combine(_pathSamples, @"Das\Single");
+            _sigleDas = Path.Combine(_pathSamples, @"Das\Single");
+            _sigleDasn = Path.Combine(_pathSamples, @"Dasn\Single");
             _multDas = Path.Combine(_pathSamples, @"Das\Mult");
             _multDasn = Path.Combine(_pathSamples, @"Dasn\Mult");
         }
@@ -46,7 +46,14 @@ namespace TestFlatFileImport
         [Test]
         public void TestFlatTextFile()
         {
-            var handler = new HandlerText(Path.Combine(_sigleDasn, "02-3105-DASN10-20100915-01.txt"));
+            var handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100915-01.txt"));
+            Assert.IsTrue(handler is HandlerText);
+
+            handler = Handler.GetHandler(_multDas);
+            Assert.IsTrue(handler is HandlerDirectory);
+
+            handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100415-01.zip"));
+            Assert.IsTrue(handler is HandlerZip);
         }
     }
 }

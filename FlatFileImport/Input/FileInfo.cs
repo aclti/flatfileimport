@@ -15,7 +15,7 @@ namespace FlatFileImport.Input
         public string Directory { get { return System.IO.Path.GetDirectoryName(Path); } }
         //public FileExtension Extesion { get { return System.IO.Path.GetExtension(Path); } }
         //public FileExtension Extesion { get { return new FileExtension(System.IO.Path.GetExtension(Path), FileType.Text); } }
-        public FileExtension Extesion { get; private set; }
+        //public FileExtension Extesion { get; private set; }
         public string Comment { set; get; }
 
         public StreamReader Stream { get { return _stream ?? (_stream = new StreamReader(_path)); } }

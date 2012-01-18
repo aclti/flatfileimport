@@ -75,7 +75,7 @@ namespace FlatFileImport.Input
         }
 
         public bool IsSupported(string extension, FileType type)
-        {   
+        {
             return _extension.Any(e => e.Extension == extension.ToLower() && e.Type == type);
         }
 

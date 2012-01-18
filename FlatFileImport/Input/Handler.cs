@@ -5,46 +5,44 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using FlatFileImport.Exception;
-using FlatFileImport.Validate;
 
 namespace FlatFileImport.Input
 {
     public abstract class Handler : IEnumerable<FileInfo>, IEnumerator<FileInfo>
     {
         private static SupportedExtension _suporttedExtesions;
-        private string _path;
+        private readonly string _path;
         private int _pos;
         protected List<FileInfo> FileInfos;
 
         public static ReadOnlyCollection<FileExtension> SupportedExtesion { get { return _suporttedExtesions.Extension; } }
-        public IValidate Validate { get; private set; }
-        public string Path
-        {
-            get { return _path; }
-            set { if (!Validate.IsValid())throw new FileNotFoundException(); _path = value; }
-        }
+        public string Path { get { return _path; } }
 
         static Handler()
         {
-            if(_suporttedExtesions == null)
+            if (_suporttedExtesions == null)
                 _suporttedExtesions = new SupportedExtension();
         }
 
         protected Handler(string path)
         {
-            _suporttedExtesions = new SupportedExtension();
-            Validate = new ValidateFileDir(path);
+            if(String.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
 
-            if (!Validate.IsValid())
-                throw new ArgumentException("O Path informado não é válido.");
+            if (_suporttedExtesions == null)
+                _suporttedExtesions = new SupportedExtension();
 
             _path = path;
+
+            if (!IsValid())
+                throw new ArgumentException("O Path informado não é válido.");
+
             FileInfos = new List<FileInfo>();
         }
 
         public static IEnumerable<FileInfo> GetHandler(string path)
         {
-            if(IsDirectory(path))
+            if (IsDirectory(path))
                 return new HandlerDirectory(path);
 
             if (IsPlainText(path))
@@ -69,18 +67,36 @@ namespace FlatFileImport.Input
         private static bool IsPlainText(string path)
         {
             var ex = _suporttedExtesions.GetFileExtension(path);
-            return SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
+            return ex != null && SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
         }
 
         private static bool IsZipFile(string path)
         {
             var ex = _suporttedExtesions.GetFileExtension(path);
-            return SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
+            return ex != null && SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
         }
 
         private static bool IsDirectory(string path)
         {
             return Directory.Exists(path);
+        }
+
+        private bool IsValid()
+        {
+            var path = _path;
+
+            var dir = System.IO.Path.GetDirectoryName(path);
+
+            if (String.IsNullOrEmpty(dir))
+                return false;
+
+            if (Directory.Exists(dir))
+                return true;
+
+            if (File.Exists(path))
+                return true;
+
+            return false;
         }
 
         #region IEnumerable<FileInfo> Members

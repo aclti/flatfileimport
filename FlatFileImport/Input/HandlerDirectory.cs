@@ -16,13 +16,13 @@ namespace FlatFileImport.Input
 
         private void ProcessDir(string sourceDir)
         {
-            string[] fileEntries = Directory.GetFiles(sourceDir);
-            foreach (string fileName in fileEntries)
+            var fileEntries = Directory.GetFiles(sourceDir);
+            foreach (var fileName in fileEntries)
                 _paths.Add(fileName);
 
-            string[] subdirEntries = Directory.GetDirectories(sourceDir);
+            var subdirEntries = Directory.GetDirectories(sourceDir);
 
-            foreach (string subdir in subdirEntries)
+            foreach (var subdir in subdirEntries)
                 if ((File.GetAttributes(subdir) & FileAttributes.ReparsePoint) != FileAttributes.ReparsePoint)
                     ProcessDir(subdir);
         }
