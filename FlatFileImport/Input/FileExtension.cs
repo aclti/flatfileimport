@@ -39,5 +39,35 @@ namespace FlatFileImport.Input
 
             return extension.ToLower();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) 
+                return false;
+
+            if (ReferenceEquals(this, obj)) 
+                return true;
+
+            return obj.GetType() == typeof (FileExtension) && Equals((FileExtension) obj);
+        }
+
+        public bool Equals(FileExtension ex)
+        {
+            if (ReferenceEquals(null, ex)) 
+                return false;
+            
+            if (ReferenceEquals(this, ex)) 
+                return true;
+
+            return Equals(ex.Extension, Extension) && Equals(ex.Type, Type);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Extension != null ? Extension.GetHashCode() : 0)*397) ^ Type.GetHashCode();
+            }
+        }
     }
 }

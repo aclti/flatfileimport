@@ -89,6 +89,23 @@ namespace TestFlatFileImport
         {
             var ex = new FileExtension("", FileType.Text);
         }
+
+        [Test]
+        public void TestForEqualsFileExtension()
+        {
+            var a = new FileExtension(".TXT", FileType.Text);
+            var b = new FileExtension(".TXT", FileType.Text);
+
+            Assert.IsTrue(a.Equals(b));
+
+            b = new FileExtension(".txt", FileType.Binary);
+
+            Assert.IsTrue(!a.Equals(b));
+
+            b = a;
+
+            Assert.IsTrue(a.Equals(b));
+        }
     }
 }
 

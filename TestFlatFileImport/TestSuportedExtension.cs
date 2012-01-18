@@ -57,11 +57,11 @@ namespace TestFlatFileImport
         {
             var sExtensions = new SupportedExtension();
 
-            Assert.IsTrue(sExtensions.IsSupported(".txt"));
-            Assert.IsTrue(sExtensions.IsSupported(".Web"));
-            Assert.IsTrue(sExtensions.IsSupported(".Zip"));
-            Assert.IsTrue(sExtensions.IsSupported(".ret"));
-            Assert.IsTrue(!sExtensions.IsSupported(".new"));
+            Assert.IsTrue(sExtensions.IsSupported(".txt", FileType.Text));
+            Assert.IsTrue(sExtensions.IsSupported(".Web", FileType.Text));
+            Assert.IsTrue(sExtensions.IsSupported(".Zip", FileType.Binary));
+            Assert.IsTrue(sExtensions.IsSupported(".ret", FileType.Text));
+            Assert.IsTrue(!sExtensions.IsSupported(".new", FileType.Text));
         }
 
         [Test]
