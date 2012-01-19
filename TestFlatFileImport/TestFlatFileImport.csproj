@@ -69,6 +69,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Blueprints\blueprint-dasn.xml" />
     <Content Include="Blueprints\pipe-with-register.xml">
       <SubType>Designer</SubType>
     </Content>

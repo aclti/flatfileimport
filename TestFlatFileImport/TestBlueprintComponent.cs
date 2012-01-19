@@ -1,0 +1,6 @@
+﻿namespace TestFlatFileImport
+{
+    class TestBlueprintComponent
+    {
+    }
+}

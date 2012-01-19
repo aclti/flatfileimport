@@ -4,8 +4,8 @@ namespace FlatFileImport.Process
 {
     public class RegexRule
     {
-        private string _name;
-        private Regex _rule;
+        private readonly string _name;
+        private readonly Regex _rule;
 
         public RegexRule(string name, string rule)
         {
@@ -22,5 +22,10 @@ namespace FlatFileImport.Process
         {
             get { return _rule; }
         }
+
+        //private string DecodeString(string toDecode)
+        //{
+        //    return toDecode.Replace("&lt;", "<").Replace("&gt;", ">");
+        //}
     }
 }
