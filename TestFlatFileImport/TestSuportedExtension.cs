@@ -13,9 +13,9 @@ namespace TestFlatFileImport
         {
             var supportedExtensions = new SupportedExtension();
 
-            Assert.Greater(supportedExtensions.Extension.Count,0);
+            Assert.Greater(supportedExtensions.Extensions.Count,0);
             
-            var l = supportedExtensions.Extension;
+            var l = supportedExtensions.Extensions;
             Assert.IsTrue(l.Any(e => e.Extension == ".txt" && e.Type == FileType.Text));
             Assert.IsTrue(l.Any(e => e.Extension == ".ret" && e.Type == FileType.Text));
             Assert.IsTrue(l.Any(e => e.Extension == ".web" && e.Type == FileType.Text));
@@ -26,12 +26,12 @@ namespace TestFlatFileImport
         public void TestGetExtesionsFromXmlConfig()
         {
             var sExtensions = new SupportedExtension();
-            var qtd = sExtensions.Extension.Count;
+            var qtd = sExtensions.Extensions.Count;
 
             sExtensions.AddExtensionFromXml(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\config-extension.xml"));
 
-            var l = sExtensions.Extension;
-            Assert.AreEqual(qtd + 2, sExtensions.Extension.Count);
+            var l = sExtensions.Extensions;
+            Assert.AreEqual(qtd + 2, sExtensions.Extensions.Count);
             Assert.IsTrue(l.Any(e => e.Extension == ".new" && e.Type == FileType.Text));
             Assert.IsTrue(l.Any(e => e.Extension == ".rar" && e.Type == FileType.Binary));
         }
@@ -67,7 +67,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestAddExtensionFromHandler()
         {
-            var l = Handler.SupportedExtesion;
+            var l = Handler.Extensions;
 
             Assert.AreEqual(4, l.Count);
             Handler.AddExtension("jar", FileType.Binary);

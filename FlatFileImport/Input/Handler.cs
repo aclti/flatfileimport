@@ -10,18 +10,18 @@ namespace FlatFileImport.Input
 {
     public abstract class Handler : IEnumerable<FileInfo>, IEnumerator<FileInfo>
     {
-        private static SupportedExtension _suporttedExtesions;
+        protected static SupportedExtension SupportedExtension;
         private readonly string _path;
         private int _pos;
         protected List<FileInfo> FileInfos;
 
-        public static ReadOnlyCollection<FileExtension> SupportedExtesion { get { return _suporttedExtesions.Extension; } }
+        public static ReadOnlyCollection<FileExtension> Extensions { get { return SupportedExtension.Extensions; } }
         public string Path { get { return _path; } }
 
         static Handler()
         {
-            if (_suporttedExtesions == null)
-                _suporttedExtesions = new SupportedExtension();
+            if (SupportedExtension == null)
+                SupportedExtension = new SupportedExtension();
         }
 
         protected Handler(string path)
@@ -29,8 +29,8 @@ namespace FlatFileImport.Input
             if(String.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            if (_suporttedExtesions == null)
-                _suporttedExtesions = new SupportedExtension();
+            if (SupportedExtension == null)
+                SupportedExtension = new SupportedExtension();
 
             _path = path;
 
@@ -56,24 +56,24 @@ namespace FlatFileImport.Input
 
         public static void AddExtension(string extension, FileType type)
         {
-            _suporttedExtesions.AddExtension(extension, type);
+            SupportedExtension.AddExtension(extension, type);
         }
 
         public static void AddExtensionFromXml(string path)
         {
-            _suporttedExtesions.AddExtensionFromXml(path);
+            SupportedExtension.AddExtensionFromXml(path);
         }
 
         private static bool IsPlainText(string path)
         {
-            var ex = _suporttedExtesions.GetFileExtension(path);
-            return ex != null && SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
+            var ex = SupportedExtension.GetFileExtension(path);
+            return ex != null && Extensions.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
         }
 
         private static bool IsZipFile(string path)
         {
-            var ex = _suporttedExtesions.GetFileExtension(path);
-            return ex != null && SupportedExtesion.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
+            var ex = SupportedExtension.GetFileExtension(path);
+            return ex != null && Extensions.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
         }
 
         private static bool IsDirectory(string path)
@@ -83,20 +83,15 @@ namespace FlatFileImport.Input
 
         private bool IsValid()
         {
-            var path = _path;
 
-            var dir = System.IO.Path.GetDirectoryName(path);
+            var fInfo = new System.IO.FileInfo(_path);
 
-            if (String.IsNullOrEmpty(dir))
-                return false;
-
-            if (Directory.Exists(dir))
+            if (fInfo.Exists)
                 return true;
 
-            if (File.Exists(path))
-                return true;
+            var dInfo = new DirectoryInfo(_path);
 
-            return false;
+            return dInfo.Exists;
         }
 
         #region IEnumerable<FileInfo> Members

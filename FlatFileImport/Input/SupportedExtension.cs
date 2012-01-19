@@ -14,7 +14,7 @@ namespace FlatFileImport.Input
     public class SupportedExtension
     {
         private readonly List<FileExtension> _extension;
-        public ReadOnlyCollection<FileExtension> Extension;
+        public ReadOnlyCollection<FileExtension> Extensions;
 
         public SupportedExtension()
         {
@@ -26,7 +26,7 @@ namespace FlatFileImport.Input
                                  , new FileExtension(".zip", FileType.Binary)
                              };
 
-            Extension = _extension.AsReadOnly();
+            Extensions = _extension.AsReadOnly();
         }
 
         public void AddExtension(string extension, FileType type)
@@ -81,7 +81,7 @@ namespace FlatFileImport.Input
 
         public bool IsSupported(FileExtension extension)
         {
-            return _extension.Any(e => e.Extension == extension.Extension && e.Type == extension.Type);// IsSupported(extension.Extension, type);
+            return _extension.Any(e => e.Extension == extension.Extension && e.Type == extension.Type);
         }
 
         private bool ExtensionExist(string extension)

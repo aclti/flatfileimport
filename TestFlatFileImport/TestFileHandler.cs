@@ -2,6 +2,7 @@
 using System.IO;
 using FlatFileImport.Input;
 using NUnit.Framework;
+using FileInfo = FlatFileImport.Input.FileInfo;
 
 namespace TestFlatFileImport
 {
@@ -46,7 +47,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestFlatTextFile()
         {
-            var handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100915-01.txt"));
+            var handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100715-01.txt"));
             Assert.IsTrue(handler is HandlerText);
 
             handler = Handler.GetHandler(_multDas);
@@ -54,6 +55,29 @@ namespace TestFlatFileImport
 
             handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100415-01.zip"));
             Assert.IsTrue(handler is HandlerZip);
+        }
+
+        [Test]
+        public void TestFileInfoText()
+        {
+            var handler = Handler.GetHandler(Path.Combine(_sigleDasn, "02-3105-DASN10-20100715-01.txt"));
+            Assert.IsTrue(handler is HandlerText);
+            
+            var enumerator = handler.GetEnumerator();
+            if(!enumerator.MoveNext())
+                throw new Exception("Nenhum FileInfo econtrado.");
+
+            var info = enumerator.Current;
+
+            Assert.AreEqual(info.Comment, Path.Combine(_sigleDasn, "02-3105-DASN10-20100715-01.txt"));
+            Assert.AreEqual(info.Directory, _sigleDasn);
+            Assert.IsTrue(info.Extesion.Equals(new FileExtension(".txt", FileType.Text)));
+            Assert.AreEqual(info.Header, "AAAAA|108|20100701|20100715");
+            Assert.AreEqual(info.Header, "AAAAA|108|20100701|20100715"); // verifica se o leitor não passa para a proxima linha
+            Assert.AreEqual(info.Name, "02-3105-DASN10-20100715-01.txt");
+            Assert.AreEqual(info.Path, Path.Combine(_sigleDasn, "02-3105-DASN10-20100715-01.txt"));
+            Assert.IsNotNull(info.Stream);
+            Assert.AreEqual(info.Stream.ReadLine(), "D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0");
         }
     }
 }

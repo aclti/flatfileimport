@@ -4,7 +4,7 @@
     {
         public HandlerText(string path) : base(path)
         {
-            var fileInfo = new FileInfo(path) { Comment = path };
+            var fileInfo = new FileInfo(path, SupportedExtension.GetFileExtension(path)) { Comment = path };
             FileInfos.Add(fileInfo);
         }
     }
