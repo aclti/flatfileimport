@@ -18,13 +18,13 @@ namespace FlatFileImport.Process
 
         // TODO: Mandar sinal que o processamento do arquivo acabou
         private IBlueprint _blueprint;
-        private BlueprintLine _currentBlueprintLine;
-        private BlueprintRegister _register;
+        private IBlueprintLine _currentBlueprintLine;
+        private IBlueprintRegister _register;
 
-        public List<BlueprintLine> BlueprintLines { get { return _blueprint.BlueprintLines; } }
-        public List<BlueprintRegister> Registers { get { return _blueprint.BlueprintRegistires; } }
-        public BlueprintLine Footer { get { return _blueprint.Footer; } }
-        public BlueprintLine Header { get { return _blueprint.Header; } }
+        public List<IBlueprintLine> BlueprintLines { get { return _blueprint.BlueprintLines; } }
+        public List<IBlueprintRegister> Registers { get { return _blueprint.BlueprintRegistires; } }
+        public IBlueprintLine Footer { get { return _blueprint.Footer; } }
+        public IBlueprintLine Header { get { return _blueprint.Header; } }
 
         private string _rawLineData;
 

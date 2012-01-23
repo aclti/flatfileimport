@@ -11,10 +11,10 @@ namespace FlatFileImport.Process
 {
     public sealed class Blueprint : IBlueprint
     {
-        public BlueprintLine Header { get { return GetHeader(); } }
-        public BlueprintLine Footer { get { return GetFooter(); } }
-        public List<BlueprintRegister> BlueprintRegistires { get { return GetRegistries(); } }
-        public List<BlueprintLine> BlueprintLines { get { return GetBluePrintLines(); } }
+        public IBlueprintLine Header { get { return GetHeader(); } }
+        public IBlueprintLine Footer { get { return GetFooter(); } }
+        public List<IBlueprintRegister> BlueprintRegistires { get { return GetRegistries(); } }
+        public List<IBlueprintLine> BlueprintLines { get { return GetBluePrintLines(); } }
         public EnumFieldSeparationType FieldSeparationType { get { return GetSeparationType(); } }
         public char BluePrintCharSepartor { get { return GetSeparaionCharacter(); } }
         public bool UseRegistries { get { return UseRegister(); } }
@@ -84,7 +84,7 @@ namespace FlatFileImport.Process
             return true;
         }
 
-        private BlueprintLine GetFooter()
+        private IBlueprintLine GetFooter()
         {
             var nodes = _xDoc.SelectNodes("//Footer/Line");
             var lines = GetLines(nodes);
@@ -92,7 +92,7 @@ namespace FlatFileImport.Process
             return lines.Count > 0 ? lines[0] : null;
         }
 
-        private BlueprintLine GetHeader()
+        private IBlueprintLine GetHeader()
         {
             var nodes = _xDoc.SelectNodes("//Header/Line");
             var lines = GetLines(nodes);
@@ -100,32 +100,34 @@ namespace FlatFileImport.Process
             return lines.Count > 0 ? lines[0] : null;
         }
 
-        private List<BlueprintRegister> GetRegistries()
+        private List<IBlueprintRegister> GetRegistries()
         {
-            var registries = new List<BlueprintRegister>();
+            var registries = new List<IBlueprintRegister>();
             var nodes = _xDoc.SelectNodes("//Registries/Register");
 
             foreach (XmlNode node in nodes)
             {
                 var attr = node.Attributes;
-                var register = new BlueprintRegister();
+                var register = new BlueprintRegister(this)
+                                   {
+                                       Begin = HasAttribute(attr, "begin") ? new Regex(GetAttributeValue(attr, "begin")) : null,
+                                       End = HasAttribute(attr, "end") ? new Regex(GetAttributeValue(attr, "end")) : null,
+                                       Class = GetAttributeValue(attr, "class")
+                                   };
 
-                register.Begin = HasAttribute(attr, "begin") ? new Regex(GetAttributeValue(attr, "begin")) : null;
-                register.End = HasAttribute(attr, "end") ? new Regex(GetAttributeValue(attr, "end")) : null;
-                register.Class = GetAttributeValue(attr, "class");
                 registries.Add(register);
             }
 
             return registries;
         }
 
-        private List<BlueprintLine> GetLines(XmlNodeList nodes)
+        private List<IBlueprintLine> GetLines(XmlNodeList nodes)
         {
-            var lines = new List<BlueprintLine>();
+            var lines = new List<IBlueprintLine>();
 
             foreach (XmlNode node in nodes)
             {
-                var line = new BlueprintLine();
+                var line = new BlueprintLine(this);
 
                 if (node != null && node.Attributes != null && node.Attributes.Count > 0)
                 {
@@ -136,7 +138,7 @@ namespace FlatFileImport.Process
                     bool.TryParse(node.Attributes["mandatory"].Value, out aux);
                     line.Mandatory = aux;
                     
-                    line.BlueprintFields = GetListFieldParser(node);
+                    line.BlueprintFields = GetListFieldParser(node, line);
                     lines.Add(line);
                 }
             }
@@ -144,13 +146,13 @@ namespace FlatFileImport.Process
             return lines;
         }
 
-        private List<BlueprintLine> GetBluePrintLines()
+        private List<IBlueprintLine> GetBluePrintLines()
         {
             var nodes = _xDoc.SelectNodes("//Root/Line");
             return GetLines(nodes);
         }
 
-        private List<IBlueprintField> GetListFieldParser(XmlNode line)
+        private List<IBlueprintField> GetListFieldParser(XmlNode line, IBlueprintLine blueprintLine)
         {
             var nodes = line.SelectNodes("Fields/Field");
             var className = line.Attributes["class"].Value;
@@ -158,7 +160,7 @@ namespace FlatFileImport.Process
             
             foreach (XmlNode node in nodes)
             {
-                var field = new BlueprintField();
+                var field = new BlueprintField(blueprintLine);
 
                 if (node != null && node.Attributes != null && node.Attributes.Count > 0)
                 {
@@ -179,7 +181,7 @@ namespace FlatFileImport.Process
                     
                     field.Regex = HasAttribute(attr, "regex") ? GetRegex(GetAttributeValue(attr, "regex")).Rule : null;
 
-                    field.Class = className;
+                    //field.BlueprintLine.Class = className;
                     field.Attribute = GetAttributeValue(attr, "attribute");
 
                     fields.Add(field);
@@ -244,14 +246,17 @@ namespace FlatFileImport.Process
             foreach (XmlNode node in xNode)
             {
 
-                var attributes = node.Attributes;
-                var ht = new Hashtable();
+                //var attributes = node.Attributes;
+                //var ht = new Hashtable();
 
-                if (attributes != null)
-                    foreach (XmlAttribute att in attributes)
-                        ht.Add(att.Name, att.Value);
+                //if (attributes != null)
+                //    foreach (XmlAttribute att in attributes)
+                //        ht.Add(att.Name, att.Value);
 
-                var rules = new RegexRule(ht["id"].ToString(), ht["expression"].ToString());
+                if(node.Attributes == null)
+                    continue;
+
+                var rules = new RegexRule(node.Attributes["id"].Value, node.InnerText);
 
                 fields.Add(rules);
             }

@@ -9,9 +9,9 @@ namespace FlatFileImport.Validate
     public class ValidateLine : IValidate
     {
         private readonly string[] _rawDataCollection;
-        private readonly BlueprintLine _blueprintLine;
+        private readonly IBlueprintLine _blueprintLine;
 
-        public ValidateLine(string[] rawDataCollection, BlueprintLine blueprintLine)
+        public ValidateLine(string[] rawDataCollection, IBlueprintLine blueprintLine)
         {
             if (rawDataCollection == null)
                 throw new ArgumentNullException("rawDataCollection");

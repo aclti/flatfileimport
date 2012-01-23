@@ -52,7 +52,10 @@
     <Compile Include="Dominio\Dasn.cs" />
     <Compile Include="Dominio\Movie.cs" />
     <Compile Include="Dominio\Music.cs" />
-    <Compile Include="Dominio\Siafi.cs" />
+    <Compile Include="Dominio\Siafi\Details.cs" />
+    <Compile Include="Dominio\Siafi\Header.cs" />
+    <Compile Include="Dominio\Siafi\Siafi.cs" />
+    <Compile Include="Dominio\Siafi\Trailer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBlueprint.cs" />
     <Compile Include="TestBlueprintComponent.cs" />
@@ -70,11 +73,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Blueprints\blueprint-dasn.xml" />
-    <Content Include="Blueprints\pipe-with-register.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Blueprints\siafi.xml" />
+    <Content Include="Samples\Blueprints\blueprint-dasn.xml" />
+    <Content Include="Samples\Blueprints\pipe-with-register.xml" />
+    <Content Include="Samples\Blueprints\siafi.xml" />
     <Content Include="Samples\config-extension-missconfig-attributecase.xml" />
     <Content Include="Samples\config-extension-missconfig-tagcase.xml" />
     <Content Include="Samples\config-extension.xml" />

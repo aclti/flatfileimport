@@ -5,6 +5,7 @@ namespace FlatFileImport.Process
 {
     public interface IBlueprintLine
     {
+        IBlueprint Blueprint { get; }
         string Class { set; get; }
         Regex Regex { set; get; }
         List<IBlueprintField> BlueprintFields { set; get; }

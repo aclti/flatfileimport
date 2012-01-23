@@ -13,16 +13,16 @@ namespace FlatFileImport.Process
                 try
                 {
                     if (blueprintField.Type == typeof(DateTime))
-                        return new ParsedData(blueprintField.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex)), blueprintField.Type);
+                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex)), blueprintField.Type);
 
                     if (blueprintField.Type == typeof(string))
-                        return new ParsedData(blueprintField.Class, blueprintField.Attribute, rawData.Replace("'", "´"), blueprintField.Type);
+                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, rawData.Replace("'", "´"), blueprintField.Type);
 
                     if (blueprintField.Type == typeof(int))
-                        return new ParsedData(blueprintField.Class, blueprintField.Attribute, ParseInt(rawData).ToString(), blueprintField.Type);
+                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseInt(rawData).ToString(), blueprintField.Type);
 
                     if (blueprintField.Type == typeof(decimal))
-                        return new ParsedData(blueprintField.Class, blueprintField.Attribute, ParseDecimal(rawData).ToString().Replace(',', '.'), blueprintField.Type);
+                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseDecimal(rawData).ToString().Replace(',', '.'), blueprintField.Type);
 
                     throw new NotSupportedDataTypeException(String.Format("VALOR NÃO SUPORTADO [ {0} : {1} : {2} ]", blueprintField.Attribute, rawData, blueprintField.Type));
                 }

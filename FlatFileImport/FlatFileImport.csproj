@@ -72,6 +72,7 @@
     <Compile Include="Process\IBlueprintFactoy.cs" />
     <Compile Include="Process\IBlueprintField.cs" />
     <Compile Include="Process\IBlueprintLine.cs" />
+    <Compile Include="Process\IBlueprintRegister.cs" />
     <Compile Include="Process\IParsedRegister.cs" />
     <Compile Include="Process\IParserRawDataField.cs" />
     <Compile Include="Process\IParserRawDataLine.cs" />

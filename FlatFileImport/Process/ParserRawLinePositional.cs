@@ -15,7 +15,7 @@ namespace FlatFileImport.Process
             get { throw new NotImplementedException(); }
         }
 
-        public void ParseRawLineData(string rawDataLine, BlueprintLine blueprintLine)
+        public void ParseRawLineData(string rawDataLine, IBlueprintLine blueprintLine)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,7 @@
 using System.IO;
 using FlatFileImport.Process;
 using TestFlatFileImport.Dominio;
+using TestFlatFileImport.Dominio.Siafi;
 using FileInfo = FlatFileImport.Input.FileInfo;
 
 namespace TestFlatFileImport

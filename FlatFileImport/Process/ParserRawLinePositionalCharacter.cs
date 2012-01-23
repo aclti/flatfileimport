@@ -5,14 +5,14 @@ namespace FlatFileImport.Process
     public class ParserRawLinePositionalCharacter : IParserRawDataLine
     {
         private string _rawDataLine;
-        private BlueprintLine _blueprintLine;
+        private IBlueprintLine _blueprintLine;
         private readonly char _separator;
 
         #region IParserRawDataLine Members
 
         public string[] RawDataCollection { get { return GetRawData(); } }
 
-        public void ParseRawLineData(string rawDataLine, BlueprintLine blueprintLine)
+        public void ParseRawLineData(string rawDataLine, IBlueprintLine blueprintLine)
         {
             _rawDataLine = rawDataLine;
             _blueprintLine = blueprintLine;

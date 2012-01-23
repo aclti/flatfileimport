@@ -5,7 +5,7 @@ namespace FlatFileImport.Process
     public interface IParserRawDataLine
     {
         string[] RawDataCollection { get; } 
-        void ParseRawLineData(string rawDataLine, BlueprintLine blueprintLine);
+        void ParseRawLineData(string rawDataLine, IBlueprintLine blueprintLine);
         List<ParsedData> ParsedDatas { get; }
     }
 }

@@ -4,7 +4,7 @@
 		<!-- Character, Position-->
 		<FieldSeparationType>Character</FieldSeparationType>
 		<Splitter>|</Splitter>
-		<UseResgister>false</UseResgister>
+		<UseResgister>true</UseResgister>
 	</Config>
 
 	<Regex>
@@ -106,12 +106,12 @@
 
 	<Line class="D4000" regex="^D4000" mandatory="false">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="false" attribute="TIPO_REGISTRO" />
-			<Field position="1" type="string" size="17" persit="true" attribute="NUM_SEQ" />
-			<Field position="2" type="date" size="6" persit="true" regex="period" attribute="PERIODO" />
-			<Field position="3" type="decimal" size="2" persit="true" attribute="VL_RECEITA_APURADA" />
-			<Field position="4" type="decimal" size="2" persit="true" attribute="VL_DEBITO_APURADO" />
-			<Field position="5" type="decimal" size="2" persit="true" attribute="VL_TOTAL_DAS_PAGOS" />
+			<Field position="0" type="string"	size="5"					persit="false" attribute="TIPO_REGISTRO" />
+			<Field position="1" type="string"	size="17"					persit="true" attribute="NUM_SEQ" />
+			<Field position="2" type="date"		size="6"					persit="true" regex="period" attribute="PERIODO" />
+			<Field position="3" type="decimal"				precision="2"	persit="true" attribute="VL_RECEITA_APURADA" />
+			<Field position="4" type="decimal"				precision="2"	persit="true" attribute="VL_DEBITO_APURADO" />
+			<Field position="5" type="decimal"				precision="2"	persit="true" attribute="VL_TOTAL_DAS_PAGOS" />
 		</Fields>
 	</Line>
 

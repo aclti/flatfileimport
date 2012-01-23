@@ -9,9 +9,9 @@ namespace FlatFileImport.Validate
     public class ValidateFieldPositionalCharacter : IValidate
     {
         private string[] _rawDataCollection;
-        private BlueprintLine _blueprintLine;
+        private IBlueprintLine _blueprintLine;
 
-        public ValidateFieldPositionalCharacter(string[] rawDataCollection, BlueprintLine blueprintLine)
+        public ValidateFieldPositionalCharacter(string[] rawDataCollection, IBlueprintLine blueprintLine)
         {
             // TODO: Complete member initialization
             _rawDataCollection = rawDataCollection;
