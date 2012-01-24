@@ -50,7 +50,6 @@
 	</Footer>
 
 	<Registries>
-		<Register class="" begin="" end="" />
 	</Registries>
 
 	<Line class="Details" regex="^2.{67}98.{18}98.{9}[ME].{355}98.{43}$" mandatory="true">

@@ -60,7 +60,7 @@ namespace FlatFileImport.Process
         {
             var node = GetConfiguration(EnumConfigurationItem.Splitter);
 
-            return char.Parse(node.InnerText);
+            return String.IsNullOrEmpty(node.InnerText) ? '\0' : char.Parse(node.InnerText);
         }
 
         private bool UseRegister()
@@ -208,6 +208,7 @@ namespace FlatFileImport.Process
         {
             switch (type)
             {
+                case "datetime":
                 case "date":
                     return typeof(DateTime);
                 case "string":

@@ -77,7 +77,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Samples\Blueprints\pipe-with-register.xml" />
-    <Content Include="Samples\Blueprints\siafi.xml" />
+    <Content Include="Samples\Blueprints\siafi.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Samples\config-extension-missconfig-attributecase.xml" />
     <Content Include="Samples\config-extension-missconfig-tagcase.xml" />
     <Content Include="Samples\config-extension.xml" />
