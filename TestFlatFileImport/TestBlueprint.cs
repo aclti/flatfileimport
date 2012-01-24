@@ -17,8 +17,6 @@ namespace TestFlatFileImport
         {
             _path = AppDomain.CurrentDomain.BaseDirectory;
             _blueprintPath = Path.Combine(_path, @"Samples\Blueprints\");
-
-            
         }
 
         [TearDown]
@@ -28,14 +26,7 @@ namespace TestFlatFileImport
             _blueprintPath = String.Empty;
             _blueprint = null;
         }
-
-        //[Test]
-        //public void TestBlueprintHeader()
-        //{
-        //    var mBlueprint = new Mock<IBlueprint>();
-        //    mBlueprint.Setup(b => b.BluePrintCharSepartor).Returns('|');
-        //}
-
+        
         [Test]
         public void TestBlueprintSiafi()
         {

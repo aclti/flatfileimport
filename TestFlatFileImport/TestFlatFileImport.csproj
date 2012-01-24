@@ -63,6 +63,7 @@
     <Compile Include="TestFileExtension.cs" />
     <Compile Include="TestFileHandler.cs" />
     <Compile Include="TestImport.cs" />
+    <Compile Include="TestParserRawLinePositional.cs" />
     <Compile Include="TestParserRawLinePositionalCharacter.cs" />
     <Compile Include="TestSuportedExtension.cs" />
   </ItemGroup>
