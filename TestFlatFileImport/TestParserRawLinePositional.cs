@@ -68,5 +68,17 @@ namespace TestFlatFileImport
             Assert.AreEqual("985401", data[26]);
             Assert.AreEqual("                                       ", data[27]);
         }
+
+        [Test]
+        public void TestParsedData()
+        {
+            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
+            var rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
+            var bLine = _blueprint.BlueprintLines[0];
+
+            var p = new ParserRawLinePositional();
+            p.ParseRawLineData(rawData, bLine);
+            var data = p.ParsedDatas;
+        }
     }
 }

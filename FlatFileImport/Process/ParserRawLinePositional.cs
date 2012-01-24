@@ -27,10 +27,7 @@ namespace FlatFileImport.Process
             _blueprintLine = blueprintLine;
         }
 
-        public List<ParsedData> ParsedDatas
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public List<ParsedData> ParsedDatas { get { return GetParsedData(RawDataCollection); } }
 
         #endregion
 
@@ -46,6 +43,19 @@ namespace FlatFileImport.Process
             }
 
             return aux;
+        }
+
+        private List<ParsedData> GetParsedData(string[] data)
+        {
+            var l = new List<ParsedData>();
+
+            for (int i = 0; i < _blueprintLine.BlueprintFields.Count; i++)
+            {
+                var parsed = ParsedDataFactory.GetParsedData(data[i], _blueprintLine.BlueprintFields[i]);
+                l.Add(parsed);
+            }
+
+            return l;
         }
     }
 }

@@ -8,41 +8,54 @@ namespace FlatFileImport.Process
 {
     public class ParsedDataFactory
     {
+        private static IBlueprintField _blueprintField;
+
         public static ParsedData GetParsedData(string rawData, IBlueprintField blueprintField)
         {
-                try
-                {
-                    if (blueprintField.Type == typeof(DateTime))
-                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex.Rule)), blueprintField.Type);
+            try
+            {
+                if (blueprintField == null)
+                    throw new ArgumentNullException("blueprintField");
 
-                    if (blueprintField.Type == typeof(string))
-                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, rawData.Replace("'", "´"), blueprintField.Type);
+                if (String.IsNullOrEmpty(rawData))
+                    throw new ArgumentNullException("rawData");
 
-                    if (blueprintField.Type == typeof(int))
-                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseInt(rawData).ToString(), blueprintField.Type);
+                _blueprintField = blueprintField;
 
-                    if (blueprintField.Type == typeof(decimal))
-                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseDecimal(rawData).ToString().Replace(',', '.'), blueprintField.Type);
+                if (blueprintField.Type == typeof(DateTime))
+                    return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex.Rule)), blueprintField.Type);
 
-                    throw new NotSupportedDataTypeException(String.Format("VALOR NÃO SUPORTADO [ {0} : {1} : {2} ]", blueprintField.Attribute, rawData, blueprintField.Type));
-                }
-                catch (System.Exception e)
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine();
-                    sb.AppendFormat("[ NOME: {0} | POSICAO: {1} | TAMANHO: {2} | TIPO: {3} ]", blueprintField.Attribute, blueprintField.Position, blueprintField.Size, blueprintField.Type);
-                    sb.AppendLine();
-                    sb.AppendFormat("[ LINHA: {0} ]", rawData);
-                    sb.AppendLine();
+                if (blueprintField.Type == typeof(string))
+                    return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, rawData.Replace("'", "´"), blueprintField.Type);
 
-                    throw new System.Exception(sb.ToString() + e);
-                }
+                if (blueprintField.Type == typeof(int))
+                    return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseInt(rawData).ToString(), blueprintField.Type);
+
+                if (blueprintField.Type == typeof(decimal))
+                    return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, ParseDecimal(rawData).ToString(), blueprintField.Type);
+
+                throw new NotSupportedDataTypeException(String.Format("VALOR NÃO SUPORTADO [ {0} : {1} : {2} ]", blueprintField.Attribute, rawData, blueprintField.Type));
+            }
+            catch (System.Exception e)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine();
+                sb.AppendFormat("[ NOME: {0} | POSICAO: {1} | TAMANHO: {2} | TIPO: {3} ]", blueprintField.Attribute, blueprintField.Position, blueprintField.Size, blueprintField.Type);
+                sb.AppendLine();
+                sb.AppendFormat("[ LINHA: {0} ]", rawData);
+                sb.AppendLine();
+
+                throw new System.Exception(sb.ToString() + e);
+            }
         }
 
         private static decimal ParseDecimal(string data)
         {
             if (String.IsNullOrEmpty(data) || data.ToUpper() == "undefined".ToUpper())
                 return 0M;
+            
+            data = data.Replace(".", "").Replace(",","");
+            data = data.Insert(_blueprintField.Size - _blueprintField.Precision, ".");
 
             return Convert.ToDecimal(data);
         }

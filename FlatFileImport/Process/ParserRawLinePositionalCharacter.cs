@@ -18,7 +18,7 @@ namespace FlatFileImport.Process
             _blueprintLine = blueprintLine;
         }
 
-        public List<ParsedData> ParsedDatas { get { return ParseData(RawDataCollection); } }
+        public List<ParsedData> ParsedDatas { get { return GetParseData(RawDataCollection); } }
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace FlatFileImport.Process
             return data;
         }
 
-        private List<ParsedData> ParseData(string[] data)
+        private List<ParsedData> GetParseData(string[] data)
         {
             var l = new List<ParsedData>();
 
