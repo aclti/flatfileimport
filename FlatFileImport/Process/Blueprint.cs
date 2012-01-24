@@ -155,7 +155,6 @@ namespace FlatFileImport.Process
         private List<IBlueprintField> GetListFieldParser(XmlNode line, IBlueprintLine blueprintLine)
         {
             var nodes = line.SelectNodes("Fields/Field");
-            var className = line.Attributes["class"].Value;
             var fields = new List<IBlueprintField>();
             
             foreach (XmlNode node in nodes)
@@ -179,15 +178,13 @@ namespace FlatFileImport.Process
                         throw new System.Exception(ex.ToString());
                     }
                     
-                    field.Regex = HasAttribute(attr, "regex") ? GetRegex(GetAttributeValue(attr, "regex")).Rule : null;
-
-                    //field.BlueprintLine.Class = className;
+                    field.Regex = HasAttribute(attr, "regex") ? GetRegex(GetAttributeValue(attr, "regex")) : null;
                     field.Attribute = GetAttributeValue(attr, "attribute");
 
                     fields.Add(field);
                 }
             }
-            //<Field position="9" type="date" size="14" persit="true" regex="datetime" name="dasn_dt_transmissao" />
+
             return fields;
         }
 
@@ -245,14 +242,6 @@ namespace FlatFileImport.Process
 
             foreach (XmlNode node in xNode)
             {
-
-                //var attributes = node.Attributes;
-                //var ht = new Hashtable();
-
-                //if (attributes != null)
-                //    foreach (XmlAttribute att in attributes)
-                //        ht.Add(att.Name, att.Value);
-
                 if(node.Attributes == null)
                     continue;
 

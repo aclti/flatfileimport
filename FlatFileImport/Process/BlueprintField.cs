@@ -10,7 +10,7 @@ namespace FlatFileImport.Process
         public Type Type { set; get; }
         public int Size { set; get; }
         public int Precision { set; get; }
-        public Regex Regex { set; get; }
+        public RegexRule Regex { set; get; }
         public bool Persist { set; get; }
         public int Position { get; set; }
 

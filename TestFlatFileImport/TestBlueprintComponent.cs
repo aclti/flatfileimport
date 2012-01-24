@@ -115,17 +115,48 @@ namespace TestFlatFileImport
             Assert.AreEqual(bField.Regex, null);
             Assert.AreEqual(bField.Size, 17);
             Assert.AreEqual(bField.Type, typeof(string));
-        }
 
-    //<Line class="D4000" regex="^D4000" mandatory="false">
-    //    <Fields>
-    //        <Field position="0" type="string" size="5" persit="false" attribute="TIPO_REGISTRO" />
-    //        <Field position="1" type="string" size="17" persit="true" attribute="NUM_SEQ" />
-    //        <Field position="2" type="date" size="6" persit="true" regex="period" attribute="PERIODO" />
-    //        <Field position="3" type="decimal" size="2" persit="true" attribute="VL_RECEITA_APURADA" />
-    //        <Field position="4" type="decimal" size="2" persit="true" attribute="VL_DEBITO_APURADO" />
-    //        <Field position="5" type="decimal" size="2" persit="true" attribute="VL_TOTAL_DAS_PAGOS" />
-    //    </Fields>
-    //</Line>
+            bLine = _blueprint.BlueprintLines[5];
+            bField = bLine.BlueprintFields[2];
+
+            Assert.AreEqual(bLine.Blueprint, _blueprint);
+            Assert.AreEqual(bField.BlueprintLine, bLine);
+            Assert.AreEqual(bField.Attribute, "VALOR");
+            Assert.AreEqual(bField.Persist, true);
+            Assert.AreEqual(bField.Position, 2);
+            Assert.AreEqual(bField.Precision, 2);
+            Assert.AreEqual(bField.Regex, null);
+            Assert.AreEqual(bField.Size, 17);
+            Assert.AreEqual(bField.Type, typeof(decimal));
+
+            bLine = _blueprint.BlueprintLines[6];
+            bField = bLine.BlueprintFields[2];
+
+            Assert.AreEqual(bLine.Blueprint, _blueprint);
+            Assert.AreEqual(bField.BlueprintLine, bLine);
+            Assert.AreEqual(bField.Attribute, "PERIODO");
+            Assert.AreEqual(bField.Persist, true);
+            Assert.AreEqual(bField.Position, 2);
+            Assert.AreEqual(bField.Precision, -1);
+            Assert.AreEqual(bField.Regex.Name, "period");
+            Assert.AreEqual(bField.Regex.Rule.ToString(), "(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])");
+            Assert.AreEqual(bField.Size, 6);
+            Assert.AreEqual(bField.Type, typeof(DateTime));
+
+            bLine = _blueprint.BlueprintLines[1];
+            bField = bLine.BlueprintFields[1];
+
+            Assert.AreEqual(bLine.Blueprint, _blueprint);
+            Assert.AreEqual(bField.BlueprintLine, bLine);
+            Assert.AreEqual(bField.Attribute, "ID_EVENTO");
+            Assert.AreEqual(bField.Persist, true);
+            Assert.AreEqual(bField.Position, 1);
+            Assert.AreEqual(bField.Precision, -1);
+            Assert.AreEqual(bField.Regex.Name, "rangenumber_1-6");
+            Assert.AreEqual(bField.Regex.Rule.ToString(), "[1-6]");
+            Assert.AreEqual(bField.Size, -1);
+            Assert.AreEqual(bField.Type, typeof(int));
+
+        }
     }
 }

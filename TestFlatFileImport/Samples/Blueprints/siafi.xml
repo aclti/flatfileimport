@@ -40,11 +40,11 @@
 	<Footer>
 		<Line class="Trailer" regex="^9[0-9]{8}[0-9]{6}[0-9]{17}[A-Za-z0-9 ]{468}$" mandatory="true">
 			<Fields>
-				<Field position="1"		type="string"	size="1"	persit="false"	attribute="CodRegistro" />
-				<Field position="2"		type="int"		size="8"	persit="true"	attribute="NumSeqRegistro" />
-				<Field position="10"	type="int"		size="6"	persit="true"	attribute="TotalRegistros" />
-				<Field position="16"	type="decimal"	size="17"	persit="true"	attribute="ValorTotalRecebido" />
-				<Field position="33"	type="string"	size="468"	persit="false"	attribute="Filler" />
+				<Field position="1"		type="string"	size="1"					persit="false"	attribute="CodRegistro" />
+				<Field position="2"		type="int"		size="8"					persit="true"	attribute="NumSeqRegistro" />
+				<Field position="10"	type="int"		size="6"					persit="true"	attribute="TotalRegistros" />
+				<Field position="16"	type="decimal"	size="17"	precision="2"	persit="true"	attribute="ValorTotalRecebido" />
+				<Field position="33"	type="string"	size="468"					persit="false"	attribute="Filler" />
 			</Fields>
 		</Line>
 	</Footer>
@@ -55,34 +55,34 @@
 
 	<Line class="Details" regex="^2.{67}98.{18}98.{9}[ME].{355}98.{43}$" mandatory="true">
 		<Fields>
-			<Field position="1"		type="string"	size="1"	persit="false"					attribute="CodRegistro" />
-			<Field position="2"		type="int"		size="8"	persit="true"					attribute="NumSeqRegistro" />
-			<Field position="10"	type="datetime" size="8"	persit="true"	regex="date"	attribute="DtEmissao" />
-			<Field position="18"	type="datetime" size="8"	persit="true"	regex="date"	attribute="DtVenciemnto" />
-			<Field position="26"	type="string"	size="12"	persit="true"	regex="numdoc"	attribute="NumDocumento" />
-			<Field position="38"	type="int"		size="6"	persit="true"					attribute="CodUnidGestEmit" />
-			<Field position="44"	type="int"		size="5"	persit="true"					attribute="CodGestEmit" />
-			<Field position="49"	type="int"		size="6"	persit="true"					attribute="CotUnidGestTom" />
-			<Field position="55"	type="string"	size="14"	persit="true"					attribute="CnpjUnidGestTom" />
-			<Field position="69"	type="string"	size="6"	persit="true"					attribute="CodMunUnidGestTom" />
-			<Field position="75"	type="string"	size="14"	persit="true"					attribute="NumDocReceitaSubstituto" />
-			<Field position="89"	type="string"	size="6"	persit="true"					attribute="CodMunNfse" />
-			<Field position="95"	type="string"	size="5"	persit="true"					attribute="CodigoReceita" />
-			<Field position="100"	type="string"	size="1"	persit="true"	regex="esfera"	attribute="EsferaReceita" />
-			<Field position="101"	type="string"	size="6"	persit="true"	regex="period"	attribute="Competencia" />
-			<Field position="107"	type="decimal"	size="17"	persit="true"					attribute="ValorPrincipal" />
-			<Field position="124"	type="decimal"	size="17"	persit="true"					attribute="ValorMulta" />
-			<Field position="141"	type="decimal"	size="17"	persit="true"					attribute="ValorJuros" />
-			<Field position="158"	type="string"	size="10"	persit="true"					attribute="NumeroNota" />
-			<Field position="168"	type="string"	size="5"	persit="true"					attribute="SerieNota" />
-			<Field position="173"	type="string"	size="2"	persit="true"					attribute="SubSerieNota" />
-			<Field position="175"	type="datetime"	size="8"	persit="true"	regex="date"	attribute="DtEmissaoNota" />
-			<Field position="183"	type="decimal"	size="17"	persit="true"					attribute="ValorNota" />
-			<Field position="200"	type="decimal"	size="5"	persit="true"					attribute="Aliquota" />
-			<Field position="205"	type="decimal"	size="17"	persit="true"					attribute="ValorBaseCalc" />
-			<Field position="222"	type="string"	size="234"	persit="true"					attribute="Observacao" />
-			<Field position="456"	type="string"	size="6"	persit="true"					attribute="CodMunFavorecido" />
-			<Field position="462"	type="string"	size="39"	persit="false"					attribute="Filler" />
+			<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
+			<Field position="2"		type="int"		size="8"					persit="true"					attribute="NumSeqRegistro" />
+			<Field position="10"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtEmissao" />
+			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVenciemnto" />
+			<Field position="26"	type="string"	size="12"					persit="true"	regex="numdoc"	attribute="NumDocumento" />
+			<Field position="38"	type="int"		size="6"					persit="true"					attribute="CodUnidGestEmit" />
+			<Field position="44"	type="int"		size="5"					persit="true"					attribute="CodGestEmit" />
+			<Field position="49"	type="int"		size="6"					persit="true"					attribute="CotUnidGestTom" />
+			<Field position="55"	type="string"	size="14"					persit="true"					attribute="CnpjUnidGestTom" />
+			<Field position="69"	type="string"	size="6"					persit="true"					attribute="CodMunUnidGestTom" />
+			<Field position="75"	type="string"	size="14"					persit="true"					attribute="NumDocReceitaSubstituto" />
+			<Field position="89"	type="string"	size="6"					persit="true"					attribute="CodMunNfse" />
+			<Field position="95"	type="string"	size="5"					persit="true"					attribute="CodigoReceita" />
+			<Field position="100"	type="string"	size="1"					persit="true"	regex="esfera"	attribute="EsferaReceita" />
+			<Field position="101"	type="string"	size="6"					persit="true"	regex="period"	attribute="Competencia" />
+			<Field position="107"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorPrincipal" />
+			<Field position="124"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorMulta" />
+			<Field position="141"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorJuros" />
+			<Field position="158"	type="string"	size="10"					persit="true"					attribute="NumeroNota" />
+			<Field position="168"	type="string"	size="5"					persit="true"					attribute="SerieNota" />
+			<Field position="173"	type="string"	size="2"					persit="true"					attribute="SubSerieNota" />
+			<Field position="175"	type="datetime"	size="8"					persit="true"	regex="date"	attribute="DtEmissaoNota" />
+			<Field position="183"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorNota" />
+			<Field position="200"	type="decimal"	size="5"	precision="3"	persit="true"					attribute="Aliquota" />
+			<Field position="205"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorBaseCalc" />
+			<Field position="222"	type="string"	size="234"					persit="true"					attribute="Observacao" />
+			<Field position="456"	type="string"	size="6"					persit="true"					attribute="CodMunFavorecido" />
+			<Field position="462"	type="string"	size="39"					persit="false"					attribute="Filler" />
 		</Fields>
 	</Line>
 </Root>

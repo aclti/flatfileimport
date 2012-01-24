@@ -13,7 +13,7 @@ namespace FlatFileImport.Process
                 try
                 {
                     if (blueprintField.Type == typeof(DateTime))
-                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex)), blueprintField.Type);
+                        return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, DateToDataBase(ParseDate(rawData, blueprintField.Regex.Rule)), blueprintField.Type);
 
                     if (blueprintField.Type == typeof(string))
                         return new ParsedData(blueprintField.BlueprintLine.Class, blueprintField.Attribute, rawData.Replace("'", "´"), blueprintField.Type);
