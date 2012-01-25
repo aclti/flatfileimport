@@ -14,12 +14,15 @@ namespace FlatFileImport.Process
         public string Class { get { return _class; } }
         public string Attribute { get { return _attribute; } }
 
-        public ParsedData(string classe, string attribute, string value, Type type)
+        public ParsedData(IBlueprintField blueprintField, string value)
         {
-            _type = type;
+            if(blueprintField == null)
+                throw new ArgumentNullException("blueprintField");
+
+            _type = blueprintField.Type;
             _value = value;
-            _attribute = attribute;
-            _class = classe;
+            _attribute = blueprintField.Attribute;
+            _class = blueprintField.BlueprintLine.Class;
         }
     }
 }

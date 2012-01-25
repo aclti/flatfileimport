@@ -68,7 +68,7 @@
 			<Field position="89"	type="string"	size="6"					persit="true"					attribute="CodMunNfse" />
 			<Field position="95"	type="string"	size="5"					persit="true"					attribute="CodigoReceita" />
 			<Field position="100"	type="string"	size="1"					persit="true"	regex="esfera"	attribute="EsferaReceita" />
-			<Field position="101"	type="string"	size="6"					persit="true"	regex="period"	attribute="Competencia" />
+			<Field position="101"	type="date"		size="6"					persit="true"	regex="period"	attribute="Competencia" />
 			<Field position="107"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorPrincipal" />
 			<Field position="124"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorMulta" />
 			<Field position="141"	type="decimal"	size="17"	precision="2"	persit="true"					attribute="ValorJuros" />

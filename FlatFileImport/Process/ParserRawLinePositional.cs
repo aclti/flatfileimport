@@ -5,40 +5,39 @@ namespace FlatFileImport.Process
 {
     public class ParserRawLinePositional : IParserRawDataLine
     {
-        //private string _rawLine;
-        //private BlueprintLine _blueprintLine;
-        
         private string _rawDataLine;
-        private IBlueprintLine _blueprintLine;
+
+        public ParserRawLinePositional(IBlueprintLine blueprintLine)
+        {
+            if (blueprintLine == null)
+                throw new ArgumentNullException("blueprintLine");
+
+            BlueprintLine = blueprintLine;
+        }
 
         #region IParserRawDataLine Members
 
+        public IBlueprintLine BlueprintLine { get; private set; }
         public string[] RawDataCollection { get { return GetRawDataCollection(); } }
+        public List<ParsedData> ParsedDatas { get { return GetParsedData(RawDataCollection); } }
 
-        public void ParseRawLineData(string rawDataLine, IBlueprintLine blueprintLine)
+        public void ParseRawLineData(string rawDataLine)
         {
             if(String.IsNullOrEmpty(rawDataLine))
                 throw new ArgumentNullException("rawDataLine");
 
-            if(blueprintLine == null)
-                throw new ArgumentNullException("blueprintLine");
-
             _rawDataLine = rawDataLine;
-            _blueprintLine = blueprintLine;
         }
-
-        public List<ParsedData> ParsedDatas { get { return GetParsedData(RawDataCollection); } }
 
         #endregion
 
-
         private string[] GetRawDataCollection()
         {
-            var aux = new string[_blueprintLine.BlueprintFields.Count];
+            var aux = new string[BlueprintLine.BlueprintFields.Count];
 
-            for (var i = 0; i <_blueprintLine.BlueprintFields.Count; i++)
+            for (var i = 0; i <BlueprintLine.BlueprintFields.Count; i++)
             {
-                var bField = _blueprintLine.BlueprintFields[i];
+                var bField = BlueprintLine.BlueprintFields[i];
                 aux[i] = _rawDataLine.Substring(bField.Position - 1, bField.Size);
             }
 
@@ -49,9 +48,9 @@ namespace FlatFileImport.Process
         {
             var l = new List<ParsedData>();
 
-            for (int i = 0; i < _blueprintLine.BlueprintFields.Count; i++)
+            for (int i = 0; i < BlueprintLine.BlueprintFields.Count; i++)
             {
-                var parsed = ParsedDataFactory.GetParsedData(data[i], _blueprintLine.BlueprintFields[i]);
+                var parsed = ParsedDataFactory.GetInstance(BlueprintLine.BlueprintFields[i]).GetParsedData(data[i]);
                 l.Add(parsed);
             }
 

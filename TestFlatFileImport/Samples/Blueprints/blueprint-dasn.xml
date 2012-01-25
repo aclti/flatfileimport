@@ -695,12 +695,12 @@
 			<Field position="2" type="string"	size="7"					persit="true"					attribute="COD_ORGAO_JUR" />
 			<Field position="3" type="string"	size="5"					persit="true"					attribute="COD_MUNICIPIO" />
 			<Field position="4" type="int"																	attribute="NUM_MESES_ATRASO" />
-			<Field position="5" type="decimal"	size="9"	precision="2"	persit="true"					attribute="VL_BASE_CALC_MULTA" />
-			<Field position="6" type="decimal"	size="6"	precision="3"	persit="true"					attribute="PERCENTUAL" />
-			<Field position="7" type="decimal"	size="9"	precision="2"	persit="true"					attribute="VL_MULTA_CALCULADA" />
-			<Field position="8" type="decimal"	size="9"	precision="2"	persit="true"					attribute="VL_MULTA_ENTR_ESPONTANEA" />
-			<Field position="9" type="decimal"	size="9"	precision="2"	persit="true"					attribute="VL_MULTA_MINIMO" />
-			<Field position="10" type="decimal" size="9"	precision="2"	persit="true"					attribute="VL_MULTA_ATRASO_ENT_DASN" />
+			<Field position="5" type="decimal"				precision="2"	persit="true"					attribute="VL_BASE_CALC_MULTA" />
+			<Field position="6" type="decimal"				precision="3"	persit="true"					attribute="PERCENTUAL" />
+			<Field position="7" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_CALCULADA" />
+			<Field position="8" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_ENTR_ESPONTANEA" />
+			<Field position="9" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_MINIMO" />
+			<Field position="10" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_ATRASO_ENT_DASN" />
 			<Field position="11" type="date"	size="8"					persit="true"	regex="date"	attribute="DT_NOTIFICACAO" />
 			<Field position="12" type="date"	size="8"					persit="true"	regex="date"	attribute="DT_CIENCIA_ENTREGA" />
 			<Field position="13" type="string"	size="60" 					persit="true" 					attribute="NOME_DELEGADO" />

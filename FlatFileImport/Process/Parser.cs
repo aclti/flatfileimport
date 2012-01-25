@@ -40,10 +40,10 @@ namespace FlatFileImport.Process
         private IParserRawDataLine GetParserRawDataLine()
         {
             if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Character)
-                return new ParserRawLinePositionalCharacter(_blueprint.BluePrintCharSepartor);
+                return new ParserRawLinePositionalCharacter(_currentBlueprintLine);
 
             if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Position)
-                return new ParserRawLinePositional();
+                return new ParserRawLinePositional(_currentBlueprintLine);
 
             throw new ParserRawDataNotFound();
         }
@@ -94,7 +94,7 @@ namespace FlatFileImport.Process
             _rawLineData = _fileInfo.Header;
             _currentBlueprintLine = _blueprint.Header;
 
-            _parserRawData.ParseRawLineData(_rawLineData, _currentBlueprintLine);
+            _parserRawData.ParseRawLineData(_rawLineData);
 
             ValidLine();
 
@@ -106,8 +106,8 @@ namespace FlatFileImport.Process
 
             if (_parsedDatas.Count > 0)
             {
-                var aux = new ParsedData(_currentBlueprintLine.Class, "ARQUIVO", _fileInfo.Comment, typeof(string));
-                _parsedDatas.Add(aux);
+                //var aux = new ParsedData(_currentBlueprintLine.Class, "ARQUIVO", _fileInfo.Comment, typeof(string));
+                //_parsedDatas.Add(aux);
                 NotifyObservers();
             }
 
@@ -147,7 +147,7 @@ namespace FlatFileImport.Process
                 _parsedDatas = new List<ParsedData>();
             }
 
-            _parserRawData.ParseRawLineData(_rawLineData, _currentBlueprintLine);
+            _parserRawData.ParseRawLineData(_rawLineData);
 
             ValidLine();
 
@@ -173,7 +173,7 @@ namespace FlatFileImport.Process
             if (_currentBlueprintLine == null)
                 return;
 
-            _parserRawData.ParseRawLineData(_rawLineData, _currentBlueprintLine);
+            _parserRawData.ParseRawLineData(_rawLineData);
             _parsedDatas = new List<ParsedData>();
 
             ValidLine();

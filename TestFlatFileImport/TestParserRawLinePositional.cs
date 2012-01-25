@@ -31,11 +31,11 @@ namespace TestFlatFileImport
         public void TestParseRawData()
         {
             _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
-            var rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
+            const string rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             var bLine = _blueprint.BlueprintLines[0];
 
-            var p = new ParserRawLinePositional();
-            p.ParseRawLineData(rawData, bLine);
+            var p = new ParserRawLinePositional(bLine);
+            p.ParseRawLineData(rawData);
             var data = p.RawDataCollection;
 
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Length);
@@ -73,12 +73,42 @@ namespace TestFlatFileImport
         public void TestParsedData()
         {
             _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
-            var rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
+            const string rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             var bLine = _blueprint.BlueprintLines[0];
 
-            var p = new ParserRawLinePositional();
-            p.ParseRawLineData(rawData, bLine);
-            var data = p.ParsedDatas;
+            var p = new ParserRawLinePositional(bLine);
+            p.ParseRawLineData(rawData);
+            var parsedData = p.ParsedDatas;
+
+            Assert.AreEqual(28, parsedData.Count);
+            Assert.AreEqual("2", parsedData[0].Value);
+            Assert.AreEqual("9", parsedData[1].Value);
+            Assert.AreEqual("2011-11-16 0:0:0.0", parsedData[2].Value);
+            Assert.AreEqual("2011-12-5 0:0:0.0", parsedData[3].Value);
+            Assert.AreEqual("2011DR800252", parsedData[4].Value);
+            Assert.AreEqual("200350", parsedData[5].Value);
+            Assert.AreEqual("1", parsedData[6].Value);
+            Assert.AreEqual("200350", parsedData[7].Value);
+            Assert.AreEqual("00394494002937", parsedData[8].Value);
+            Assert.AreEqual("984123", parsedData[9].Value);
+            Assert.AreEqual("97481220000116", parsedData[10].Value);
+            Assert.AreEqual("984371", parsedData[11].Value);
+            Assert.AreEqual("09999", parsedData[12].Value);
+            Assert.AreEqual("M", parsedData[13].Value);
+            Assert.AreEqual("2011-11-1 0:0:0.0", parsedData[14].Value);
+            Assert.AreEqual("290.15", parsedData[15].Value);
+            Assert.AreEqual("0.00", parsedData[16].Value);
+            Assert.AreEqual("0.00", parsedData[17].Value);
+            Assert.AreEqual("0000000967", parsedData[18].Value);
+            Assert.AreEqual("", parsedData[19].Value);
+            Assert.AreEqual("00", parsedData[20].Value);
+            Assert.AreEqual("2011-11-3 0:0:0.0", parsedData[21].Value);
+            Assert.AreEqual("9671.70", parsedData[22].Value);
+            Assert.AreEqual("3.000", parsedData[23].Value);
+            Assert.AreEqual("9671.66", parsedData[24].Value);
+            Assert.AreEqual("RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.", parsedData[25].Value);
+            Assert.AreEqual("985401", parsedData[26].Value);
+            Assert.AreEqual("", parsedData[27].Value);
         }
     }
 }
