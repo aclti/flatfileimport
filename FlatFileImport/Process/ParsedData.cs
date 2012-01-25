@@ -2,7 +2,6 @@
 
 namespace FlatFileImport.Process
 {
-    //Verificar uma melhor forma encapsulamento
     public class ParsedData
     {
         private readonly Type _type;
