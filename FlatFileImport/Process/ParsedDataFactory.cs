@@ -8,7 +8,24 @@ namespace FlatFileImport.Process
 {
     public class ParsedDataFactory
     {
-        private static IBlueprintField _blueprintField;
+        private IBlueprintField _blueprintField;
+        private static ParsedDataFactory _instance;
+
+        private ParsedDataFactory(IBlueprintField blueprintField)
+        {
+            if(blueprintField == null)
+                throw new ArgumentNullException("blueprintField");
+
+            _blueprintField = blueprintField;
+        }
+
+        public static ParsedDataFactory GetInstance(IBlueprintField blueprint)
+        {
+            if(_instance == null)
+                _instance = new ParsedDataFactory(blueprint);
+
+            return _instance;
+        }
 
         public static ParsedData GetParsedData(string rawData, IBlueprintField blueprintField)
         {
