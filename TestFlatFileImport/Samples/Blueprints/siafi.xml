@@ -57,13 +57,13 @@
 			<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
 			<Field position="2"		type="int"		size="8"					persit="false"					attribute="NumSeqRegistro" />
 			<Field position="10"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtEmissao" />
-			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVenciemnto" />
+			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVencimento" />
 			<Field position="26"	type="string"	size="12"					persit="true"	regex="numdoc"	attribute="NumDocumento" />
-			<Field position="38"	type="int"		size="6"					persit="true"					attribute="CodUnidGestEmit" />
-			<Field position="44"	type="int"		size="5"					persit="true"					attribute="CodGestEmit" />
-			<Field position="49"	type="int"		size="6"					persit="true"					attribute="CotUnidGestTom" />
-			<Field position="55"	type="string"	size="14"					persit="true"					attribute="CnpjUnidGestTom" />
-			<Field position="69"	type="string"	size="6"					persit="true"					attribute="CodMunUnidGestTom" />
+			<Field position="38"	type="int"		size="6"					persit="true"					attribute="CodUnidGestoraEmit" />
+			<Field position="44"	type="int"		size="5"					persit="true"					attribute="CodGestaoEmit" />
+			<Field position="49"	type="int"		size="6"					persit="true"					attribute="CodUnidGestoraTom" />
+			<Field position="55"	type="string"	size="14"					persit="true"					attribute="CnpjUnidGestoraTom" />
+			<Field position="69"	type="string"	size="6"					persit="true"					attribute="CodMunUnidGestoraTom" />
 			<Field position="75"	type="string"	size="14"					persit="true"					attribute="NumDocReceitaSubstituto" />
 			<Field position="89"	type="string"	size="6"					persit="true"					attribute="CodMunNfse" />
 			<Field position="95"	type="string"	size="5"					persit="true"					attribute="CodigoReceita" />
