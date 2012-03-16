@@ -64,7 +64,7 @@
 			<Field position="49"	type="int"		size="6"					persit="true"					attribute="CodUnidGestoraTom" />
 			<Field position="55"	type="string"	size="14"					persit="true"					attribute="CnpjUnidGestoraTom" />
 			<Field position="69"	type="string"	size="6"					persit="true"					attribute="CodMunUnidGestoraTom" />
-			<Field position="75"	type="string"	size="14"					persit="true"					attribute="NumDocReceitaSubstituto" />
+			<Field position="75"	type="string"	size="14"					persit="true"					attribute="NumDocReceitaSubstituido" />
 			<Field position="89"	type="string"	size="6"					persit="true"					attribute="CodMunNfse" />
 			<Field position="95"	type="string"	size="5"					persit="true"					attribute="CodigoReceita" />
 			<Field position="100"	type="string"	size="1"					persit="true"	regex="esfera"	attribute="EsferaReceita" />

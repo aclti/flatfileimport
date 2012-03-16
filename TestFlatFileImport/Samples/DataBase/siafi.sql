@@ -1,18 +1,87 @@
 use luberabamg
 
-CREATE TABLE SiafiDetails
+--EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+
+--drop table SiafiEmitente
+--drop table SiafiPrestador
+--drop table SiafiTomador
+--drop table SiafiRegistro
+--drop table siafi
+
+CREATE TABLE Siafi
 ( 
-	IdSiafiDetails       int IDENTITY ( 1,1 ) ,
-	IdSiafiHeader        int  NULL ,
+	IdSiafi              int IDENTITY ( 1,1 ) ,
+	CodConvenio          varchar(20)  NULL ,
+	NumRemessa           int  NULL ,
+	Mes                  int  NULL ,
+	Ano                  int  NULL ,
+	Decendio             int  NULL ,
+	TotalRegistros       int  NULL ,
+	ValorTotalRecebido   money  NULL ,
+	DtGeracao            datetime  NULL ,
+	DtRecebimento        datetime  NULL ,
+	DtProcessamento      datetime  NULL ,
+	Arquivo              varchar(128)  NULL ,
+	Status               char(1)  NULL ,
+	NumVersao            varchar(5)  NULL 
+)
+go
+
+ALTER TABLE Siafi
+	ADD CONSTRAINT XPKSiafi PRIMARY KEY (IdSiafi ASC)
+go
+
+CREATE TABLE SiafiEmitente
+( 
+	IdSiafiEmitente      int IDENTITY ( 1,1 ) ,
+	IdSiafiRegistro      int  NULL ,
+	CodUnidadeGestora    int  NULL ,
+	CodGestao            int  NULL 
+)
+go
+
+ALTER TABLE SiafiEmitente
+	ADD CONSTRAINT XPKSiafiEmitente PRIMARY KEY (IdSiafiEmitente ASC)
+go
+
+CREATE NONCLUSTERED INDEX XIF1SiafiEmitente ON SiafiEmitente
+( 
+	IdSiafiRegistro       ASC
+)
+go
+
+CREATE TABLE SiafiPrestador
+( 
+	IdSiafiPrestador     int IDENTITY ( 1,1 ) ,
+	IdSiafiRegistro      int  NULL ,
+	IdContribuinte       int  NULL ,
+	NumDocReceita        varchar(14)  NULL 
+)
+go
+
+ALTER TABLE SiafiPrestador
+	ADD CONSTRAINT XPKSiafiPrestador PRIMARY KEY (IdSiafiPrestador ASC)
+go
+
+CREATE NONCLUSTERED INDEX XIF1SiafiPrestador ON SiafiPrestador
+( 
+	IdContribuinte        ASC
+)
+go
+
+CREATE NONCLUSTERED INDEX XIF2SiafiPrestador ON SiafiPrestador
+( 
+	IdSiafiRegistro       ASC
+)
+go
+
+CREATE TABLE SiafiRegistro
+( 
+	IdSiafiRegistro      int IDENTITY ( 1,1 ) ,
+	IdSiafi              int  NULL ,
 	DtEmissao            datetime  NULL ,
-	DtVenciemnto         datetime  NULL ,
+	DtVencimento         datetime  NULL ,
 	NumDocumento         varchar(12)  NULL ,
-	CodUnidGestEmit      int  NULL ,
-	CodGestEmit          int  NULL ,
-	CotUnidGestTom       int  NULL ,
-	CnpjUnidGestTom      varchar(14)  NULL ,
-	CodMunUnidGestTom    varchar(6)  NULL ,
-	NumDocReceitaSubstituto varchar(14)  NULL ,
 	CodMunNfse           varchar(6)  NULL ,
 	CodigoReceita        varchar(5)  NULL ,
 	EsferaReceita        char(1)  NULL ,
@@ -33,83 +102,75 @@ CREATE TABLE SiafiDetails
 )
 go
 
-
-
-ALTER TABLE SiafiDetails
-	ADD CONSTRAINT XPKSiafiDetails PRIMARY KEY (IdSiafiDetails ASC)
+ALTER TABLE SiafiRegistro
+	ADD CONSTRAINT XPKSiafiDetails PRIMARY KEY (IdSiafiRegistro ASC)
 go
 
-
-
-CREATE NONCLUSTERED INDEX XIF1SiafiDetails ON SiafiDetails
+CREATE NONCLUSTERED INDEX XIF1SiafiDetails ON SiafiRegistro
 ( 
-	IdSiafiHeader         ASC
+	IdSiafi               ASC
 )
 go
 
-
-
-CREATE TABLE SiafiHeader
+CREATE TABLE SiafiTomador
 ( 
-	IdSiafiHeader        int IDENTITY ( 1,1 ) ,
-	CodConvenio          varchar(20)  NULL ,
-	DtGeracao            datetime  NULL ,
-	NumRemessa           int  NULL ,
-	NumVersao            varchar(2)  NULL ,
-	Mes                  int  NULL ,
-	Ano                  int  NULL ,
-	Decendio             int  NULL 
+	IdSiafiTomador       int IDENTITY ( 1,1 ) ,
+	IdSiafiRegistro      int  NULL ,
+	IdSubstituto         int  NULL ,
+	CodUnidGestora       int  NULL ,
+	Cnpj                 varchar(14)  NULL ,
+	CodMunicipio         int  NULL 
 )
 go
 
-
-
-ALTER TABLE SiafiHeader
-	ADD CONSTRAINT XPKSiafiHeader PRIMARY KEY (IdSiafiHeader ASC)
+ALTER TABLE SiafiTomador
+	ADD CONSTRAINT XPKSiafiTomador PRIMARY KEY (IdSiafiTomador ASC)
 go
 
-
-
-CREATE TABLE SiafiTrailer
+CREATE NONCLUSTERED INDEX XIF1SiafiTomador ON SiafiTomador
 ( 
-	IdSiafiTrailer       int IDENTITY ( 1,1 ) ,
-	IdSiafiHeader        int  NULL ,
-	NumSeqRegistro       int  NULL ,
-	TotalRegistros       int  NULL ,
-	ValorTotalRecebido   money  NULL 
+	IdSiafiRegistro       ASC
 )
 go
 
-
-
-ALTER TABLE SiafiTrailer
-	ADD CONSTRAINT XPKSiafiTriller PRIMARY KEY (IdSiafiTrailer ASC)
-go
-
-
-
-CREATE NONCLUSTERED INDEX XIF1SiafiTriller ON SiafiTrailer
+CREATE NONCLUSTERED INDEX XIF2SiafiTomador ON SiafiTomador
 ( 
-	IdSiafiHeader         ASC
+	IdSubstituto          ASC
 )
 go
 
-
-
-
-ALTER TABLE SiafiDetails
-	ADD CONSTRAINT R_714 FOREIGN KEY (IdSiafiHeader) REFERENCES SiafiHeader(IdSiafiHeader)
+ALTER TABLE SiafiEmitente
+	ADD CONSTRAINT FK_SiafiEmitenteFromSiafiRegistro FOREIGN KEY (IdSiafiRegistro) REFERENCES SiafiRegistro(IdSiafiRegistro)
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION
 go
 
-
-
-
-ALTER TABLE SiafiTrailer
-	ADD CONSTRAINT R_715 FOREIGN KEY (IdSiafiHeader) REFERENCES SiafiHeader(IdSiafiHeader)
+ALTER TABLE SiafiPrestador
+	ADD CONSTRAINT FK_SiafiPrestadorFromContribuinte FOREIGN KEY (IdContribuinte) REFERENCES Contribuinte(IdContribuinte)
 		ON DELETE NO ACTION
 		ON UPDATE NO ACTION
 go
 
+ALTER TABLE SiafiPrestador
+	ADD CONSTRAINT FK_SiafiPrestadorFromSiafiRegistro FOREIGN KEY (IdSiafiRegistro) REFERENCES SiafiRegistro(IdSiafiRegistro)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+go
 
+ALTER TABLE SiafiRegistro
+	ADD CONSTRAINT FK_SiafiRegistroFromSiafi FOREIGN KEY (IdSiafi) REFERENCES Siafi(IdSiafi)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+go
+
+ALTER TABLE SiafiTomador
+	ADD CONSTRAINT FK_SiafiTomadorFromSiafiRegistro FOREIGN KEY (IdSiafiRegistro) REFERENCES SiafiRegistro(IdSiafiRegistro)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+go
+
+ALTER TABLE SiafiTomador
+	ADD CONSTRAINT FK_SiafiTomadorFromContribuinte FOREIGN KEY (IdSubstituto) REFERENCES Contribuinte(IdContribuinte)
+		ON DELETE NO ACTION
+		ON UPDATE NO ACTION
+go
