@@ -63,7 +63,7 @@ namespace TestFlatFileImport
             bFiled = bLine.BlueprintFields[1];
             Assert.AreEqual("NumSeqRegistro", bFiled.Attribute);
             Assert.AreEqual(bLine, bFiled.BlueprintLine);
-            Assert.AreEqual(true, bFiled.Persist);
+            Assert.AreEqual(false, bFiled.Persist);
             Assert.AreEqual(2, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
             Assert.AreEqual(null, bFiled.Regex);
