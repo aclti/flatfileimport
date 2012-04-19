@@ -22,7 +22,7 @@ namespace FlatFileImport
             Parser.ProcessHeader();
 
             Console.WriteLine("".PadLeft(80, '*'));
-            Console.WriteLine(String.Format("INICIO DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Comment));
+            Console.WriteLine(String.Format("INICIO DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Path));
             Console.WriteLine("".PadLeft(80, '*'));
 
             Parser.Process();
@@ -30,7 +30,7 @@ namespace FlatFileImport
             Parser.UnRegisterObserver(observer);
 
             Console.WriteLine("".PadLeft(80, '*'));
-            Console.WriteLine(String.Format("FINAL DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Comment));
+            Console.WriteLine(String.Format("FINAL DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Path));
             Console.WriteLine("".PadLeft(80, '*'));
         }
     }

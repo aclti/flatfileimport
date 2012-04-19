@@ -7,7 +7,7 @@ namespace FlatFileImport.Input
     {
         private static readonly Regex Regex = new Regex(@"^\.[a-zA-Z0-9]{3,}$");
 
-        public string Extension { private set; get; }
+        public string Name { private set; get; }
         public FileType Type { private set; get; }
 
         public FileExtension(string extension, FileType type)
@@ -23,7 +23,7 @@ namespace FlatFileImport.Input
             if(!IsValid(extension))
                 throw new System.Exception("A extensão informada não é válida");
 
-            Extension = extension;
+            Name = extension;
             Type = type;
         }
 
@@ -59,14 +59,14 @@ namespace FlatFileImport.Input
             if (ReferenceEquals(this, ex)) 
                 return true;
 
-            return Equals(ex.Extension, Extension) && Equals(ex.Type, Type);
+            return Equals(ex.Name, Name) && Equals(ex.Type, Type);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((Extension != null ? Extension.GetHashCode() : 0)*397) ^ Type.GetHashCode();
+                return ((Name != null ? Name.GetHashCode() : 0)*397) ^ Type.GetHashCode();
             }
         }
     }

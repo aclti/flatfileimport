@@ -3,14 +3,18 @@
 namespace FlatFileImport.Input
 {
     // TODO: Fazer com que o handler consiga trabalhar com zip que contenham mais de um arquivo ou diretorio
-    // TODO: Tratar de uma forma melhor o armazanamento do nome original do zip, talvez encadear os handlers Handler -> ParentHandler. Atualmente essa informação fica armazenada no campo comments
     public class HandlerZip : Handler
     {
         private string _dataFile;
 
         public HandlerZip(string path) : base(path)
         {
-            var fileInfo = new FileInfo(ExtractZip(path), SupportedExtension.GetFileExtension(path)) { Comment = path };
+            // TODO Melhorar a estrutura de parent do file info, talvez trabalhar com parent no handler também
+            var parentFileInfo = new FileInfo(path, SupportedExtension.GetFileExtension(path));
+            var file = ExtractZip(path);
+            // TODO Implementar para chamar novamente o handler;
+            var fileInfo = new FileInfo(file, SupportedExtension.GetFileExtension(file), parentFileInfo);
+            
             FileInfos.Add(fileInfo);
         }
 

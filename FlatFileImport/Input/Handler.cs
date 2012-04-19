@@ -67,13 +67,13 @@ namespace FlatFileImport.Input
         private static bool IsPlainText(string path)
         {
             var ex = SupportedExtension.GetFileExtension(path);
-            return ex != null && Extensions.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Text);
+            return ex != null && Extensions.Any(e => e.Name == ex.Name && ex.Type == FileType.Text);
         }
 
         private static bool IsZipFile(string path)
         {
             var ex = SupportedExtension.GetFileExtension(path);
-            return ex != null && Extensions.Any(e => e.Extension == ex.Extension && ex.Type == FileType.Binary && e.Extension == ".zip");
+            return ex != null && Extensions.Any(e => e.Name == ex.Name && ex.Type == FileType.Binary && e.Name == ".zip");
         }
 
         private static bool IsDirectory(string path)

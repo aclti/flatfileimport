@@ -71,27 +71,27 @@ namespace FlatFileImport.Input
         public FileExtension GetFileExtension(string path)
         {
             var extension = Path.GetExtension(path);
-            return String.IsNullOrEmpty(extension) ? null : _extension.FirstOrDefault(e => e.Extension == extension.ToLower());
+            return String.IsNullOrEmpty(extension) ? null : _extension.FirstOrDefault(e => e.Name == extension.ToLower());
         }
 
         public bool IsSupported(string extension, FileType type)
         {
-            return _extension.Any(e => e.Extension == extension.ToLower() && e.Type == type);
+            return _extension.Any(e => e.Name == extension.ToLower() && e.Type == type);
         }
 
         public bool IsSupported(FileExtension extension)
         {
-            return _extension.Any(e => e.Extension == extension.Extension && e.Type == extension.Type);
+            return _extension.Any(e => e.Name == extension.Name && e.Type == extension.Type);
         }
 
         private bool ExtensionExist(string extension)
         {
-            return _extension.Any(e => e.Extension == extension);
+            return _extension.Any(e => e.Name == extension);
         }
 
         private bool ExtensionExist(FileExtension ex)
         {
-            return ExtensionExist(ex.Extension);
+            return ExtensionExist(ex.Name);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace FlatFileImport.Process
 
                 using (var file = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Warnning.txt", true))
                 {
-                    file.WriteLine(_fileInfo.Comment + Validate.ValidateResult.Message);
+                    file.WriteLine(_fileInfo.Path + Validate.ValidateResult.Message);
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace FlatFileImport.Process
 
                 using (var file = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Warnning.txt", true))
                 {
-                    file.WriteLine(_fileInfo.Comment + Validate.ValidateResult.Message);
+                    file.WriteLine(_fileInfo.Path + Validate.ValidateResult.Message);
                 }
             }
 
@@ -121,11 +121,9 @@ namespace FlatFileImport.Process
 
         public void Process()
         {
-            string l;
-
-            while ((l = _fileInfo.Stream.ReadLine()) != null)
+            while (_fileInfo.MoveToNext())
             {
-                _rawLineData = l;
+                _rawLineData = _fileInfo.Line;
                 _currentBlueprintLine = GetBlueprintLine();
 
                 if (_blueprint.UseRegistries)

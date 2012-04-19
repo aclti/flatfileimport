@@ -58,6 +58,7 @@
     <Compile Include="Input\HandlerDirectory.cs" />
     <Compile Include="Input\HandlerText.cs" />
     <Compile Include="Input\HandlerZip.cs" />
+    <Compile Include="Input\IFileInfo.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
     <Compile Include="Input\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
