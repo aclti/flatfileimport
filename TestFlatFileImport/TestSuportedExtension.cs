@@ -16,10 +16,10 @@ namespace TestFlatFileImport
             Assert.Greater(supportedExtensions.Extensions.Count,0);
             
             var l = supportedExtensions.Extensions;
-            Assert.IsTrue(l.Any(e => e.Extension == ".txt" && e.Type == FileType.Text));
-            Assert.IsTrue(l.Any(e => e.Extension == ".ret" && e.Type == FileType.Text));
-            Assert.IsTrue(l.Any(e => e.Extension == ".web" && e.Type == FileType.Text));
-            Assert.IsTrue(l.Any(e => e.Extension == ".zip" && e.Type == FileType.Binary));
+            Assert.IsTrue(l.Any(e => e.Name == ".txt" && e.Type == FileType.Text));
+            Assert.IsTrue(l.Any(e => e.Name == ".ret" && e.Type == FileType.Text));
+            Assert.IsTrue(l.Any(e => e.Name == ".web" && e.Type == FileType.Text));
+            Assert.IsTrue(l.Any(e => e.Name == ".zip" && e.Type == FileType.Binary));
         }
 
         [Test]
@@ -32,8 +32,8 @@ namespace TestFlatFileImport
 
             var l = sExtensions.Extensions;
             Assert.AreEqual(qtd + 2, sExtensions.Extensions.Count);
-            Assert.IsTrue(l.Any(e => e.Extension == ".new" && e.Type == FileType.Text));
-            Assert.IsTrue(l.Any(e => e.Extension == ".rar" && e.Type == FileType.Binary));
+            Assert.IsTrue(l.Any(e => e.Name == ".new" && e.Type == FileType.Text));
+            Assert.IsTrue(l.Any(e => e.Name == ".rar" && e.Type == FileType.Binary));
         }
 
         [Test]

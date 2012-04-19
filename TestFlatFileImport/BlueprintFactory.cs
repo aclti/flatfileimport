@@ -42,7 +42,7 @@ namespace TestFlatFileImport
                     break;
 
                 default:
-                    throw new NotImplementedException(toParse.Header + " [ " + toParse.Comment + " ] [ " + toParse.Path + " ]");
+                    throw new NotImplementedException(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
             }
 
             return new Blueprint(pathXml);

@@ -54,18 +54,18 @@ namespace TestFlatFileImport
         {
             var ex = new FileExtension(".Txt", FileType.Text);
 
-            Assert.AreEqual(ex.Extension, ".txt");
+            Assert.AreEqual(ex.Name, ".txt");
             Assert.AreEqual(ex.Type, FileType.Text);
 
 
             ex = new FileExtension(".RAR", FileType.Binary);
 
-            Assert.AreEqual(ex.Extension, ".rar");
+            Assert.AreEqual(ex.Name, ".rar");
             Assert.AreEqual(ex.Type, FileType.Binary);
 
             ex = new FileExtension(".zIp", FileType.Binary);
 
-            Assert.AreEqual(ex.Extension, ".zip");
+            Assert.AreEqual(ex.Name, ".zip");
             Assert.AreEqual(ex.Type, FileType.Binary);
         }
 
