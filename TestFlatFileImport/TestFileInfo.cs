@@ -102,23 +102,23 @@ namespace TestFlatFileImport
         [Test]
         public void TestCraeteFileFInfoZipSingleLineNumber()
         {
-            var path = Path.Combine(SigleDasn, "02-3105-DASN10-20100415-01.zip");
+            var path = Path.Combine(SigleDas, "02-3105-DAS-20090722-01.zip");
             var handler = Handler.GetHandler(path);
             var enumerator = handler.GetEnumerator();
             enumerator.MoveNext();
             var fileInfo = enumerator.Current;
 
             Assert.IsNotNull(fileInfo);
-            Assert.AreEqual("AAAAA|108|20100401|20100415", fileInfo.Header);
-            Assert.AreEqual("AAAAA|108|20100401|20100415", fileInfo.Line);
+            Assert.AreEqual("AAAAA|120|20090722|20090722", fileInfo.Header);
+            Assert.AreEqual("AAAAA|120|20090722|20090722", fileInfo.Line);
             Assert.AreEqual(1, fileInfo.LineNumber);
 
             fileInfo.MoveToNext();
-            Assert.AreEqual("D1000|000689662009001|1|2009|CHAME TAXI LTDA EPP|19940517|19940517|02071009400003615|00206062898925166181|20100404084639|1.0.1.0|0", fileInfo.Line);
+            Assert.AreEqual("00000|00430700000116|SANTOS PROTESE DENTAL COMERCIO E SERVICOS LTDA|3105|S|19950210|200906|3942,20|0,000|1,00|R|0|", fileInfo.Line);
             Assert.AreEqual(2, fileInfo.LineNumber);
 
             fileInfo.MoveToNext();
-            Assert.AreEqual("D3001|200801|17408,76", fileInfo.Line);
+            Assert.AreEqual("01000|01070920300051855|177,40|2,92|0,00|180,32|20090724|20090731|180,32", fileInfo.Line);
             Assert.AreEqual(3, fileInfo.LineNumber);
 
             var line = "";
@@ -126,30 +126,30 @@ namespace TestFlatFileImport
                 fileInfo.MoveToNext();
 
             line = fileInfo.Line;
-            Assert.AreEqual("04000|1004|298,89||||||", line);
+            Assert.AreEqual("03000|00543079000288|SE|3105|73560,77|1,00|1200000,00|0||", line);
             Assert.AreEqual(53, fileInfo.LineNumber);
 
             for (var i = 0; i < 200; i++)
                 fileInfo.MoveToNext();
 
             line = fileInfo.Line;
-            Assert.AreEqual("D4000|00090021200901004|200901|44929,68|4237,19|4350,07", line);
+            Assert.AreEqual("03110|||5551,00|0|0|0|0|0|0|0|0|10,260|569,53|1,430|79,370|0,430|23,860|||4,070|225,960|||0,480|26,640|3,500|194,280|0,350|19,420|0,04|5", line);
             Assert.AreEqual(253, fileInfo.LineNumber);
 
             for (var i = 0; i < 1000; i++)
                 fileInfo.MoveToNext();
 
             line = fileInfo.Line;
-            Assert.AreEqual("02000|585297,32|664972,70|162969,33|585297,32|664972,70||", line);
+            Assert.AreEqual("03110|||4350,00|0|0|5|0|0|0|0|0|2,750|119,63|0,000|0,000|0,000|0,000|0,000|0,000|2,750|119,630|||0,000|0,000|||0,000|0,000|0,01|5", line);
             Assert.AreEqual(1253, fileInfo.LineNumber);
 
 
             while (fileInfo.MoveToNext())
                 line = fileInfo.Line;
 
-            Assert.AreEqual("ZZZZZ|284184", fileInfo.Line);
+            Assert.AreEqual("ZZZZZ|6095", fileInfo.Line);
             fileInfo.MoveToNext();
-            Assert.AreEqual("ZZZZZ|284184", fileInfo.Line);
+            Assert.AreEqual("ZZZZZ|6095", fileInfo.Line);
         }
     }
 }
