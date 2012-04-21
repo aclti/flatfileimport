@@ -22,7 +22,7 @@
 	</Regex>
 
 	<Header>
-		<Line class="Header" regex="^1.{72}0[1-3].{425}$" mandatory="true">
+		<Line class="Header" regex="^1.*$" mandatory="true">
 			<Fields>
 				<Field position="1"		type="string"	size="1"	persit="false"					attribute="CodRegistro" />
 				<Field position="2"		type="int"		size="8"	persit="false"	regex="number"	attribute="NumSeqRegistro" />
@@ -38,7 +38,7 @@
 	</Header>
 
 	<Footer>
-		<Line class="Trailer" regex="^9[0-9]{8}[0-9]{6}[0-9]{17}[A-Za-z0-9 ]{468}$" mandatory="true">
+		<Line class="Trailer" regex="^9[0-9]{8}.*$" mandatory="true">
 			<Fields>
 				<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
 				<Field position="2"		type="int"		size="8"					persit="false"	regex="number"	attribute="NumSeqRegistro" />
@@ -52,12 +52,12 @@
 	<Registries>
 	</Registries>
 
-	<Line class="Details" regex="^2.{67}98.{18}98.{9}[ME].{355}98.{43}$" mandatory="true">
+	<Line class="Details" regex="^2.*$" mandatory="true">
 		<Fields>
 			<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
 			<Field position="2"		type="int"		size="8"					persit="false"	regex="number"	attribute="NumSeqRegistro" />
 			<Field position="10"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtEmissao" />
-			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVencimento" />
+			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVenciemnto" />
 			<Field position="26"	type="string"	size="12"					persit="true"	regex="numdoc"	attribute="NumDocumento" />
 			<Field position="38"	type="int"		size="6"					persit="true"	regex="number"	attribute="CodUnidGestEmit" />
 			<Field position="44"	type="int"		size="5"					persit="true"	regex="number"	attribute="CodGestEmit" />
