@@ -66,7 +66,6 @@ namespace TestFlatFileImport
             Assert.AreEqual(false, bFiled.Persist);
             Assert.AreEqual(2, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
-            Assert.AreEqual(null, bFiled.Regex);
             Assert.AreEqual(8, bFiled.Size);
             Assert.AreEqual(typeof(int), bFiled.Type);
 
@@ -97,7 +96,6 @@ namespace TestFlatFileImport
             Assert.AreEqual(true, bFiled.Persist);
             Assert.AreEqual(38, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
-            Assert.AreEqual(null, bFiled.Regex);
             Assert.AreEqual(6, bFiled.Size);
             Assert.AreEqual(typeof(int), bFiled.Type);
 

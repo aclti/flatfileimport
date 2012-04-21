@@ -32,12 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\Dependencies\MOQ\NET35\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\nunit.mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,12 +62,13 @@
     <Compile Include="TestBlueprint.cs" />
     <Compile Include="TestBlueprintComponent.cs" />
     <Compile Include="TestBlueprintFactory.cs" />
+    <Compile Include="TestConverter.cs" />
     <Compile Include="TestFileExtension.cs" />
     <Compile Include="TestFileHandler.cs" />
     <Compile Include="TestFileInfo.cs" />
     <Compile Include="TestImport.cs" />
-    <Compile Include="TestParserRawLinePositional.cs" />
-    <Compile Include="TestParserRawLinePositionalCharacter.cs" />
+    <Compile Include="TestParserPositional.cs" />
+    <Compile Include="TestParserSeparatedCharacter.cs" />
     <Compile Include="TestSuportedExtension.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +82,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Samples\Blueprints\pipe-with-register.xml" />
+    <Content Include="Samples\Blueprints\siafi-simplicaficado.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Samples\Blueprints\siafi.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -106,7 +111,6 @@
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090601-01.zip" />
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090602-01.zip" />
     <None Include="Samples\Files\Das\Single\02-3105-DAS-20090722-01.zip" />
-    <None Include="Samples\sample-siafi-posicional.ret" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
