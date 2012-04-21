@@ -30,7 +30,7 @@ resultadao da importação da linha
 
 PASSO:
 - Identificar a Blueprint
-- Receber a linha
+- Ler linha a linha
 - Identificar a linha
 - Criar os objetos necessários
 - Chamar o parser
