@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+TODO
+-------------------------------------------------------------------------------
+
+-- CUSTOM TYPES FOR CONVERTION -------------------------------------------------
+verificar uma forma de melhora a conversão dos objetos, ja que utiliza regex e 
+grupos para identifica poderia pensar em uma forma de passar para o value, 
+complexo, um elemento serializado em xml ou json. Isser seria aplicado para 
+tipos especiais como por exemplo:
+talvez pesar algo do tipo, custom types
+
+class Period{
+	public int month;
+	public int day
+}
+
+dessa forma quando for fazer a conversão seria utilizada esse tipo, e o retorno
+seria uma sring da serialização do objeto
+-------------------------------------------------------------------------------
+
+-- MELHORIAS DESEJÁVEIS -------------------------------------------------------
+A possibilidade de definir na linha quantas vezes ela podera aparecer, ser uma 
+linha especial (header, footer, etc....), se é uma linha de totaliza, 
+de quem é essa totalização, se ela tem alguma precedencia.
+
+Opção de criar grupos com header, details e footer. Se não for especificado o 
+arquivo todo é um mesmo grupo
+
+Implementar somatorio ou contagem de de um derterminado campo linha. Validar 
+o resultado contra um determinado campo de uma linha qualquer ou 
+contra o footer.
+-------------------------------------------------------------------------------

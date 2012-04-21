@@ -39,11 +39,11 @@ namespace FlatFileImport.Process
 
         private IParserRawDataLine GetParserRawDataLine()
         {
-            if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Character)
-                return new ParserRawLinePositionalCharacter(_currentBlueprintLine);
+            //if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Character)
+            //    return new ParserRawLinePositionalCharacter(_currentBlueprintLine);
 
-            if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Position)
-                return new ParserRawLinePositional(_currentBlueprintLine);
+            //if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Position)
+            //    return new ParserRawLinePositional(_currentBlueprintLine);
 
             throw new ParserRawDataNotFound();
         }

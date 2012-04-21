@@ -26,9 +26,9 @@ namespace FlatFileImport.Validate
             return result.Success;
         }
 
-        public ValidateResult Valid()
+        public ValidResult Valid()
         {
-            var result = new ValidateResult { Success = true };
+            var result = new ValidResult { Success = true };
             //var sb = new StringBuilder();
             //var blueprintFields = _blueprintLine.BlueprintFields;
 
@@ -53,7 +53,7 @@ namespace FlatFileImport.Validate
             return result;
         }
 
-        public ValidateResult ValidateResult
+        public ValidResult ValidateResult
         {
             get { return Valid(); }
         }

@@ -20,7 +20,7 @@ namespace FlatFileImport.Input
         #region IValidate Members
 
 
-        public ValidateResult ValidateResult
+        public ValidResult ValidateResult
         {
             get { return Valid(); }
         }
@@ -43,12 +43,12 @@ namespace FlatFileImport.Input
             return false;
         }
 
-        public ValidateResult Valid()
+        public ValidResult Valid()
         {
             if (IsValid())
                 return null;
 
-            return new ValidateResult { Message = "Invalid Path", Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error };
+            return new ValidResult { Message = "Invalid Path", Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error };
         }
 
         #endregion

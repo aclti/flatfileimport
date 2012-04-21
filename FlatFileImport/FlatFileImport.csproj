@@ -67,6 +67,10 @@
     <Compile Include="Process\BlueprintField.cs" />
     <Compile Include="Process\BlueprintLine.cs" />
     <Compile Include="Process\BlueprintRegister.cs" />
+    <Compile Include="Process\Converter.cs" />
+    <Compile Include="Process\ConverterDate.cs" />
+    <Compile Include="Process\ConverterNumber.cs" />
+    <Compile Include="Process\ConverterString.cs" />
     <Compile Include="Process\Enumeration.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="Process\IBlueprint.cs" />
@@ -75,23 +79,27 @@
     <Compile Include="Process\IBlueprintLine.cs" />
     <Compile Include="Process\IBlueprintRegister.cs" />
     <Compile Include="Process\IParsedRegister.cs" />
+    <Compile Include="Process\IParser.cs" />
     <Compile Include="Process\IParserRawDataField.cs" />
     <Compile Include="Process\IParserRawDataLine.cs" />
+    <Compile Include="Process\ParsedAttribute.cs" />
     <Compile Include="Process\ParsedData.cs" />
     <Compile Include="Process\ParsedDataFactory.cs" />
     <Compile Include="Process\ParsedFooter.cs" />
     <Compile Include="Process\ParsedHeader.cs" />
     <Compile Include="Process\ParsedRegister.cs" />
     <Compile Include="Process\Parser.cs" />
+    <Compile Include="Process\ParserPositional.cs" />
     <Compile Include="Process\ParserRawLinePositional.cs" />
     <Compile Include="Process\ParserRawLinePositionalCharacter.cs" />
+    <Compile Include="Process\ParserSeparatedCharacter.cs" />
     <Compile Include="Process\RegexRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validate\IValidate.cs" />
     <Compile Include="Validate\ValidateField.cs" />
     <Compile Include="Validate\ValidateLine.cs" />
     <Compile Include="Validate\ValidateRegister.cs" />
-    <Compile Include="Validate\ValidateResult.cs" />
+    <Compile Include="Validate\ValidResult.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

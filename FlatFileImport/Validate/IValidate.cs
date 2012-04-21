@@ -3,7 +3,7 @@
     public interface IValidate
     {
         bool IsValid();
-        ValidateResult Valid();
-        ValidateResult ValidateResult { get; }
+        ValidResult Valid();
+        ValidResult ValidateResult { get; }
     }
 }

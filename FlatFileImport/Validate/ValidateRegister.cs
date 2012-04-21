@@ -20,12 +20,12 @@ namespace FlatFileImport.Validate
             throw new System.NotImplementedException();
         }
 
-        public ValidateResult Valid()
+        public ValidResult Valid()
         {
             throw new System.NotImplementedException();
         }
 
-        public ValidateResult ValidateResult
+        public ValidResult ValidateResult
         {
             get { throw new System.NotImplementedException(); }
         }

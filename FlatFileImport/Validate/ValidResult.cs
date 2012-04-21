@@ -2,7 +2,7 @@
 
 namespace FlatFileImport.Validate
 {
-    public class ValidateResult
+    public class ValidResult
     {
         public string Message { set; get; }
         public ExceptionType Type { set; get; }

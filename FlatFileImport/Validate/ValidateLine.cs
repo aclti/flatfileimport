@@ -25,7 +25,7 @@ namespace FlatFileImport.Validate
 
         #region IValidate Members
 
-        public ValidateResult ValidateResult
+        public ValidResult ValidateResult
         {
             get { return Valid(); }
         }
@@ -35,9 +35,9 @@ namespace FlatFileImport.Validate
             return Valid().Success;
         }
 
-        public ValidateResult Valid()
+        public ValidResult Valid()
         {
-            var result = new ValidateResult { Success = true };
+            var result = new ValidResult { Success = true };
 
             if (_blueprintLine.BlueprintFields.Count != _rawDataCollection.Length)
             {
@@ -54,14 +54,14 @@ namespace FlatFileImport.Validate
 
                 if (_blueprintLine.BlueprintFields.Count > _rawDataCollection.Length)
                 {
-                    result = new ValidateResult { Message = sb.ToString(), Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error, Success = false};
+                    result = new ValidResult { Message = sb.ToString(), Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error, Success = false};
                 }
                 else if (_blueprintLine.BlueprintFields.Count < _rawDataCollection.Length)
                 {
                     if (_blueprintLine.Mandatory)
-                        result = new ValidateResult { Message = sb.ToString(), Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error, Success = false };
+                        result = new ValidResult { Message = sb.ToString(), Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error, Success = false };
                     else
-                        result = new ValidateResult { Message = sb.ToString(), Severity = ExceptionSeverity.Critical, Type = ExceptionType.Warnning, Success = false };
+                        result = new ValidResult { Message = sb.ToString(), Severity = ExceptionSeverity.Critical, Type = ExceptionType.Warnning, Success = false };
                 }
 
             }
