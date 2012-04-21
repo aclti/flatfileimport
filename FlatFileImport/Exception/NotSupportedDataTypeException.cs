@@ -2,7 +2,7 @@
 
 namespace FlatFileImport.Exception
 {
-    public class NotSupportedDataTypeException : System.Exception, IParserException
+    public class NotSupportedDataTypeException : System.Exception, IImporterException
     {
         public NotSupportedDataTypeException (string msg) : base(msg)
         {

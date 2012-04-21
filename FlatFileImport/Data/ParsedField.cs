@@ -1,23 +1,23 @@
 ﻿using System;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Data
 {
-    public class ParsedAttribute
+    public class ParsedField
     {
-        private readonly ParsedData _class;
+        private ParsedLine _parent;
+        private string _name;
         private Type _type;
         private string _value;
-        private string _name;
 
-        public ParsedData Class { get { return _class; } }
+        public ParsedLine Parent { get { return _parent; } }
         public Type Type { get { return _type; } }
         public string Value { get { return _value; } }
         public string Name { get { return _name; } }
 
-        public ParsedAttribute(string name, string value, Type type, ParsedData classe)
+        public ParsedField(string name, string value, Type type, ParsedLine line)
         {
-            if (classe == null)
-                throw new ArgumentNullException("classe");
+            if (line == null)
+                throw new ArgumentNullException("line");
 
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -25,7 +25,7 @@ namespace FlatFileImport.Process
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            _class = classe;
+            _parent = line;
             _type = type;
             _value = value ?? "";
             _name = name;

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlatFileImport.Data;
+using FlatFileImport.Log;
 using FlatFileImport.Process;
+using FlatFileImport.Validate;
 using FileInfo = FlatFileImport.Input.FileInfo;
 
 namespace FlatFileImport
@@ -8,16 +11,36 @@ namespace FlatFileImport
     public class Importer : ISubject
     {
         private List<IObserver> _observers;
-
         private IParser _parser;
+        private IBlueprintFactoy _blueprintFactoy;
         private Blueprint _blueprint;
-        private List<ParsedData> _parsedDatas;
+        private ParsedData _parsedData;
+        private IEventLog _loger;
+        private IValidate _validate;
 
-        public IBlueprintFactoy BlueprintFactoy { set; get; }
-        
-        public Importer(IBlueprintFactoy factoy)
+        public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
+        public IBlueprintFactoy BlueprintFactoy
         {
-            BlueprintFactoy = factoy;
+            set
+            {
+                if (value == null)
+                    throw new System.Exception("A BlueprintFactory não pode ser null.");
+
+                _blueprintFactoy = value;
+            }
+
+            get
+            {
+                if(_blueprintFactoy ==  null)
+                    throw new System.Exception("A BlueprintFactory não foi definida.");
+
+                return _blueprintFactoy;
+            }
+        }
+
+        public Importer()
+        {
+            _parsedData = new ParsedData();
         }
 
         public void Process(FileInfo fileInfo)
@@ -38,6 +61,26 @@ namespace FlatFileImport
             //Console.WriteLine("".PadLeft(80, '*'));
         }
 
+        private IBlueprintLine GetBlueprintLine(string rawLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ParsedData GetParsedData(string rawLine)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ParsedData GetParsedData(string rawLine, ParsedData parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ParsedLine GetParsedLine(string rawLine, ParsedData parent)
+        {
+            throw new NotImplementedException();
+        }
+
         #region ISubject Members
 
         public void RegisterObserver(IObserver observer)
@@ -55,11 +98,11 @@ namespace FlatFileImport
                 _observers.Remove(observer);
         }
 
-        public void NotifyObservers()
+        public void NotifyObservers(ParsedData parsedData)
         {
             if (_observers != null)
                 foreach (var o in _observers)
-                    o.Notify(_parsedDatas);
+                    o.Notify(parsedData);
         }
 
         #endregion

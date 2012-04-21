@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FlatFileImport.Data;
 using FlatFileImport.Validate;
 
 namespace FlatFileImport.Process
@@ -8,7 +9,7 @@ namespace FlatFileImport.Process
     {
         private string _rawDataLine;
         private IBlueprintLine _blueprintLine;
-        private ParsedData _data;
+        private ParsedLine _data;
         private Converter _converter;
 
         public ParserPositional(IBlueprintLine blueprintLine, string rawDataLine)
@@ -26,9 +27,9 @@ namespace FlatFileImport.Process
         #region IParser Members
 
         // TODO: Migrar para um super classe ou para um command pattern
-        public ParsedData GetParsedData()
+        public ParsedLine GetParsedData()
         {
-            _data = new ParsedData(_blueprintLine.Class, _blueprintLine.Mandatory);
+            _data = new ParsedLine(_blueprintLine.Class, _blueprintLine.Mandatory);
 
             foreach (var field in _blueprintLine.BlueprintFields)
             {
@@ -37,7 +38,7 @@ namespace FlatFileImport.Process
                 _converter = Converter.GetConvert(field.Type);
                 _converter.Init(field, data);
 
-                _data.AddAtributte(field.Attribute, _converter.Data, field.Type);
+                _data.AddField(field.Attribute, _converter.Data, field.Type);
             }
 
             return _data;

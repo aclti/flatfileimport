@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Data
 {
     //public interface IParsedRegister
     //{

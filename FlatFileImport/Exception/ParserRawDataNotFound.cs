@@ -1,6 +1,6 @@
 ﻿namespace FlatFileImport.Exception
 {
-    public class ParserRawDataNotFound: System.Exception, IParserException
+    public class ParserRawDataNotFound: System.Exception, IImporterException
     {
         public ExceptionType Type
         {

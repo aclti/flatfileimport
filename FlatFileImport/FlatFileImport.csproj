@@ -46,7 +46,7 @@
     <Compile Include="Exception\BlueprintMissingConfigItem.cs" />
     <Compile Include="Exception\DataLengthDontMatchWithBlueprintDefinition.cs" />
     <Compile Include="Exception\Enumerations.cs" />
-    <Compile Include="Exception\IParserException.cs" />
+    <Compile Include="Exception\IImporterException.cs" />
     <Compile Include="Exception\NoMatchBlueprintFile.cs" />
     <Compile Include="Exception\ParserRawDataNotFound.cs" />
     <Compile Include="Exception\NotSupportedDataTypeException.cs" />
@@ -63,6 +63,9 @@
     <Compile Include="Input\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="ISubject.cs" />
+    <Compile Include="Log\DefaultEventLog.cs" />
+    <Compile Include="Log\IEventLog.cs" />
+    <Compile Include="Log\NotLogEvent.cs" />
     <Compile Include="Process\Blueprint.cs" />
     <Compile Include="Process\BlueprintField.cs" />
     <Compile Include="Process\BlueprintLine.cs" />
@@ -78,20 +81,17 @@
     <Compile Include="Process\IBlueprintField.cs" />
     <Compile Include="Process\IBlueprintLine.cs" />
     <Compile Include="Process\IBlueprintRegister.cs" />
-    <Compile Include="Process\IParsedRegister.cs" />
+    <Compile Include="Data\ParsedData.cs" />
+    <Compile Include="Data\IParsedRegister.cs" />
     <Compile Include="Process\IParser.cs" />
-    <Compile Include="Process\IParserRawDataField.cs" />
-    <Compile Include="Process\IParserRawDataLine.cs" />
-    <Compile Include="Process\ParsedAttribute.cs" />
-    <Compile Include="Process\ParsedData.cs" />
-    <Compile Include="Process\ParsedDataFactory.cs" />
-    <Compile Include="Process\ParsedFooter.cs" />
-    <Compile Include="Process\ParsedHeader.cs" />
-    <Compile Include="Process\ParsedRegister.cs" />
+    <Compile Include="Data\ParsedField.cs" />
+    <Compile Include="Data\ParsedLine.cs" />
+    <Compile Include="Data\ParsedDataFactory.cs" />
+    <Compile Include="Data\ParsedFooter.cs" />
+    <Compile Include="Data\ParsedHeader.cs" />
+    <Compile Include="Data\ParsedRegister.cs" />
     <Compile Include="Process\Parser.cs" />
     <Compile Include="Process\ParserPositional.cs" />
-    <Compile Include="Process\ParserRawLinePositional.cs" />
-    <Compile Include="Process\ParserRawLinePositionalCharacter.cs" />
     <Compile Include="Process\ParserSeparatedCharacter.cs" />
     <Compile Include="Process\RegexRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,7 +101,9 @@
     <Compile Include="Validate\ValidateRegister.cs" />
     <Compile Include="Validate\ValidResult.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factory\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

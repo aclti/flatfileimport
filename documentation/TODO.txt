@@ -2,7 +2,47 @@
 TODO
 -------------------------------------------------------------------------------
 
--- CUSTOM TYPES FOR CONVERTION -------------------------------------------------
+-- FUNÇCIONALIDADES E REPONSABILIDADES DO IMPORTER -----------------------------
+- Atua como  um controller da importação
+- É o subject, onde os cliente da importação serão registrados
+- Recebe um File para importar
+- Recebe uma blueprint para interpretar o arquivo
+- Manipula o arquivo, fazendo a leitura, e passa as linhas para um Parse
+- Recebe o resultado do parser
+- Analisa o resulta do parser, para saber se a importação da linha 
+foi bem sucessdia
+- Trata os erros, caso existam, que o parser retornou como 
+resultadao da importação da linha
+- Guarda o status dos matchs da blueprint
+- Trata as linha obrigatorias, e a quantiade delas
+- Passa o conteudo importado para o cliente
+- Descide quando passar esse conteudo
+- Faz a validação dos registro
+- Faz a totalização da importação
+-------------------------------------------------------------------------------
+
+-- DADOS QUE ESTÃO SENDO IMPORTADOS -------------------------------------------
+- Avaliar a obrigatoriedade do regsitro
+- Avaliar a quantidade de ocorrencias
+- Aninhar registro interligados
+- Avaliar os Registros ante de enviar para o clinte
+- Criar o objeto para armazenar os dados importados
+
+PASSO:
+- Identificar a Blueprint
+- Receber a linha
+- Identificar a linha
+- Criar os objetos necessários
+- Chamar o parser
+- Analisar o resultado
+- Tomar a decisão:
+	- Armazenar
+	- Passar para a proxima linha
+	- Disparar um erro
+	
+-------------------------------------------------------------------------------
+
+-- CUSTOM TYPES FOR CONVERTION ------------------------------------------------
 verificar uma forma de melhora a conversão dos objetos, ja que utiliza regex e 
 grupos para identifica poderia pensar em uma forma de passar para o value, 
 complexo, um elemento serializado em xml ou json. Isser seria aplicado para 

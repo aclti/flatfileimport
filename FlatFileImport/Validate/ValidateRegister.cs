@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using FlatFileImport.Data;
 using FlatFileImport.Process;
 
 namespace FlatFileImport.Validate
 {
     public class ValidateRegister : IValidate
     {
-        private List<ParsedData> _parsedDatas;
+        private List<ParsedLine> _parsedDatas;
 
-        public ValidateRegister(List<ParsedData> parsedDatas, List<IBlueprintField> blueprintFields)
+        public ValidateRegister(List<ParsedLine> parsedDatas, List<IBlueprintField> blueprintFields)
         {
             // TODO: Complete member initialization
             _parsedDatas = parsedDatas;

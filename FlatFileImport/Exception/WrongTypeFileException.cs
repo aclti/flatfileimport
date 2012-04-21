@@ -2,7 +2,7 @@
 
 namespace FlatFileImport.Exception
 {
-    public class WrongTypeFileException : System.Exception, IParserException
+    public class WrongTypeFileException : System.Exception, IImporterException
     {
         public WrongTypeFileException(string message) :base (message)
         {

@@ -1,6 +1,6 @@
 ﻿namespace FlatFileImport.Exception
 {
-    public interface IParserException
+    public interface IImporterException
     {
         ExceptionType Type { get; }
         ExceptionSeverity Severity { get; }

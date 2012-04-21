@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Data
 {
-    //public class ParsedHeader : IParsedRegister
+    //public class ParsedFooter : IParsedRegister
     //{
     //    #region IParsedRegister Members
 

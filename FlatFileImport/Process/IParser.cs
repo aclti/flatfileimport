@@ -1,10 +1,11 @@
-﻿using FlatFileImport.Validate;
+﻿using FlatFileImport.Data;
+using FlatFileImport.Validate;
 
 namespace FlatFileImport.Process
 {
     public interface IParser
     {
-        ParsedData GetParsedData();
+        ParsedLine GetParsedData();
         ValidResult Result();
         bool IsValid { get; }
     }

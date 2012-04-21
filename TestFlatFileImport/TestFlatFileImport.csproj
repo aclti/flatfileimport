@@ -81,6 +81,9 @@
     <Content Include="Samples\Blueprints\blueprint-dasn.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Samples\Blueprints\blueprint-dasn-resumida.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Samples\Blueprints\pipe-with-register.xml" />
     <Content Include="Samples\Blueprints\siafi-simplicaficado.xml">
       <SubType>Designer</SubType>
