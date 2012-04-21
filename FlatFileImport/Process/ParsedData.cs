@@ -1,28 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace FlatFileImport.Process
 {
     public class ParsedData
     {
-        private readonly Type _type;
-        private readonly string _value;
-        private readonly string _class;
-        private readonly string _attribute;
+        private  List<ParsedAttribute> _attributes;
+        private bool _mandatory;
+        private string _name;
 
-        public Type Type { get { return _type; } }
-        public string Value { get { return _value; } }
-        public string Class { get { return _class; } }
-        public string Attribute { get { return _attribute; } }
+        public string Name { get { return _name; } }
+        public bool Mandatory{ get { return _mandatory; } }
 
-        public ParsedData(IBlueprintField blueprintField, string value)
+        public ReadOnlyCollection<ParsedAttribute> Attributes { get { return _attributes.AsReadOnly(); } }
+
+        public ParsedData(string name, bool mandatory)
         {
-            if(blueprintField == null)
-                throw new ArgumentNullException("blueprintField");
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
-            _type = blueprintField.Type;
-            _value = value;
-            _attribute = blueprintField.Attribute;
-            _class = blueprintField.BlueprintLine.Class;
+            _mandatory = mandatory;
+            _name = name;
+        }
+
+        public void AddAtributte(string name, string value, Type type)
+        {
+            var attribute = new ParsedAttribute(name, value, type, this);
+
+            if(_attributes == null)
+                _attributes = new List<ParsedAttribute>();
+
+            _attributes.Add(attribute);
         }
     }
 }
