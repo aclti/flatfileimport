@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using FlatFileImport.Core;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -11,6 +13,7 @@ namespace TestFlatFileImport
         private string _path;
         private string _blueprintPath;
         private IBlueprint _blueprint;
+        private IBlueprintSetter _blueprintSetter;
 
         [SetUp]
         public void Setup()
@@ -30,9 +33,10 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataSintaxLineAndAtributtes()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
             var rawData = "D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("D1000"));
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
 
             var p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
@@ -69,14 +73,14 @@ namespace TestFlatFileImport
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsFalse(p.IsValid);
 
-            bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("D3001"));
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D3001"));
             rawData = "D3001|200810|88168,20";
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|88168.20";
             p = new ParserSeparatedCharacter(bLine, rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|efrwqr";
             p = new ParserSeparatedCharacter(bLine, rawData);
@@ -84,24 +88,27 @@ namespace TestFlatFileImport
 
             rawData = "D3001|200810|88168";
             p = new ParserSeparatedCharacter(bLine, rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|0";
             p = new ParserSeparatedCharacter(bLine, rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
         }
 
         [Test]
         public void TestParseRawData()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
             var rawData = "D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("D1000"));
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
             var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
             var p = new ParserSeparatedCharacter(bLine, rawData);
             var data = p.GetParsedData();
 
+            Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
             Assert.AreEqual("D1000", data.Fields[0].Value);
             Assert.AreEqual("010428182009003", data.Fields[1].Value);
@@ -116,11 +123,12 @@ namespace TestFlatFileImport
             Assert.AreEqual("1.0.7.0", data.Fields[10].Value);
             Assert.AreEqual("0", data.Fields[11].Value);
 
-            bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("00000"));
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("00000"));
             rawData = "00000|07491222000101|MATOS DISTRIBUIDORA DE COSMETICOS LTDA, ME|3105|S|20050712|200907|6389,32|0,000|1,00|A|1|6389,32";
             p = new ParserSeparatedCharacter(bLine, rawData);
             data = p.GetParsedData();
 
+            Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
             Assert.AreEqual("00000", data.Fields[0].Value);
             Assert.AreEqual("07491222000101", data.Fields[1].Value);
@@ -136,11 +144,12 @@ namespace TestFlatFileImport
             Assert.AreEqual("1", data.Fields[11].Value);
             Assert.AreEqual("6389" + decimalSeparator + "32", data.Fields[12].Value);
 
-            bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("D7000"));
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D7000"));
             rawData = "D7000|074912222009001|0520100|3105|4|2442,52|8,000|0|97,70|200,00|200,00|20100713|20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter(bLine, rawData);
             data = p.GetParsedData();
 
+            Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
             Assert.AreEqual("D7000", data.Fields[0].Value);
             Assert.AreEqual("074912222009001", data.Fields[1].Value);
@@ -167,9 +176,11 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataInclomplet()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
             var rawData = "D1000|010428182009003||||19960208||02071018801526456|01406041942879518599||1.0.7.0|0";
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Regex.IsMatch("D1000"));
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
             var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
             var p = new ParserSeparatedCharacter(bLine, rawData);
@@ -190,7 +201,7 @@ namespace TestFlatFileImport
             Assert.AreEqual("1.0.7.0", data.Fields[10].Value);
             Assert.AreEqual("0", data.Fields[11].Value);
 
-            bLine = _blueprint.BlueprintLines[7];
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("00000"));
             rawData = "00000|07491222000101||3105|S|20050712||0|0||A|1|6389,32";
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
@@ -211,7 +222,7 @@ namespace TestFlatFileImport
             Assert.AreEqual("1", data.Fields[11].Value);
             Assert.AreEqual("6389" + decimalSeparator + "32", data.Fields[12].Value);
 
-            bLine = _blueprint.BlueprintLines[47];
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D7000"));
             rawData = "D7000|||3105|4|2442,52|8,000|||200,00|0||20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);

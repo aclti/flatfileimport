@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using FlatFileImport.Core;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -9,6 +12,7 @@ namespace TestFlatFileImport
     {
         private string _path;
         private string _blueprintPath;
+        private IBlueprintSetter _blueprintSetter;
 
         private IBlueprint _blueprint;
 
@@ -26,33 +30,36 @@ namespace TestFlatFileImport
             _blueprintPath = String.Empty;
             _blueprint = null;
         }
-        
+
         [Test]
         public void TestBlueprintSiafi()
         {
             //TODO: Testar todas as linhas e campos.
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
 
             Assert.AreEqual(_blueprint.BluePrintCharSepartor, '\0');
-            Assert.AreEqual(_blueprint.BlueprintLines.Count, 1);
-            Assert.AreEqual(_blueprint.BlueprintRegistires.Count, 0);
+            Assert.AreEqual(_blueprint.BlueprintLines.Count, 3);
             Assert.AreEqual(_blueprint.FieldSeparationType, EnumFieldSeparationType.Position);
-            Assert.IsNotNull(_blueprint.Footer);
-            Assert.IsNotNull(_blueprint.Header);
-            Assert.AreEqual(_blueprint.UseRegistries, false);
+            //Assert.IsNotNull(_blueprint.Footer);
+            //Assert.IsNotNull(_blueprint.Header);
+            //Assert.AreEqual(_blueprint.UseRegistries, false);
             
-            // Teste HEADER
-            var bLine = _blueprint.Header;
-            Assert.AreEqual(bLine.Blueprint, _blueprint);
-            Assert.AreEqual(bLine.BlueprintFields.Count, 9);
-            Assert.AreEqual(bLine.Class, "Header");
-            Assert.AreEqual(bLine.Mandatory, true);
-            Assert.AreEqual(bLine.Regex.ToString(), "^1.{72}0[1-3].{425}$");
+            //// Teste HEADER
+            //var bLine = _blueprint.Header;
+            //Assert.AreEqual(bLine.Blueprint, _blueprint);
+            //Assert.AreEqual(bLine.BlueprintFields.Count, 9);
+            //Assert.AreEqual(bLine.Name, "Header");
+            //Assert.AreEqual(/*_blueprintLine.Mandatory*/true, true);
+            //Assert.AreEqual(bLine.Regex.ToString(), "^1.{72}0[1-3].{425}$");
 
             // Teste HEADER FIELDS
-            var bFiled = bLine.BlueprintFields[0];
-            Assert.AreEqual("CodRegistro", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Header");
+            var bFiled = bLine.BlueprintFields.FirstOrDefault(f => f.Name == "CodRegistro"); //_blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Header"); //bLine.BlueprintFields[0];
+            Assert.IsNotNull(bLine);
+            Assert.IsNotNull(bFiled);
+            Assert.AreEqual("CodRegistro", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(false, bFiled.Persist);
             Assert.AreEqual(1, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -60,9 +67,11 @@ namespace TestFlatFileImport
             Assert.AreEqual(1, bFiled.Size);
             Assert.AreEqual(typeof(string), bFiled.Type);
 
+
             bFiled = bLine.BlueprintFields[1];
-            Assert.AreEqual("NumSeqRegistro", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.IsNotNull(bFiled);
+            Assert.AreEqual("NumSeqRegistro", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(false, bFiled.Persist);
             Assert.AreEqual(2, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -70,8 +79,8 @@ namespace TestFlatFileImport
             Assert.AreEqual(typeof(int), bFiled.Type);
 
             bFiled = bLine.BlueprintFields[2];
-            Assert.AreEqual("CodConvenio", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.AreEqual("CodConvenio", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(true, bFiled.Persist);
             Assert.AreEqual(10, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -80,8 +89,8 @@ namespace TestFlatFileImport
             Assert.AreEqual(typeof(string), bFiled.Type);
 
             bFiled = bLine.BlueprintFields[3];
-            Assert.AreEqual("DtGeracao", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.AreEqual("DtGeracao", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(true, bFiled.Persist);
             Assert.AreEqual(30, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -91,8 +100,8 @@ namespace TestFlatFileImport
             Assert.AreEqual(typeof(DateTime), bFiled.Type);
 
             bFiled = bLine.BlueprintFields[4];
-            Assert.AreEqual("NumRemessa", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.AreEqual("NumRemessa", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(true, bFiled.Persist);
             Assert.AreEqual(38, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -100,8 +109,8 @@ namespace TestFlatFileImport
             Assert.AreEqual(typeof(int), bFiled.Type);
 
             bFiled = bLine.BlueprintFields[5];
-            Assert.AreEqual("NumVersao", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.AreEqual("NumVersao", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(true, bFiled.Persist);
             Assert.AreEqual(44, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);
@@ -110,8 +119,8 @@ namespace TestFlatFileImport
             Assert.AreEqual(typeof(string), bFiled.Type);
 
             bFiled = bLine.BlueprintFields[6];
-            Assert.AreEqual("FillerA", bFiled.Attribute);
-            Assert.AreEqual(bLine, bFiled.BlueprintLine);
+            Assert.AreEqual("FillerA", bFiled.Name);
+            Assert.AreEqual(bLine, bFiled.Parent);
             Assert.AreEqual(false, bFiled.Persist);
             Assert.AreEqual(46, bFiled.Position);
             Assert.AreEqual(-1, bFiled.Precision);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Exception;
 using FlatFileImport.Validate;
@@ -22,8 +23,8 @@ namespace FlatFileImport.Process
         private IBlueprintLine _currentBlueprintLine;
         private IBlueprintRegister _register;
 
-        public List<IBlueprintLine> BlueprintLines { get { return _blueprint.BlueprintLines; } }
-        public List<IBlueprintRegister> Registers { get { return _blueprint.BlueprintRegistires; } }
+        public List<IBlueprintLine> BlueprintLines { get { return null; } }
+        public List<IBlueprintRegister> Registers { get { return null; } }
         public IBlueprintLine Footer { get { return _blueprint.Footer; } }
         public IBlueprintLine Header { get { return _blueprint.Header; } }
 
@@ -55,7 +56,7 @@ namespace FlatFileImport.Process
 
             if (!Validate.IsValid())
             {
-                if (Validate.ValidateResult.Severity == ExceptionSeverity.Fatal && _currentBlueprintLine.Mandatory)
+                if (Validate.ValidateResult.Severity == ExceptionSeverity.Fatal && /*_blueprintLine.Mandatory*/true)
                     throw new DataLengthDontMatchWithBlueprintDefinition(Validate.ValidateResult);
 
                 using (var file = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Warnning.txt", true))
@@ -71,7 +72,7 @@ namespace FlatFileImport.Process
 
             if (!Validate.IsValid())
             {
-                if (_currentBlueprintLine.Mandatory)
+                if (/*_blueprintLine.Mandatory*/true)
                     throw new System.Exception(Validate.ValidateResult.Message);
 
                 using (var file = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "Warnning.txt", true))
@@ -188,14 +189,14 @@ namespace FlatFileImport.Process
             _parsedDatas = null;
         }
 
-        private bool MatchBlueprintLine(BlueprintLine line)
+        private bool MatchBlueprintLine(IBlueprintLine line)
         {
             return line.Regex.Match(_rawLineData).Success;
         }
 
-        private BlueprintLine GetBlueprintLine()
+        private IBlueprintLine GetBlueprintLine()
         {
-            foreach (BlueprintLine l in BlueprintLines)
+            foreach (var l in BlueprintLines)
                 if (MatchBlueprintLine(l))
                     return l;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using FlatFileImport.Core;
 using FlatFileImport.Process;
 using TestFlatFileImport.Dominio;
 using TestFlatFileImport.Dominio.Siafi;
@@ -9,15 +10,24 @@ namespace TestFlatFileImport
 {
     public class BlueprintFactory : IBlueprintFactoy
     {
+        public IBlueprintSetter BlueprintSetter;
+
         #region IBlueprintFactoy Members
 
         public IBlueprint GetBlueprint(Type type, FileInfo toParse)
         {
+            
             if (type == typeof(Movie))
-                return new Blueprint(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-movie.xml"));
+            {
+                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-movie.xml"));
+                return BlueprintSetter.GetBlueprint();
+            }
 
             if (type == typeof(Music))
-                return new Blueprint(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-music.xml"));
+            {
+                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-music.xml"));
+                return BlueprintSetter.GetBlueprint();
+            }
 
             if (type == typeof(Das))
                 return GetBlueprintDas(toParse);
@@ -26,7 +36,10 @@ namespace TestFlatFileImport
                 return GetBlueprintDasn(toParse);
 
             if (type == typeof(Siafi))
-                return new Blueprint(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-siaf.xml"));
+            {
+                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-siaf.xml"));
+                return BlueprintSetter.GetBlueprint();
+            }
 
             throw new NotImplementedException();
         }
@@ -45,7 +58,8 @@ namespace TestFlatFileImport
                     throw new NotImplementedException(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
             }
 
-            return new Blueprint(pathXml);
+            BlueprintSetter = new BlueprintXmlSetter(pathXml);
+            return BlueprintSetter.GetBlueprint();
         }
 
         private IBlueprint GetBlueprintDas(FileInfo toParse)

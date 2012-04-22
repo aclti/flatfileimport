@@ -1,7 +1,7 @@
 ﻿using System;
 using FileInfo = FlatFileImport.Input.FileInfo;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Core
 {
     public interface IBlueprintFactoy
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Log;
 using FlatFileImport.Process;
@@ -13,7 +14,7 @@ namespace FlatFileImport
         private List<IObserver> _observers;
         private IParser _parser;
         private IBlueprintFactoy _blueprintFactoy;
-        private Blueprint _blueprint;
+        private IBlueprint _blueprint;
         private ParsedData _parsedData;
         private IEventLog _loger;
         private IValidate _validate;

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Core
 {
     public class RegexRule
     {

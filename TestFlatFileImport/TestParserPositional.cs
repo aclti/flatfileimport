@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using FlatFileImport.Core;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -10,6 +12,7 @@ namespace TestFlatFileImport
         private string _path;
         private string _blueprintPath;
         private IBlueprint _blueprint;
+        private IBlueprintSetter _blueprintSetter;
 
         [SetUp]
         public void Setup()
@@ -29,8 +32,10 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataSintaxLineAndAtributtes()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Class == "Details");
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
             var rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             var p = new ParserPositional(bLine, rawData);
@@ -46,8 +51,10 @@ namespace TestFlatFileImport
             Assert.IsFalse(p.IsValid);
 
             // tamanho menor
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
-            bLine = _blueprint.BlueprintLines.Find(b => b.Class == "Details");
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
             rawData = "20000000920111116201112052011DR800252200350000012003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             p = new ParserPositional(bLine, rawData);
             Assert.IsFalse(p.IsValid);
@@ -61,14 +68,17 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataValid()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Class == "Details");
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
             const string rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
 
             var p = new ParserPositional(bLine, rawData);
             Assert.IsTrue(p.IsValid);
             var data = p.GetParsedData();
 
+            Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
             Assert.AreEqual("2", data.Fields[0].Value);
             Assert.AreEqual("9", data.Fields[1].Value);
@@ -103,16 +113,20 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterParsedDatas()
         {
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+            
             var rawData = "20000000920111116201112052011DR8002522003588888888888888888888888888888888888888888888888888888888888888888888888888888888888888888800000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            var bLine = _blueprint.BlueprintLines.Find(b => b.Class == "Details");
+            var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
             var p = new ParserPositional(bLine, rawData);
             Assert.IsFalse(p.IsValid);
 
-            _blueprint = new Blueprint(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
             rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            bLine = _blueprint.BlueprintLines.Find(b => b.Class == "Details");
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
             p = new ParserPositional(bLine, rawData);
             Assert.IsTrue(p.IsValid);

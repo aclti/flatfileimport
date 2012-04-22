@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FlatFileImport.Core;
 
 namespace FlatFileImport.Process
 {
@@ -8,7 +9,7 @@ namespace FlatFileImport.Process
     {
         protected IBlueprintField BlueprintField { get; private set; }
         protected RegexRule RegexRule { get { return BlueprintField.Regex; } }
-        protected EnumFieldSeparationType FieldSeparationType { get { return BlueprintField.BlueprintLine.Blueprint.FieldSeparationType; } }
+        protected EnumFieldSeparationType FieldSeparationType { get { return BlueprintField.Parent.Blueprint.FieldSeparationType; } }
         protected bool HasGroup;
         protected Match Match;
         protected string RawData;

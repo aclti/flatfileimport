@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using FlatFileImport.Exception;
-using FlatFileImport.Process;
-using System;
+﻿using FlatFileImport.Core;
+
 
 namespace FlatFileImport.Validate
 {

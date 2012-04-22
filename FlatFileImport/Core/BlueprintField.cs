@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Core
 {
     public class BlueprintField : IBlueprintField
     {
-        public IBlueprintLine BlueprintLine { private set; get; }
-        public string Attribute { set; get; }
+        public IBlueprintLine Parent { private set; get; }
+        public string Name { set; get; }
         public Type Type { set; get; }
         public int Size { set; get; }
         public int Precision { set; get; }
@@ -19,7 +19,7 @@ namespace FlatFileImport.Process
             if(blueprintLine ==  null)
                 throw new ArgumentNullException("blueprintLine");
 
-            BlueprintLine = blueprintLine;
+            Parent = blueprintLine;
         }
     }
 }

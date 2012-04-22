@@ -9,733 +9,731 @@
 
 	<Regex>
 		<Rule id="date"><![CDATA[(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])(?<day>0[1-9]|[1-2][0-9]|3[0-1])]]></Rule>
-		<Rule id="datetime"><![CDATA[(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])(?<day>0[1-9]|[1-2][0-9]|3[0-1])(?<hour>[01][0-9]|2[0-3])(?<minute>[0-5][0-9])(?<second>[0-5][0-9])]]></Rule>
-		<Rule id="period"><![CDATA[(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])]]></Rule>
-		<Rule id="money">^[0-9]+,[0-9]{2}$</Rule>
-		<Rule id="decimal">^[0-9]+,[0-9]+$</Rule>
-		<Rule id="int">^[0-9]+$</Rule>
-		<Rule id="rangenumber_1-4">[1-4]</Rule>		
+		<Rule id="period"><![CDATA[(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])]]></Rule>		
+		<Rule id="rangenumber_1-4">[1-4]</Rule>
 		<Rule id="rangenumber_1-6">[1-6]</Rule>
 		<Rule id="operacao">[arAR]</Rule>
 		<Rule id="optantess">[snSN]</Rule>
-		<Rule id="limiteapur">[0-1]</Rule>		
+		<Rule id="limiteapur">[0-1]</Rule>
 	</Regex>
 
-	<Header>
-		<Line class="AAAAA" regex="^AAAAA" mandatory="true">
-			<Fields>
-				<Field position="0" type="string"	size="5" persit="false"					attribute="tipo_registro" />
-				<Field position="1" type="string"	size="3" persit="true"					attribute="COD_VER" />
-				<Field position="2" type="date"		size="8" persit="true"	regex="date"	attribute="DT_INICIO" />
-				<Field position="3" type="date"		size="8" persit="true"	regex="date"	attribute="DT_FIM" />
-			</Fields>
-		</Line>
-	</Header>
-
-	<Footer>
-		<Line class="ZZZZZ" regex="^ZZZZZ" mandatory="true">
-			<Fields>
-				<Field position="0"	type="string" size="5"	persit="false"				attribute="tipo_registro" />
-				<Field position="1" type="int"				persit="false" regex="int"	attribute="qtd_lin_reg_zzzzz" />
-			</Fields>
-		</Line>
-	</Footer>
-
-	<Registries>
-		<Register class="D1000" begin="^D1000" end="^D9999" />
-	</Registries>
-
-	<Line class="D1000" regex="^D1000" mandatory="true">
+	<!-- LineType: Header, Footer, Details (default) -->
+	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Gap[MIN-MAX] -->
+	<Line name="AAAAA" regex="^AAAAA" occurrence="One" type="Header" parent="">
 		<Fields>
-			<Field position="0"		type="string"	size="5"	persit="false"						attribute="tipo_registro" />
-			<Field position="1"		type="string"	size="15"	persit="true"						attribute="ID_DECLARACAO" />
-			<Field position="2"		type="int"					persit="true"	regex="int"			attribute="TDSN_ID_TIPO" />
-			<Field position="3"		type="int"					persit="true"	regex="int"			attribute="EXERCICIO" />
-			<Field position="4"		type="string"	size="150"	persit="true"						attribute="RAZAO_SOCIAL" />
-			<Field position="5"		type="date"		size="8"	persit="true"	regex="date"		attribute="DT_ABERTURA" />
-			<Field position="6"		type="date"		size="8"	persit="true"	regex="date"		attribute="DT_INICIO_ATIVIDADE" />
-			<Field position="7"		type="string"	size="17"	persit="true"						attribute="NUM_RECIBO" />
-			<Field position="8"		type="string"	size="20"	persit="true"						attribute="NUM_AUTENTICACAO" />
-			<Field position="9"		type="date"		size="14"	persit="true"	regex="datetime"	attribute="DT_TRANSMISSAO" />
-			<Field position="10"	type="string"	size="9"	persit="true"						attribute="VERSAO" />
-			<Field position="11"	type="string"	size="1"	persit="true"						attribute="REGIME_COMPETENCIA" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="3"					persist="true"							name="COD_VER" />
+			<Field position="2"		type="date"		size="8"					persist="true"	regex="date"			name="DT_INICIO" />
+			<Field position="3"		type="date"		size="8"					persist="true"	regex="date"			name="DT_FIM" />
 		</Fields>
 	</Line>
 
-	<Line class="D2000" regex="^D2000" mandatory="false">
+	<Line name="ZZZZZ" regex="^ZZZZZ" occurrence="One" type="Footer" parent="">
 		<Fields>
-			<Field position="0"		type="string"	size="5"	persit="false"							attribute="tipo_registro" />
-			<Field position="1"		type="int"					persit="true"	regex="rangenumber_1-6" attribute="ID_EVENTO" />
-			<Field position="2"		type="date"		size="8"	persit="true"	regex="date"			attribute="DT_EVENTO" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="int"									persist="false"							name="qtd_lin_reg_zzzzz" />
 		</Fields>
 	</Line>
 
-	<Line class="D2001" regex="^D2001" mandatory="false">
+	<Line name="D1000" regex="^D1000" occurrence="AtLeastOne" type="Header" parent="AAAAA">
 		<Fields>
-			<Field position="0"		type="string"	size="5"	persit="false"							attribute="tipo_registro" />
-			<Field position="1"		type="int"					persit="true"	regex="rangenumber_1-4" attribute="ID_TIPO_ESFERA" />
-			<Field position="2"		type="string"	size="2"	persit="true"							attribute="UF_REPARTICAO" />
-			<Field position="3"		type="string"	size="5"	persit="true"							attribute="COD_MUNIC_REPARTICAO" />
-			<Field position="4"		type="string"	size="50"	persit="true"							attribute="NOME_MUNIC_REPARTICAO" />
-			<Field position="5"		type="string"	size="24"	persit="true"							attribute="NUM_PROCESSO" />
-			<Field position="6"		type="date"		size="6"	persit="true"	regex="period"			attribute="DT_INICIO" />
-			<Field position="7"		type="date"		size="6"	persit="true"	regex="period"			attribute="DT_FIM" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="15"					persist="true"							name="ID_DECLARACAO" />
+			<Field position="2"		type="int"									persist="true"							name="TDSN_ID_TIPO" />
+			<Field position="3"		type="int"									persist="true"							name="EXERCICIO" />
+			<Field position="4"		type="string"	size="150"					persist="true"							name="RAZAO_SOCIAL" />
+			<Field position="5"		type="date"		size="8"					persist="true"	regex="date"			name="DT_ABERTURA" />
+			<Field position="6"		type="date"		size="8"					persist="true"	regex="date"			name="DT_INICIO_ATIVIDADE" />
+			<Field position="7"		type="string"	size="17"					persist="true"							name="NUM_RECIBO" />
+			<Field position="8"		type="string"	size="20"					persist="true"							name="NUM_AUTENTICACAO" />
+			<Field position="9"		type="date"		size="14"					persist="true"							name="DT_TRANSMISSAO" />
+			<Field position="10"	type="string"	size="9"					persist="true"							name="VERSAO" />
+			<Field position="11"	type="string"	size="1"					persist="true"							name="REGIME_COMPETENCIA" />
 		</Fields>
 	</Line>
 
-	<Line class="D9999" regex="^D9999" mandatory="false">
+	<Line name="D9999" regex="^D9999" occurrence="AtLeastOne" type="Footer" parent="AAAAA">
 		<Fields>
-			<Field position="0" type="string" size="5" attribute="tipo_registro" />
-			<Field position="1" type="int" attribute="qtd_lin_reg_d9999" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="int"									persist="true"							name="qtd_lin_reg_d9999" />
 		</Fields>
 	</Line>
 
-	<Line class="D3001" regex="^D3001" mandatory="false">
+	<Line name="D2000" regex="^D2000" parent="D1000">
 		<Fields>
-			<Field position="0"		type="string"	size="5"					persit="false"					attribute="TIPO_REGISTRO" />
-			<Field position="1"		type="date"		size="6"					persit="true"	regex="period"	attribute="PERIODO_APURACAO" />
-			<Field position="2"		type="decimal"	size="17"	precision="2"	persit="true"	regex="money"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="int"									persist="true"	regex="rangenumber_1-6" name="ID_EVENTO" />
+			<Field position="2"		type="date"		size="8"					persist="true"	regex="date"			name="DT_EVENTO" />
 		</Fields>
 	</Line>
 
-	<Line class="D3002" regex="^D3002" mandatory="false">
+	<Line name="D2001" regex="^D2001" parent="D1000">
 		<Fields>
-			<Field position="0"		type="string"	size="5"					persit="false"					attribute="TIPO_REGISTRO" />
-			<Field position="1"		type="date"		size="6"					persit="true"	regex="period"	attribute="PERIODO_APURACAO" />
-			<Field position="2"		type="decimal"	size="17"	precision="2"	persit="true"					attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="int"									persist="true"	regex="rangenumber_1-4"	name="ID_TIPO_ESFERA" />
+			<Field position="2"		type="string"	size="2"					persist="true"							name="UF_REPARTICAO" />
+			<Field position="3"		type="string"	size="5"					persist="true"							name="COD_MUNIC_REPARTICAO" />
+			<Field position="4"		type="string"	size="50"					persist="true"							name="NOME_MUNIC_REPARTICAO" />
+			<Field position="5"		type="string"	size="24"					persist="true"							name="NUM_PROCESSO" />
+			<Field position="6"		type="date"		size="6"					persist="true"	regex="period"			name="DT_INICIO" />
+			<Field position="7"		type="date"		size="6"					persist="true"	regex="period"			name="DT_FIM" />
 		</Fields>
 	</Line>
 
-	<Line class="D4000" regex="^D4000" mandatory="false">
+	<Line name="D3001" regex="^D3001" parent="D1000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"					attribute="TIPO_REGISTRO" />
-			<Field position="1" type="string"	size="17"					persit="true"					attribute="NUM_SEQ" />
-			<Field position="2" type="date"		size="6"					persit="true" regex="period"	attribute="PERIODO" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"					attribute="VL_RECEITA_APURADA" />
-			<Field position="4" type="decimal"	size="17"	precision="2"	persit="true"					attribute="VL_DEBITO_APURADO" />
-			<Field position="5" type="decimal"	size="17"	precision="2"	persit="true"					attribute="VL_TOTAL_DAS_PAGOS" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="date"		size="6"					persist="true"	regex="period"			name="PERIODO_APURACAO" />
+			<Field position="2"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
+		</Fields>
+	</Line>
+
+	<Line name="D3002" regex="^D3002" parent="D1000">
+		<Fields>
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="date"		size="6"					persist="true"	regex="period"			name="PERIODO_APURACAO" />
+			<Field position="2"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
+		</Fields>
+	</Line>
+
+	<Line name="D4000" regex="^D4000" occurrence="Gap[1-12]" type="Header" parent="D1000">
+		<Fields>
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="17"					persist="true"							name="NUM_SEQ" />
+			<Field position="2"		type="date"		size="6"					persist="true"	regex="period"			name="PERIODO" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_RECEITA_APURADA" />
+			<Field position="4"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_DEBITO_APURADO" />
+			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL_DAS_PAGOS" />
 		</Fields>
 	</Line>
 
 	<!-- REGISTORS PGDAS INICIO -->
-	<Line class="P0000" regex="^00000" mandatory="false">
+	<Line name="P0000" regex="^00000" occurrence="AtLeastOne" type="Header" parent="D4000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"						attribute="REG" />
-			<Field position="1" type="string"	size="14"					persit="true"						attribute="CNPJ_MATRIZ" />
-			<Field position="2" type="string"	size="56"					persit="true"						attribute="NOME" />
-			<Field position="3" type="string"	size="5"					persit="true"						attribute="COD_TOM" />
-			<Field position="4" type="string"	size="1"					persit="true"	regex="optantess"	attribute="OPTANTE" />
-			<Field position="5" type="date"		size="8"					persit="true"	regex="date"		attribute="ABERTURA" />
-			<Field position="6" type="date"		size="6"					persit="true"	regex="period"		attribute="PERIODO" />
-			<Field position="7" type="decimal"				precision="2"	persit="true"						attribute="RECEITA_BRUTA_PA" />
-			<Field position="8" type="decimal"				precision="3"	persit="true"						attribute="RAZAO_FOLHA" />
-			<Field position="9" type="decimal"				precision="2"	persit="true"						attribute="INDICE_MAJOR" />
-			<Field position="10" type="string"	size="1"					persit="true"	regex="operacao"	attribute="OPERACAO" />
-			<Field position="11" type="int"									persit="true"						attribute="REGIME" />
-			<Field position="12" type="decimal"				precision="2"	persit="true"						attribute="RECEITA_BRUTA_PA_CAIXA" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="14"					persist="true"							name="CNPJ_MATRIZ" />
+			<Field position="2"		type="string"	size="56"					persist="true"							name="NOME" />
+			<Field position="3"		type="string"	size="5"					persist="true"							name="COD_TOM" />
+			<Field position="4"		type="string"	size="1"					persist="true"	regex="optantess"		name="OPTANTE" />
+			<Field position="5"		type="date"		size="8"					persist="true"	regex="date"			name="ABERTURA" />
+			<Field position="6"		type="date"		size="6"					persist="true"	regex="period"			name="PERIODO" />
+			<Field position="7"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_PA" />
+			<Field position="8"		type="decimal"				precision="3"	persist="true"							name="RAZAO_FOLHA" />
+			<Field position="9"		type="decimal"				precision="2"	persist="true"							name="INDICE_MAJOR" />
+			<Field position="10"	type="string"	size="1"					persist="true"	regex="operacao"		name="OPERACAO" />
+			<Field position="11"	type="int"									persist="true"							name="REGIME" />
+			<Field position="12"	type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_PA_CAIXA" />
 		</Fields>
 	</Line>
 
-	<Line class="P1000" regex="^01000" mandatory="false">
+	<Line name="P9999" regex="^99999" occurrence="One" type="Footer" parent="D4000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"				attribute="REG" />
-			<Field position="1" type="string"	size="17"					persit="true"				attribute="NUM_PAGTO" />
-			<Field position="2" type="decimal"				precision="2"	persit="true"				attribute="VL_PRINC" />
-			<Field position="3" type="decimal"				precision="2"	persit="true"				attribute="VL_MULTA" />
-			<Field position="4" type="decimal"				precision="2"	persit="true"				attribute="VL_JUROS" />
-			<Field position="5" type="decimal"				precision="2"	persit="true"				attribute="TOTAL_DEVIDO" />
-			<Field position="6" type="date"		size="8"					persit="true" regex="date"	attribute="DT_VENCIMENTO" />
-			<Field position="7" type="date"		size="8"					persit="true" regex="date"	attribute="DT_VALID_CALC" />
-			<Field position="8" type="decimal"				precision="2"	persit="true"				attribute="VL_DAS" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="TIPO_REG" />
+			<Field position="1"		type="int"									persist="true"							name="QTD_LINHAS" />
 		</Fields>
 	</Line>
 
-	<Line class="P2000" regex="^02000" mandatory="false">
+	<Line name="P1000" regex="^01000" occurrence="One" type="Details" parent="P0000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="2"	persit="true"	attribute="RECEITA_BRUTA_12" />
-			<Field position="2" type="decimal"				precision="2"	persit="true"	attribute="RECEITA_BRUTA_ANO_ANTERIOR" />
-			<Field position="3" type="decimal"				precision="2"	persit="true"	attribute="RECEITA_BRUTA_ANO" />
-			<Field position="4" type="decimal"				precision="2"	persit="true"	attribute="RECEITA_BRUTA_12_ORIGINAL" />
-			<Field position="5" type="decimal"				precision="2"	persit="true"	attribute="RECEITA_BRUTA_12_ORIGINAL_ANTERIOR" />
-			<Field position="6" type="decimal"				precision="2"	persit="true"	attribute="ICMS" />
-			<Field position="7" type="decimal"				precision="2"	persit="true"	attribute="ISS" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="17"					persist="true"							name="NUM_PAGTO" />
+			<Field position="2"		type="decimal"				precision="2"	persist="true"							name="VL_PRINC" />
+			<Field position="3"		type="decimal"				precision="2"	persist="true"							name="VL_MULTA" />
+			<Field position="4"		type="decimal"				precision="2"	persist="true"							name="VL_JUROS" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true"							name="TOTAL_DEVIDO" />
+			<Field position="6"		type="date"		size="8"					persist="true"	regex="date"			name="DT_VENCIMENTO" />
+			<Field position="7"		type="date"		size="8"					persist="true"	regex="date"			name="DT_VALID_CALC" />
+			<Field position="8"		type="decimal"				precision="2"	persist="true"							name="VL_DAS" />
 		</Fields>
 	</Line>
 
-	<Line class="P3000" regex="^03000" mandatory="false">
+	<Line name="P2000" regex="^02000" occurrence="One" type="Details" parent="P0000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"						attribute="REG" />
-			<Field position="1" type="string"	size="14"					persit="true"						attribute="CNPJ" />
-			<Field position="2" type="string"	size="2"					persit="true"						attribute="UF" />
-			<Field position="3" type="string"	size="5"					persit="true"						attribute="COD_TOM" />
-			<Field position="4" type="decimal"				precision="2"	persit="true"						attribute="VL_TOTAL" />
-			<Field position="5" type="decimal"				precision="2"	persit="true"						attribute="IME" />
-			<Field position="6" type="decimal"				precision="2"	persit="true"						attribute="LIMITE" />
-			<Field position="7" type="int"									persit="true"	regex="limiteapur"	attribute="LIM_ULTRAPASSADO_PERIODO_APURACAO" />
-			<Field position="8" type="decimal"	size="16"	precision="15"	persit="true"						attribute="PREX_1" />
-			<Field position="9" type="decimal"	size="16"	precision="15"	persit="true"						attribute="PREX_2" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_12" />
+			<Field position="2"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_ANO_ANTERIOR" />
+			<Field position="3"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_ANO" />
+			<Field position="4"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_12_ORIGINAL" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true"							name="RECEITA_BRUTA_12_ORIGINAL_ANTERIOR" />
+			<Field position="6"		type="decimal"				precision="2"	persist="true"							name="ICMS" />
+			<Field position="7"		type="decimal"				precision="2"	persist="true"							name="ISS" />
 		</Fields>
 	</Line>
 
-	<Line class="P4000" regex="^04000" mandatory="false">
+	<Line name="P3000" regex="^03000" type="Header" parent="P0000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="int"									persit="true"	attribute="COD_REC_PRINC" />
-			<Field position="2" type="decimal"				precision="2"	persit="true"	attribute="VALOR_PRINCIPAL" />
-			<Field position="3" type="int"									persit="true"	attribute="COD_REC_MULTA" />
-			<Field position="4" type="decimal"				precision="2"	persit="true"	attribute="VALOR_MULTA" />
-			<Field position="5" type="int"									persit="true"	attribute="COD_REC_JUROS" />
-			<Field position="6" type="decimal"				precision="2"	persit="true"	attribute="VALOR_JUROS" />
-			<Field position="7" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="8" type="string"	size="4"					persit="true"	attribute="COD_MUNIC" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="14"					persist="true"							name="CNPJ" />
+			<Field position="2"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="3"		type="string"	size="5"					persist="true"							name="COD_TOM" />
+			<Field position="4"		type="decimal"				precision="2"	persist="true"							name="VL_TOTAL" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true"							name="IME" />
+			<Field position="6"		type="decimal"				precision="2"	persist="true"							name="LIMITE" />
+			<Field position="7"		type="int"									persist="true"	regex="limiteapur"		name="LIM_ULTRAPASSADO_PERIODO_APURACAO" />
+			<Field position="8"		type="decimal"	size="16"	precision="15"	persist="true"							name="PREX_1" />
+			<Field position="9"		type="decimal"	size="16"	precision="15"	persist="true"							name="PREX_2" />
 		</Fields>
 	</Line>
 
-	<Line class="P3100" regex="^03100" mandatory="false">
+	<Line name="P3100" regex="^03100" type="Header" parent="P3000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="TIPO_ATIVIDADE" />
-			<Field position="2" type="decimal"				precision="2"	persit="true"	attribute="VL_TOTAL" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="TIPO_ATIVIDADE" />
+			<Field position="2"		type="decimal"				precision="2"	persist="true"							name="VL_TOTAL" />
 		</Fields>
 	</Line>
 
-	<Line class="P3110" regex="^03110" mandatory="false">
+	<Line name="P3110" regex="^03110" type="Header" parent="P3100">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_TOM" />
-			<Field position="3" type="decimal"				precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_TOM" />
+			<Field position="3"		type="decimal"				precision="2"	persist="true"							name="VALOR" />
 
-			<Field position="4" type="string"	size="1"					persit="true"	attribute="COFINS" />
-			<Field position="5" type="string"	size="1"					persit="true"	attribute="CSLL" />
-			<Field position="6" type="string"	size="1"					persit="true"	attribute="ICMS" />
-			<Field position="7" type="string"	size="1"					persit="true"	attribute="INSS" />
-			<Field position="8" type="string"	size="1"					persit="true"	attribute="IPI" />
-			<Field position="9" type="string"	size="1"					persit="true"	attribute="IRPJ" />
-			<Field position="10" type="string"	size="1"					persit="true"	attribute="ISS" />
-			<Field position="11" type="string"	size="1"					persit="true"	attribute="PIS" />
+			<Field position="4"		type="string"	size="1"					persist="true"							name="COFINS" />
+			<Field position="5"		type="string"	size="1"					persist="true"							name="CSLL" />
+			<Field position="6"		type="string"	size="1"					persist="true"							name="ICMS" />
+			<Field position="7"		type="string"	size="1"					persist="true"							name="INSS" />
+			<Field position="8"		type="string"	size="1"					persist="true"							name="IPI" />
+			<Field position="9"		type="string"	size="1"					persist="true"							name="IRPJ" />
+			<Field position="10"	type="string"	size="1"					persist="true"							name="ISS" />
+			<Field position="11"	type="string"	size="1"					persist="true"							name="PIS" />
 
-			<Field position="12" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
-			<Field position="13" type="decimal"				precision="2"	persit="true"	attribute="VL_IMPOSTO" />
+			<Field position="12"	type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
+			<Field position="13"	type="decimal"				precision="2"	persist="true"							name="VL_IMPOSTO" />
 
-			<Field position="14" type="decimal"				precision="3"	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="15" type="decimal"				precision="2"	persit="true"	attribute="VL_COFINS" />
-			<Field position="16" type="decimal"				precision="3"	persit="true"	attribute="ALQ_CSLL" />
-			<Field position="17" type="decimal"				precision="2"	persit="true"	attribute="VL_CSLL" />
-			<Field position="18" type="decimal"				precision="3"	persit="true"	attribute="ALQ_ICMS" />
-			<Field position="19" type="decimal"				precision="2"	persit="true"	attribute="VL_ICMS" />
-			<Field position="20" type="decimal"				precision="3"	persit="true"	attribute="ALQ_INSS" />
-			<Field position="21" type="decimal"				precision="2"	persit="true"	attribute="VL_INSS" />
-			<Field position="22" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IPI" />
-			<Field position="23" type="decimal"				precision="2"	persit="true"	attribute="VL_IPI" />
-			<Field position="24" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IRPJ" />
-			<Field position="25" type="decimal"				precision="2"	persit="true"	attribute="VL_IRPJ" />
-			<Field position="26" type="decimal"				precision="3"	persit="true"	attribute="ALQ_ISS" />
-			<Field position="27" type="decimal"				precision="2"	persit="true"	attribute="VL_ISS" />
-			<Field position="28" type="decimal"				precision="3"	persit="true"	attribute="ALQ_PIS" />
-			<Field position="29" type="decimal"				precision="2"	persit="true"	attribute="VL_PIS" />
-
-			<Field position="30" type="decimal"				precision="2"	persit="true"	attribute="DIFERENÇA" />
-			<Field position="31" type="string"	size="3"					persit="true"	attribute="MAIORTRIBUTO" />
+			<Field position="14"	type="decimal"				precision="3"	persist="true"							name="ALQ_COFINS" />
+			<Field position="15"	type="decimal"				precision="2"	persist="true"							name="VL_COFINS" />
+			<Field position="16"	type="decimal"				precision="3"	persist="true"							name="ALQ_CSLL" />
+			<Field position="17"	type="decimal"				precision="2"	persist="true"							name="VL_CSLL" />
+			<Field position="18"	type="decimal"				precision="3"	persist="true"							name="ALQ_ICMS" />
+			<Field position="19"	type="decimal"				precision="2"	persist="true"							name="VL_ICMS" />
+			<Field position="20"	type="decimal"				precision="3"	persist="true"							name="ALQ_INSS" />
+			<Field position="21"	type="decimal"				precision="2"	persist="true"							name="VL_INSS" />
+			<Field position="22"	type="decimal"				precision="3"	persist="true"							name="ALQ_IPI" />
+			<Field position="23"	type="decimal"				precision="2"	persist="true"							name="VL_IPI" />
+			<Field position="24"	type="decimal"				precision="3"	persist="true"							name="ALQ_IRPJ" />
+			<Field position="25"	type="decimal"				precision="2"	persist="true"							name="VL_IRPJ" />
+			<Field position="26"	type="decimal"				precision="3"	persist="true"							name="ALQ_ISS" />
+			<Field position="27"	type="decimal"				precision="2"	persist="true"							name="VL_ISS" />
+			<Field position="28"	type="decimal"				precision="3"	persist="true"							name="ALQ_PIS" />
+			<Field position="29"	type="decimal"				precision="2"	persist="true"							name="VL_PIS" />
+			
+			<Field position="30"	type="decimal"				precision="2"	persist="true"							name="DIFERENÇA" />
+			<Field position="31"	type="string"	size="3"					persist="true"							name="MAIORTRIBUTO" />
 		</Fields>
 	</Line>
 
-	<Line class="P3120" regex="^03120" mandatory="false">
+	<Line name="P3111" regex="^03111" parent="P3110">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"  			precision="2" 	persist="true"							name="VALOR" />
+			<Field position="3"		type="decimal"  			precision="2" 	persist="true"							name="VL_IMPOSTO" />
+			<Field position="2"		type="decimal"  			precision="3" 	persist="true"							name="ALQ_APUR" />
 
-			<Field position="2" type="decimal"				precision="3"	persit="true" 	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal"				precision="2"	persit="true" 	attribute="VL_COFINS" />
-			<Field position="4" type="decimal"				precision="3"	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal"				precision="2"	persit="true" 	attribute="VL_CSLL" />
-			<Field position="6" type="decimal"				precision="3"	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal"				precision="2"	persit="true" 	attribute="VL_ICMS" />
-			<Field position="8" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"				precision="2" 	persit="true" 	attribute="VL_INSS" />
-			<Field position="10" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal"				precision="2" 	persit="true" 	attribute="VL_IPI" />
-			<Field position="12" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"				precision="2" 	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"				precision="2" 	persit="true" 	attribute="VL_ISS" />
-			<Field position="16" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"				precision="2" 	persit="true" 	attribute="VL_PIS" />
+			<Field position="4"		type="decimal"  			precision="3" 	persist="true"							name="ALQ_COFINS" />
+			<Field position="5"		type="decimal"   			precision="2" 	persist="true"							name="VL_COFINS" />
+			<Field position="6"		type="decimal"   			precision="3" 	persist="true" 							name="ALQ_CSLL" />
+			<Field position="7"		type="decimal"   			precision="2" 	persist="true" 							name="VL_CSLL" />
+			<Field position="8"		type="decimal"   			precision="3" 	persist="true" 							name="ALQ_ICMS" />
+			<Field position="9"		type="decimal"   			precision="2" 	persist="true" 							name="VL_ICMS" />
+			<Field position="10"	type="decimal"   			precision="3" 	persist="true" 							name="ALQ_INSS" />
+			<Field position="11"	type="decimal"   			precision="2" 	persist="true" 							name="VL_INSS" />
+			<Field position="12"	type="decimal"   			precision="3" 	persist="true" 							name="ALQ_IPI" />
+			<Field position="13"	type="decimal"   			precision="2" 	persist="true" 							name="VL_IPI" />
+			<Field position="14"	type="decimal"   			precision="3" 	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="15"	type="decimal"   			precision="2" 	persist="true" 							name="VL_IRPJ" />
+			<Field position="16"	type="decimal"   			precision="3" 	persist="true" 							name="ALQ_ISS" />
+			<Field position="17"	type="decimal"   			precision="2" 	persist="true" 							name="VL_ISS" />
+			<Field position="18"	type="decimal"   			precision="3"	persist="true" 							name="ALQ_PIS" />
+			<Field position="19"	type="decimal"   			precision="2"	persist="true" 							name="VL_PIS" />
+
+			<Field position="20"	type="decimal"   			precision="2"	persist="true"							name="DIFERENÇA" />
+			<Field position="21"	type="string"	size="3"					persist="true"							name="MAIORTRIBUTO" />
 		</Fields>
 	</Line>
 
-	<Line class="P3130" regex="^03130" mandatory="false">
+	<Line name="P3112" regex="^03112" parent="P3110">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="2"	persist="true"							name="VALOR" />
+			<Field position="2"		type="decimal"				precision="2"	persist="true"							name="REDUCAO" />
+			<Field position="3"		type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
+			<Field position="4"		type="decimal"				precision="2"	persist="true"							name="VL_IMPOSTO" />
 
-			<Field position="2" type="decimal" 				precision="3"	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal" 				precision="2" 	persit="true" 	attribute="VL_COFINS" />
-			<Field position="4" type="decimal" 				precision="3" 	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal" 				precision="2" 	persit="true" 	attribute="VL_CSLL" />
-			<Field position="6" type="decimal" 				precision="3" 	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal" 				precision="2" 	persit="true" 	attribute="VL_ICMS" />
-			<Field position="8" type="decimal" 				precision="3" 	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"				precision="2" 	persit="true" 	attribute="VL_INSS" />
-			<Field position="10" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal" 			precision="2" 	persit="true" 	attribute="VL_IPI" />
-			<Field position="12" type="decimal"  			precision="3" 	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"  			precision="2" 	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal"  			precision="3" 	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"  			precision="2" 	persit="true" 	attribute="VL_ISS" />
-			<Field position="16" type="decimal"  			precision="3" 	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"  			precision="2" 	persit="true" 	attribute="VL_PIS" />
+			<Field position="5"		type="decimal"				precision="3"	persist="true"							name="ALQ_COFINS" />
+			<Field position="6"		type="decimal"				precision="2"	persist="true"							name="VL_COFINS" />
+			<Field position="7"		type="decimal"				precision="3"  	persist="true"							name="ALQ_CSLL" />
+			<Field position="8"		type="decimal" 				precision="2"   persist="true"							name="VL_CSLL" />
+			<Field position="9"		type="decimal" 				precision="3"   persist="true"							name="ALQ_ICMS" />
+			<Field position="10"	type="decimal"				precision="2"   persist="true"							name="VL_ICMS" />
+			<Field position="11"	type="decimal"				precision="3"   persist="true"							name="ALQ_INSS" />
+			<Field position="12"	type="decimal"				precision="2"   persist="true"							name="VL_INSS" />
+			<Field position="13"	type="decimal"				precision="3"	persist="true"							name="ALQ_IPI" />
+			<Field position="14"	type="decimal"				precision="2"	persist="true"							name="VL_IPI" />
+			<Field position="15"	type="decimal"				precision="3"	persist="true"							name="ALQ_IRPJ" />
+			<Field position="16"	type="decimal"				precision="2"	persist="true" 							name="VL_IRPJ" />
+			<Field position="17"	type="decimal"				precision="3"	persist="true" 							name="ALQ_ISS" />
+			<Field position="18"	type="decimal"				precision="2"	persist="true" 							name="VL_ISS" />
+			<Field position="19"	type="decimal"				precision="3"	persist="true" 							name="ALQ_PIS" />
+			<Field position="20"	type="decimal"				precision="2"	persist="true" 							name="VL_PIS" />
+
+			<Field position="21"	type="decimal"				precision="2"	persist="true"							name="DIFERENÇA" />
+			<Field position="22"	type="string"	size="3"					persist="true"							name="MAIORTRIBUTO" />
 		</Fields>
 	</Line>
 
-	<Line class="P3111" regex="^03111" mandatory="false">
+	<Line name="P3120" regex="^03120" type="Header" parent="P3100">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"  			precision="2" 	persit="false"	attribute="VALOR" />
-			<Field position="2" type="decimal"  			precision="3" 	persit="true"	attribute="ALQ_APUR" />
-			<Field position="3" type="decimal"  			precision="2" 	persit="true"	attribute="VL_IMPOSTO" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
 
-			<Field position="4" type="decimal"  			precision="3" 	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="5" type="decimal"   			precision="2" 	persit="true"	attribute="VL_COFINS" />
-			<Field position="6" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="7" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_CSLL" />
-			<Field position="8" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="9" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_ICMS" />
-			<Field position="10" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="11" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_INSS" />
-			<Field position="12" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="13" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_IPI" />
-			<Field position="14" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="15" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="16" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="17" type="decimal"   			precision="2" 	persit="true" 	attribute="VL_ISS" />
-			<Field position="18" type="decimal"   			precision="3"	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="19" type="decimal"   			precision="2"	persit="true" 	attribute="VL_PIS" />
-
-			<Field position="20" type="decimal"   			precision="2"	persit="true"	attribute="DIFERENÇA" />
-			<Field position="21" type="string"	size="3"					persit="true"	attribute="MAIORTRIBUTO" />
+			<Field position="2"		type="decimal"				precision="3"	persist="true" 							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal"				precision="2"	persist="true" 							name="VL_COFINS" />
+			<Field position="4"		type="decimal"				precision="3"	persist="true" 							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true" 							name="VL_CSLL" />
+			<Field position="6"		type="decimal"				precision="3"	persist="true" 							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal"				precision="2"	persist="true" 							name="VL_ICMS" />
+			<Field position="8"		type="decimal"				precision="3" 	persist="true" 							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"				precision="2" 	persist="true" 							name="VL_INSS" />
+			<Field position="10"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_IPI" />
+			<Field position="11"	type="decimal"				precision="2" 	persist="true" 							name="VL_IPI" />
+			<Field position="12"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"				precision="2" 	persist="true" 							name="VL_IRPJ" />
+			<Field position="14"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"				precision="2" 	persist="true" 							name="VL_ISS" />
+			<Field position="16"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"				precision="2" 	persist="true" 							name="VL_PIS" />
 		</Fields>
 	</Line>
 
-	<Line class="P3121" regex="^03121" mandatory="false">
+	<Line name="P3121" regex="^03121" parent="P3120">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"   			precision="3"	persit="true" 	attribute="ALQ_APUR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"   			precision="3"	persist="true" 							name="ALQ_APUR" />
 
-			<Field position="2" type="decimal"   			precision="3" 	persit="true" 	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_COFINS" />
-			<Field position="4" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_CSLL" />
-			<Field position="6" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_ICMS" />
-			<Field position="8" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_INSS" />
-			<Field position="10" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_IPI" />
-			<Field position="12" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_ISS" />
-			<Field position="16" type="decimal"    			precision="3" 	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"    			precision="2" 	persit="true" 	attribute="VL_PIS" />
+			<Field position="2"		type="decimal"   			precision="3" 	persist="true" 							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal"    			precision="2" 	persist="true" 							name="VL_COFINS" />
+			<Field position="4"		type="decimal"    			precision="3" 	persist="true" 							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal"    			precision="2" 	persist="true" 							name="VL_CSLL" />
+			<Field position="6"		type="decimal"    			precision="3" 	persist="true" 							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal"    			precision="2" 	persist="true" 							name="VL_ICMS" />
+			<Field position="8"		type="decimal"    			precision="3" 	persist="true" 							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"    			precision="2" 	persist="true" 							name="VL_INSS" />
+			<Field position="10"	type="decimal"    			precision="3" 	persist="true" 							name="ALQ_IPI" />
+			<Field position="11"	type="decimal"    			precision="2" 	persist="true" 							name="VL_IPI" />
+			<Field position="12"	type="decimal"    			precision="3" 	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"    			precision="2" 	persist="true" 							name="VL_IRPJ" />
+			<Field position="14"	type="decimal"    			precision="3" 	persist="true" 							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"    			precision="2" 	persist="true" 							name="VL_ISS" />
+			<Field position="16"	type="decimal"    			precision="3" 	persist="true" 							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"    			precision="2" 	persist="true" 							name="VL_PIS" />
 		</Fields>
 	</Line>
 
-	<Line class="P3131" regex="^03131" mandatory="false">
+	<Line name="P3122" regex="^03122" parent="P3120">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"    			precision="3"	persit="true"	attribute="ALQ_APUR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
 
-			<Field position="2" type="decimal"     			precision="3" 	persit="true" 	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal"     			precision="2" 	persit="true" 	attribute="VL_COFINS" />
-			<Field position="4" type="decimal"     			precision="3" 	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal"     			precision="2"  	persit="true" 	attribute="VL_CSLL" />
-			<Field position="6" type="decimal"     			precision="3"  	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal"     			precision="2"  	persit="true" 	attribute="VL_ICMS" />
-			<Field position="8" type="decimal"     			precision="3"  	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"     			precision="2"  	persit="true" 	attribute="VL_INSS" />
-			<Field position="10" type="decimal"     		precision="3"  	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal"      		precision="2"  	persit="true" 	attribute="VL_IPI" />
-			<Field position="12" type="decimal"      		precision="3"  	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"      		precision="2"  	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal"      		precision="3"  	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"      		precision="2"  	persit="true" 	attribute="VL_ISS" />
-			<Field position="16" type="decimal"      		precision="3"  	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"      		precision="2"  	persit="true" 	attribute="VL_PIS" />
+			<Field position="2"		type="decimal"				precision="3"	persist="true"							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal"				precision="2"	persist="true"							name="VL_COFINS" />
+			<Field position="4"		type="decimal"				precision="3"	persist="true"							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true"							name="VL_CSLL" />
+			<Field position="6"		type="decimal"				precision="3"	persist="true"							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal"				precision="2"	persist="true"							name="VL_ICMS" />
+			<Field position="8"		type="decimal"				precision="3"	persist="true"							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"				precision="2"	persist="true"							name="VL_INSS" />
+			<Field position="10"	type="decimal"				precision="3"	persist="true"							name="ALQ_IPI" />
+			<Field position="11"	type="decimal"				precision="2"	persist="true"							name="VL_IPI" />
+			<Field position="12"	type="decimal"				precision="3"	persist="true"							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"				precision="2"	persist="true"							name="VL_IRPJ" />
+			<Field position="14"	type="decimal" 				precision="3"	persist="true"							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"				precision="2"	persist="true"							name="VL_ISS" />
+			<Field position="16"	type="decimal"				precision="3"	persist="true"							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"				precision="2"	persist="true"							name="VL_PIS" />
+		</Fields>
+	</Line>
+	
+	<Line name="P3130" regex="^03130" type="Header" parent="P3100">
+		<Fields>
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
+
+			<Field position="2"		type="decimal" 				precision="3"	persist="true"							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal" 				precision="2" 	persist="true" 							name="VL_COFINS" />
+			<Field position="4"		type="decimal" 				precision="3" 	persist="true" 							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal" 				precision="2" 	persist="true" 							name="VL_CSLL" />
+			<Field position="6"		type="decimal" 				precision="3" 	persist="true" 							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal" 				precision="2" 	persist="true" 							name="VL_ICMS" />
+			<Field position="8"		type="decimal" 				precision="3" 	persist="true" 							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"				precision="2" 	persist="true" 							name="VL_INSS" />
+			<Field position="10"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_IPI" />
+			<Field position="11"	type="decimal" 				precision="2" 	persist="true" 							name="VL_IPI" />
+			<Field position="12"	type="decimal"  			precision="3" 	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"  			precision="2" 	persist="true" 							name="VL_IRPJ" />
+			<Field position="14"	type="decimal"  			precision="3" 	persist="true" 							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"  			precision="2" 	persist="true" 							name="VL_ISS" />
+			<Field position="16"	type="decimal"  			precision="3" 	persist="true" 							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"  			precision="2" 	persist="true" 							name="VL_PIS" />
 		</Fields>
 	</Line>
 
-	<Line class="P3112" regex="^03112" mandatory="false">
+	<Line name="P3131" regex="^03131" parent="P3130">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="2"	persit="true"	attribute="VALOR" />
-			<Field position="2" type="decimal"				precision="2"	persit="true"	attribute="REDUCAO" />
-			<Field position="3" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
-			<Field position="4" type="decimal"				precision="2"	persit="true"	attribute="VL_IMPOSTO" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"    			precision="3"	persist="true"							name="ALQ_APUR" />
 
-			<Field position="5" type="decimal"				precision="3"	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="6" type="decimal"				precision="2"	persit="true"	attribute="VL_COFINS" />
-			<Field position="7" type="decimal"				precision="3"  	persit="true"	attribute="ALQ_CSLL" />
-			<Field position="8" type="decimal" 				precision="2"   persit="true"	attribute="VL_CSLL" />
-			<Field position="9" type="decimal" 				precision="3"   persit="true"	attribute="ALQ_ICMS" />
-			<Field position="10" type="decimal"				precision="2"   persit="true"	attribute="VL_ICMS" />
-			<Field position="11" type="decimal"				precision="3"   persit="true"	attribute="ALQ_INSS" />
-			<Field position="12" type="decimal"				precision="2"   persit="true"	attribute="VL_INSS" />
-			<Field position="13" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IPI" />
-			<Field position="14" type="decimal"				precision="2"	persit="true"	attribute="VL_IPI" />
-			<Field position="15" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IRPJ" />
-			<Field position="16" type="decimal"				precision="2"	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="17" type="decimal"				precision="3"	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="18" type="decimal"				precision="2"	persit="true" 	attribute="VL_ISS" />
-			<Field position="19" type="decimal"				precision="3"	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="20" type="decimal"				precision="2"	persit="true" 	attribute="VL_PIS" />
-
-			<Field position="21" type="decimal"				precision="2"	persit="true"	attribute="DIFERENÇA" />
-			<Field position="22" type="string"	size="3"					persit="true"	attribute="MAIORTRIBUTO" />
+			<Field position="2"		type="decimal"     			precision="3" 	persist="true" 							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal"     			precision="2" 	persist="true" 							name="VL_COFINS" />
+			<Field position="4"		type="decimal"     			precision="3" 	persist="true" 							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal"     			precision="2"  	persist="true" 							name="VL_CSLL" />
+			<Field position="6"		type="decimal"     			precision="3"  	persist="true" 							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal"     			precision="2"  	persist="true" 							name="VL_ICMS" />
+			<Field position="8"		type="decimal"     			precision="3"  	persist="true" 							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"     			precision="2"  	persist="true" 							name="VL_INSS" />
+			<Field position="10"	type="decimal"     			precision="3"  	persist="true" 							name="ALQ_IPI" />
+			<Field position="11"	type="decimal"      		precision="2"  	persist="true" 							name="VL_IPI" />
+			<Field position="12"	type="decimal"      		precision="3"  	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"      		precision="2"  	persist="true" 							name="VL_IRPJ" />
+			<Field position="14"	type="decimal"      		precision="3"  	persist="true" 							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"      		precision="2"  	persist="true" 							name="VL_ISS" />
+			<Field position="16"	type="decimal"      		precision="3"  	persist="true" 							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"      		precision="2"  	persist="true" 							name="VL_PIS" />
 		</Fields>
 	</Line>
 
-	<Line class="P3122" regex="^03122" mandatory="false">
+	<Line name="P3132" regex="^03132" parent="P3130">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"				precision="3"	persist="true"							name="ALQ_APUR" />
 
-			<Field position="2" type="decimal"				precision="3"	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal"				precision="2"	persit="true"	attribute="VL_COFINS" />
-			<Field position="4" type="decimal"				precision="3"	persit="true"	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal"				precision="2"	persit="true"	attribute="VL_CSLL" />
-			<Field position="6" type="decimal"				precision="3"	persit="true"	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal"				precision="2"	persit="true"	attribute="VL_ICMS" />
-			<Field position="8" type="decimal"				precision="3"	persit="true"	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"				precision="2"	persit="true"	attribute="VL_INSS" />
-			<Field position="10" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal"				precision="2"	persit="true"	attribute="VL_IPI" />
-			<Field position="12" type="decimal"				precision="3"	persit="true"	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"				precision="2"	persit="true"	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal" 			precision="3"	persit="true"	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"				precision="2"	persit="true"	attribute="VL_ISS" />
-			<Field position="16" type="decimal"				precision="3"	persit="true"	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"				precision="2"	persit="true"	attribute="VL_PIS" />
+			<Field position="2"		type="decimal"				precision="3" 	persist="true"							name="ALQ_COFINS" />
+			<Field position="3"		type="decimal"				precision="2" 	persist="true" 							name="VL_COFINS" />
+			<Field position="4"		type="decimal"				precision="3" 	persist="true" 							name="ALQ_CSLL" />
+			<Field position="5"		type="decimal"				precision="2" 	persist="true" 							name="VL_CSLL" />
+			<Field position="6"		type="decimal"				precision="3" 	persist="true" 							name="ALQ_ICMS" />
+			<Field position="7"		type="decimal"				precision="2" 	persist="true" 							name="VL_ICMS" />
+			<Field position="8"		type="decimal"				precision="3" 	persist="true" 							name="ALQ_INSS" />
+			<Field position="9"		type="decimal"				precision="2" 	persist="true" 							name="VL_INSS" />
+			<Field position="10"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_IPI" />
+			<Field position="11"	type="decimal"				precision="2" 	persist="true" 							name="VL_IPI" />
+			<Field position="12"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_IRPJ" />
+			<Field position="13"	type="decimal"				precision="2" 	persist="true" 							name="VL_IRPJ" />
+			<Field position="14"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_ISS" />
+			<Field position="15"	type="decimal"				precision="2" 	persist="true" 							name="VL_ISS" />
+			<Field position="16"	type="decimal"				precision="3" 	persist="true" 							name="ALQ_PIS" />
+			<Field position="17"	type="decimal"				precision="2" 	persist="true" 							name="VL_PIS" />
 		</Fields>
 	</Line>
-
-	<Line class="P3132" regex="^03132" mandatory="false">
+	
+	<Line name="P4000" regex="^04000" occurrence="NoOrMany" type="Details" parent="P0000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="decimal"				precision="3"	persit="true"	attribute="ALQ_APUR" />
-
-			<Field position="2" type="decimal"				precision="3" 	persit="true"	attribute="ALQ_COFINS" />
-			<Field position="3" type="decimal"				precision="2" 	persit="true" 	attribute="VL_COFINS" />
-			<Field position="4" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_CSLL" />
-			<Field position="5" type="decimal"				precision="2" 	persit="true" 	attribute="VL_CSLL" />
-			<Field position="6" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_ICMS" />
-			<Field position="7" type="decimal"				precision="2" 	persit="true" 	attribute="VL_ICMS" />
-			<Field position="8" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_INSS" />
-			<Field position="9" type="decimal"				precision="2" 	persit="true" 	attribute="VL_INSS" />
-			<Field position="10" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_IPI" />
-			<Field position="11" type="decimal"				precision="2" 	persit="true" 	attribute="VL_IPI" />
-			<Field position="12" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_IRPJ" />
-			<Field position="13" type="decimal"				precision="2" 	persit="true" 	attribute="VL_IRPJ" />
-			<Field position="14" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_ISS" />
-			<Field position="15" type="decimal"				precision="2" 	persit="true" 	attribute="VL_ISS" />
-			<Field position="16" type="decimal"				precision="3" 	persit="true" 	attribute="ALQ_PIS" />
-			<Field position="17" type="decimal"				precision="2" 	persit="true" 	attribute="VL_PIS" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="int"									persist="true"							name="COD_REC_PRINC" />
+			<Field position="2"		type="decimal"				precision="2"	persist="true"							name="VALOR_PRINCIPAL" />
+			<Field position="3"		type="int"									persist="true"							name="COD_REC_MULTA" />
+			<Field position="4"		type="decimal"				precision="2"	persist="true"							name="VALOR_MULTA" />
+			<Field position="5"		type="int"									persist="true"							name="COD_REC_JUROS" />
+			<Field position="6"		type="decimal"				precision="2"	persist="true"							name="VALOR_JUROS" />
+			<Field position="7"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="8"		type="string"	size="4"					persist="true"							name="COD_MUNIC" />
 		</Fields>
 	</Line>
 	<!-- REGISTORS PGDAS FIM -->
 
-	<Line class="D5000" regex="^D5000" mandatory="false">
+	<Line name="D5000" regex="^D5000" occurrence="One" type="Details" parent="D1000">
 		<Fields>
-			<Field position="0" type="string"	size="5"	persit="false"					attribute="REG" />
-			<Field position="1" type="decimal"	size="9"	precision="2"	persit="true"	attribute="VL_GANHOS_CAPITAL" />
-			<Field position="2" type="decimal"	size="9"	precision="2"	persit="true"	attribute="VL_LUCRO_CONTABIL" />
-			<Field position="3" type="int"									persit="true"	attribute="QTDE_EMPREGADOS_INICIAL" />
-			<Field position="4" type="int"									persit="true"	attribute="QTDE_EMPREGADOS_FINAL" />
-			<Field position="5" type="decimal" size="17"	precision="2"	persit="true"	attribute="VL_EXPORT_DIRETA" />
-			<Field position="6" type="decimal" size="17"	precision="2"	persit="true"	attribute="VL_TOTAL_GANHO_LIQ" />
-			<Field position="7" type="int"									persit="true"	attribute="INTIVO_ANO_2008" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="decimal"	size="9"	precision="2"	persist="true"							name="VL_GANHOS_CAPITAL" />
+			<Field position="2"		type="decimal"	size="9"	precision="2"	persist="true"							name="VL_LUCRO_CONTABIL" />
+			<Field position="3"		type="int"									persist="true"							name="QTDE_EMPREGADOS_INICIAL" />
+			<Field position="4"		type="int"									persist="true"							name="QTDE_EMPREGADOS_FINAL" />
+			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_EXPORT_DIRETA" />
+			<Field position="6"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL_GANHO_LIQ" />
+			<Field position="7"		type="int"									persist="true"							name="INTIVO_ANO_2008" />
 		</Fields>
 	</Line>
 
-	<Line class="D5100" regex="^D5100" mandatory="false">
+	<Line name="D5100" regex="^D5100" parent="D1000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="string"	size="14"					persit="true"	attribute="CNPJ_COMERCIAL" />
-			<Field position="2" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_TOTAL" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="14"					persist="true"							name="CNPJ_COMERCIAL" />
+			<Field position="2"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL" />
 		</Fields>
 	</Line>
 
-	<Line class="D5200" regex="^D5200" mandatory="false">
+	<Line name="D5200" regex="^D5200" parent="D1000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="string"	size="11"					persit="true"	attribute="CPF_SOCIO_TITULAR" />
-			<Field position="2" type="string"	size="60"					persit="true"	attribute="NOME_SOCIO" />
-			<Field position="3" type="decimal"	size="9"	precision="2"	persit="true"	attribute="VL_REND_ISEN_PG_SOCIO" />
-			<Field position="4" type="decimal"	size="9"	precision="2"	persit="true"	attribute="VL_REND_TRIB_PG_SOCIO" />
-			<Field position="5" type="decimal"	size="6"	precision="3"	persit="true"	attribute="PC_PARTICIPACAO_SOCIO" />
-			<Field position="6" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_IR_RETIDO" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="11"					persist="true"							name="CPF_SOCIO_TITULAR" />
+			<Field position="2"		type="string"	size="60"					persist="true"							name="NOME_SOCIO" />
+			<Field position="3"		type="decimal"	size="9"	precision="2"	persist="true"							name="VL_REND_ISEN_PG_SOCIO" />
+			<Field position="4"		type="decimal"	size="9"	precision="2"	persist="true"							name="VL_REND_TRIB_PG_SOCIO" />
+			<Field position="5"		type="decimal"	size="6"	precision="3"	persist="true"							name="PC_PARTICIPACAO_SOCIO" />
+			<Field position="6"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_IR_RETIDO" />
 		</Fields>
 	</Line>
 
-	<Line class="D5300" regex="^D5300" mandatory="false">
+	<Line name="D5300" regex="^D5300" type="Header" parent="D1000">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"	attribute="REG" />
-			<Field position="1" type="string"	size="4"					persit="true"	attribute="NUM_ESTABELECIMENTO" />
-			<Field position="2" type="int"									persit="true"	attribute="IN_MATRIZ_FILIAL" />
-			<Field position="3" type="decimal"	size="11"	precision="2"	persit="true"	attribute="VL_ESTOQUE_INICIAL" />
-			<Field position="4" type="decimal"	size="11"	precision="2"	persit="true"	attribute="VL_ESTOQUE_FINAL" />
-			<Field position="5" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_SALDO_CX_BANCO_INICIAL" />
-			<Field position="6" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_SALDO_CX_BANCO_FINAL" />
-			<Field position="7" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_TOTAL_ENTRADAS" />
-			<Field position="8" type="decimal"	size="11"	precision="2"	persit="true"	attribute="VL_TOTAL_AQUIS_MERC_COM_IND" />
-			<Field position="9" type="decimal"	size="11"	precision="2"	persit="true"	attribute="VL_TOTAL_ENTRADAS_TRANSF" />
-			<Field position="10" type="decimal" size="9"	precision="2"	persit="true"	attribute="VL_TOTAL_DEVOLUCAO_VENDAS" />
-			<Field position="11" type="decimal" size="11"	precision="2"	persit="true"	attribute="VL_TOTAL_SAIDAS_TRANSF" />
-			<Field position="12" type="decimal" size="17"	precision="2"	persit="true"	attribute="VL_TOTAL_DEVOLUCAO_COMPRAS" />
-			<Field position="13" type="decimal" size="17" 	precision="2"	persit="true"	attribute="VL_TOTAL_DESPESAS" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="4"					persist="true"							name="NUM_ESTABELECIMENTO" />
+			<Field position="2"		type="int"									persist="true"							name="IN_MATRIZ_FILIAL" />
+			<Field position="3"		type="decimal"	size="11"	precision="2"	persist="true"							name="VL_ESTOQUE_INICIAL" />
+			<Field position="4"		type="decimal"	size="11"	precision="2"	persist="true"							name="VL_ESTOQUE_FINAL" />
+			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_SALDO_CX_BANCO_INICIAL" />
+			<Field position="6"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_SALDO_CX_BANCO_FINAL" />
+			<Field position="7"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL_ENTRADAS" />
+			<Field position="8"		type="decimal"	size="11"	precision="2"	persist="true"							name="VL_TOTAL_AQUIS_MERC_COM_IND" />
+			<Field position="9"		type="decimal"	size="11"	precision="2"	persist="true"							name="VL_TOTAL_ENTRADAS_TRANSF" />
+			<Field position="10"	type="decimal"	size="9"	precision="2"	persist="true"							name="VL_TOTAL_DEVOLUCAO_VENDAS" />
+			<Field position="11"	type="decimal"	size="11"	precision="2"	persist="true"							name="VL_TOTAL_SAIDAS_TRANSF" />
+			<Field position="12"	type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL_DEVOLUCAO_COMPRAS" />
+			<Field position="13"	type="decimal"	size="17" 	precision="2"	persist="true"							name="VL_TOTAL_DESPESAS" />
 		</Fields>
 	</Line>
 
-	<Line class="D5310" regex="^D5310" mandatory="false">
+	<Line name="D5310" regex="^D5310" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="int"									persit="true"	attribute="NUM_SEQ" />
-			<Field position="2" type="string"	size="2"					persit="true"	attribute="UF_ORIGEM" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VL_TOTAL" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="int"									persist="true"							name="NUM_SEQ" />
+			<Field position="2"		type="string"	size="2"					persist="true"							name="UF_ORIGEM" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_TOTAL" />
 		</Fields>
 	</Line>
 
-	<Line class="D5320" regex="^D5320" mandatory="false">
+	<Line name="D5320" regex="^D5320" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
-			<Field position="2" type="string"	size="2"					persit="true"	attribute="UF_ORIGEM" />
-			<Field position="3" type="string"	size="5"					persit="true"	attribute="COD_MUNIC" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
+			<Field position="2"		type="string"	size="2"					persist="true"							name="UF_ORIGEM" />
+			<Field position="3"		type="string"	size="5"					persist="true"							name="COD_MUNIC" />
 		</Fields>
 	</Line>
 
-	<Line class="D5330" regex="^D5330" mandatory="false">
+	<Line name="D5330" regex="^D5330" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5340" regex="^D5340" mandatory="false">
+	<Line name="D5340" regex="^D5340" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5370" regex="^D5370" mandatory="false">
+	<Line name="D5370" regex="^D5370" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5352" regex="^D5352" mandatory="false">
+	<Line name="D5350" regex="^D5350" type="Header" parent="D5300">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_SAIDA" />
+			<Field position="2"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_AUTO" />
 		</Fields>
 	</Line>
 
-	<Line class="D5353" regex="^D5353" mandatory="false">
+
+	<Line name="D5352" regex="^D5352" parent="D5350">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5354" regex="^D5354" mandatory="false">
+	<Line name="D5353" regex="^D5353" parent="D5350">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5355" regex="^D5355" mandatory="false">
+	<Line name="D5354" regex="^D5354" parent="D5350">
 		<Fields>
-			<Field position="0" type="string"	size="5"					persit="true"	attribute="REG" />
-			<Field position="1" type="string"	size="2"					persit="true"	attribute="UF" />
-			<Field position="2" type="string"	size="5"					persit="true"	attribute="COD_MUN" />
-			<Field position="3" type="decimal"	size="17"	precision="2"	persit="true"	attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5356" regex="^D5356" mandatory="false">
+	<Line name="D5355" regex="^D5355" parent="D5350">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5362" regex="^D5362" mandatory="false">
+	<Line name="D5356" regex="^D5356" parent="D5350">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5363" regex="^D5363" mandatory="false">
+	<Line name="D5357" regex="^D5357" parent="D5350">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	 persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="int"									persist="true"							name="RATEIO" />
+			<Field position="2"		type="string"	size="50"					persist="true"							name="DESCRICAO" />
+			<Field position="3"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="4"		type="string"	size="5"					persist="true"							name="COD_MUNIC" />
+			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5364" regex="^D5364" mandatory="false">
+	<Line name="D5360" regex="^D5360" type="Header" parent="D5300">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	 persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF_ORIGEM" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUNIC_ORIGEM" />
+			<Field position="3"		type="string"	size="2"					persist="true"							name="UF_DESTINO" />
+			<Field position="4"		type="string"	size="5"					persist="true"							name="COD_MUNIC_DESTINO" />
+			<Field position="5"		type="date"		size="8"					persist="true"	regex="date"			name="DT_MUDANCA" />
 		</Fields>
 	</Line>
 
-	<Line class="D5365" regex="^D5365" mandatory="false">
+	<Line name="D5361" regex="^D5361" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	 persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_SAIDA" />
+			<Field position="2"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_AUTO" />
 		</Fields>
 	</Line>
 
-	<Line class="D5366" regex="^D5366" mandatory="false">
+	<Line name="D5362" regex="^D5362" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUN" />
-			<Field position="3" type="decimal" size="17"	precision="2"	 persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5357" regex="^D5357" mandatory="false">
+	<Line name="D5363" regex="^D5363" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="int" persit="true" attribute="RATEIO" />
-			<Field position="2" type="string" size="50" persit="true" attribute="DESCRICAO" />
-			<Field position="3" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="4" type="string" size="5" persit="true" attribute="COD_MUNIC" />
-			<Field position="5" type="decimal" size="17"	precision="2"	 persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5367" regex="^D5367" mandatory="false">
+	<Line name="D5364" regex="^D5364" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="int" persit="true" attribute="RATEIO" />
-			<Field position="2" type="string" size="50" persit="true" attribute="DESCRICAO" />
-			<Field position="3" type="string" size="2" persit="true" attribute="UF" />
-			<Field position="4" type="string" size="5" persit="true" attribute="COD_MUNIC" />
-			<Field position="5" type="decimal" size="17"	precision="2"	persit="true" attribute="VALOR" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5350" regex="^D5350" mandatory="false">
+	<Line name="D5365" regex="^D5365" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="decimal" size="17"	precision="2"	persit="true" attribute="VL_SAIDA" />
-			<Field position="2" type="decimal" size="17"	precision="2"	persit="true" attribute="VL_AUTO" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
 	</Line>
 
-	<Line class="D5361" regex="^D5361" mandatory="false">
+	<Line name="D5366" regex="^D5366" parent="D5360">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="true" attribute="REG" />
-			<Field position="1" type="decimal" size="17"	precision="2"	 persit="true" attribute="VL_SAIDA" />
-			<Field position="2" type="decimal" size="17"	precision="2"	 persit="true" attribute="VL_AUTO" />
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="2"		type="string"	size="5"					persist="true"							name="COD_MUN" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
+		</Fields>
+	</Line>
+	
+	<Line name="D5367" regex="^D5367" parent="D5360">
+		<Fields>
+			<Field position="0"		type="string"	size="5"					persist="true"							name="REG" />
+			<Field position="1"		type="int"									persist="true"							name="RATEIO" />
+			<Field position="2"		type="string"	size="50"					persist="true"							name="DESCRICAO" />
+			<Field position="3"		type="string"	size="2"					persist="true"							name="UF" />
+			<Field position="4"		type="string"	size="5"					persist="true"							name="COD_MUNIC" />
+			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
+		</Fields>
+	</Line>
+	
+	<Line name="D6000" regex="^D6000" occurrence="NoOrMany" type="Details" parent="D1000">
+		<Fields>
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="17"					persist="true"							name="NUM_DOCUMENTO" />
+			<Field position="2"		type="date"		size="6"					persist="true"	regex="period"			name="PERIODO" />
+			<Field position="3"		type="decimal"	size="17"	precision="2"	persist="true"							name="VL_PAGO" />
 		</Fields>
 	</Line>
 
-	<Line class="D5360" regex="^D5360" mandatory="false">
+	<Line name="D7000" regex="^D7000" occurrence="NoOrMany" type="Details" parent="D1000">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="false" attribute="REG" />
-			<Field position="1" type="string" size="2" persit="true" attribute="UF_ORIGEM" />
-			<Field position="2" type="string" size="5" persit="true" attribute="COD_MUNIC_ORIGEM" />
-			<Field position="3" type="string" size="2" persit="true" attribute="UF_DESTINO" />
-			<Field position="4" type="string" size="5" persit="true" attribute="COD_MUNIC_DESTINO" />
-			<Field position="5" type="date" size="8" persit="true" regex="date" attribute="DT_MUDANCA" />
+			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
+			<Field position="1"		type="string"	size="30"					persist="true"							name="NUM_NOTIFICACAO" />
+			<Field position="2"		type="string"	size="7"					persist="true"							name="COD_ORGAO_JUR" />
+			<Field position="3"		type="string"	size="5"					persist="true"							name="COD_MUNICIPIO" />
+			<Field position="4"		type="int"									persist="true"							name="NUM_MESES_ATRASO" />
+			<Field position="5"		type="decimal"				precision="2"	persist="true"							name="VL_BASE_CALC_MULTA" />
+			<Field position="6"		type="decimal"				precision="3"	persist="true"							name="PERCENTUAL" />
+			<Field position="7"		type="decimal"				precision="2"	persist="true"							name="VL_MULTA_CALCULADA" />
+			<Field position="8"		type="decimal"				precision="2"	persist="true"							name="VL_MULTA_ENTR_ESPONTANEA" />
+			<Field position="9"		type="decimal"				precision="2"	persist="true"							name="VL_MULTA_MINIMO" />
+			<Field position="10"	type="decimal"				precision="2"	persist="true"							name="VL_MULTA_ATRASO_ENT_DASN" />
+			<Field position="11"	type="date"		size="8"					persist="true"	regex="date"			name="DT_NOTIFICACAO" />
+			<Field position="12"	type="date"		size="8"					persist="true"	regex="date"			name="DT_CIENCIA_ENTREGA" />
+			<Field position="13"	type="string"	size="60" 					persist="true" 							name="NOME_DELEGADO" />
+			<Field position="14"	type="string"	size="80" 				 	persist="true" 							name="CARGO_FUNCAO" />
+			<Field position="15"	type="string"	size="7" 				 	persist="true" 							name="MATRICULA" />
+			<Field position="16"	type="string"	size="80" 				 	persist="true" 							name="NOME_DRF" />
+			<Field position="17"	type="string"	size="5" 					persist="true" 							name="TIPO_DECLARACAO" />
+			<Field position="18"	type="int" 								 	persist="true" 							name="STATUS_SICODEC" />
+			<Field position="19"	type="int" 								 	persist="true" 							name="STATUS_CCPJ" />
 		</Fields>
 	</Line>
-
-	<Line class="D6000" regex="^D6000" mandatory="false">
+	
+	<Line name="D7001" regex="^D7001" parent="D1000">
 		<Fields>
-			<Field position="0" type="string" size="5" persit="false" attribute="REG" />
-			<Field position="1" type="string" size="17" persit="true" attribute="NUM_DOCUMENTO" />
-			<Field position="2" type="date" size="6" persit="true" regex="period" attribute="PERIODO" />
-			<Field position="3" type="decimal" size="17"	precision="2"	 persit="true" attribute="VL_PAGO" />
-		</Fields>
-	</Line>
-
-	<Line class="D7000" regex="^D7000" mandatory="false">
-		<Fields>
-			<Field position="0" type="string"	size="5"					persit="false"					attribute="REG" />
-			<Field position="1" type="string"	size="30"					persit="true"					attribute="NUM_NOTIFICACAO" />
-			<Field position="2" type="string"	size="7"					persit="true"					attribute="COD_ORGAO_JUR" />
-			<Field position="3" type="string"	size="5"					persit="true"					attribute="COD_MUNICIPIO" />
-			<Field position="4" type="int"																	attribute="NUM_MESES_ATRASO" />
-			<Field position="5" type="decimal"				precision="2"	persit="true"					attribute="VL_BASE_CALC_MULTA" />
-			<Field position="6" type="decimal"				precision="3"	persit="true"					attribute="PERCENTUAL" />
-			<Field position="7" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_CALCULADA" />
-			<Field position="8" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_ENTR_ESPONTANEA" />
-			<Field position="9" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_MINIMO" />
-			<Field position="10" type="decimal"				precision="2"	persit="true"					attribute="VL_MULTA_ATRASO_ENT_DASN" />
-			<Field position="11" type="date"	size="8"					persit="true"	regex="date"	attribute="DT_NOTIFICACAO" />
-			<Field position="12" type="date"	size="8"					persit="true"	regex="date"	attribute="DT_CIENCIA_ENTREGA" />
-			<Field position="13" type="string"	size="60" 					persit="true" 					attribute="NOME_DELEGADO" />
-			<Field position="14" type="string"	size="80" 					persit="true"  					attribute="CARGO_FUNCAO" />
-			<Field position="15" type="string"	size="7" 					persit="true"  					attribute="MATRICULA" />
-			<Field position="16" type="string"	size="80" 					persit="true"  					attribute="NOME_DRF" />
-			<Field position="17" type="string"	size="5" 					persit="true" 					attribute="TIPO_DECLARACAO" />
-			<Field position="18" type="int" 								persit="true"  					attribute="STATUS_SICODEC" />
-			<Field position="19" type="int" 								persit="true"  					attribute="STATUS_CCPJ" />
-		</Fields>
-	</Line>
-
-	<Line class="D7001" regex="^D7001" mandatory="false">
-		<Fields>
-			<Field position="0" type="string" 	size="5" 					persit="false" 					attribute="REG" />
-			<Field position="1" type="string" 	size="14" 					persit="true" 					attribute="CNPJ_MATRIZ" />
-			<Field position="2" type="string" 	size="60" 					persit="true"					attribute="NOME" />
-			<Field position="3" type="date" 	size="6"					persit="true"	regex="period"	attribute="PERIODO" />
-			<Field position="4" type="date" 	size="8" 					persit="true"	regex="date"	attribute="DT_VENCIMENTO" />
-			<Field position="5" type="string" 	size="5" 					persit="true" 					attribute="COD_MUNICIPIO" />
-			<Field position="6" type="string" 	size="50" 					persit="true" 					attribute="NOME_MUNICIPIO" />
-			<Field position="7" type="string" 	size="4" 					persit="true" 					attribute="COD_RECEITA" />
-			<Field position="8" type="string" 	size="21"					persit="true" 					attribute="NUM_REFERENCIA" />
-			<Field position="9" type="decimal"	size="17"	precision="2"	persit="true" 					attribute="VL_PRINCIPAL" />
-			<Field position="10" type="decimal"	size="17"	precision="2"	persit="true" 					attribute="VL_MULTA" />
-			<Field position="11" type="decimal"	size="17"	precision="2"	persit="true" 					attribute="VL_JUROS" />
-			<Field position="12" type="decimal"	size="17"	precision="2"	persit="true" 					attribute="VL_TOTAL" />
-			<Field position="13" type="date" 	size="8"					persit="true"	regex="date"	attribute="DT_VALIDADE_VL_CALCULADO" />
-			<Field position="14" type="string" 	size="144" 					persit="true" 					attribute="OBS_1" />
-			<Field position="15" type="string" 	size="144" 					persit="true"					attribute="OBS_2" />
-			<Field position="16" type="string" 	size="144" 					persit="true"					attribute="OBS_3" />
-			<Field position="17" type="string" 	size="40" 					persit="true"					attribute="PROGRAMA_CHAMADOR" />
-			<Field position="18" type="string" 	size="1" 					persit="true"					attribute="MANUAL_AUTOMATICO" />
+			<Field position="0"		type="string" 	size="5" 					persist="false" 							name="REG" />
+			<Field position="1"		type="string" 	size="14" 					persist="true" 							name="CNPJ_MATRIZ" />
+			<Field position="2"		type="string" 	size="60" 					persist="true"							name="NOME" />
+			<Field position="3"		type="date" 	size="6"					persist="true"	regex="period"			name="PERIODO" />
+			<Field position="4"		type="date" 	size="8" 					persist="true"	regex="date"			name="DT_VENCIMENTO" />
+			<Field position="5"		type="string" 	size="5" 					persist="true" 							name="COD_MUNICIPIO" />
+			<Field position="6"		type="string" 	size="50" 					persist="true" 							name="NOME_MUNICIPIO" />
+			<Field position="7"		type="string" 	size="4" 					persist="true" 							name="COD_RECEITA" />
+			<Field position="8"		type="string" 	size="21"					persist="true" 							name="NUM_REFERENCIA" />
+			<Field position="9"		type="decimal"	size="17"	precision="2"	persist="true" 							name="VL_PRINCIPAL" />
+			<Field position="10"	type="decimal"	size="17"	precision="2"	persist="true" 							name="VL_MULTA" />
+			<Field position="11"	type="decimal"	size="17"	precision="2"	persist="true" 							name="VL_JUROS" />
+			<Field position="12"	type="decimal"	size="17"	precision="2"	persist="true" 							name="VL_TOTAL" />
+			<Field position="13"	type="date" 	size="8"					persist="true"	regex="date"			name="DT_VALIDADE_VL_CALCULADO" />
+			<Field position="14"	type="string" 	size="144" 					persist="true" 							name="OBS_1" />
+			<Field position="15"	type="string" 	size="144" 					persist="true"							name="OBS_2" />
+			<Field position="16"	type="string" 	size="144" 					persist="true"							name="OBS_3" />
+			<Field position="17"	type="string" 	size="40" 					persist="true"							name="PROGRAMA_CHAMADOR" />
+			<Field position="18"	type="string" 	size="1" 					persist="true"							name="MANUAL_AUTOMATICO" />
 		</Fields>
 	</Line>
 </Root>

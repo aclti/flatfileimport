@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using FlatFileImport.Core;
 using FlatFileImport.Data;
-using FlatFileImport.Process;
 
 namespace FlatFileImport.Validate
 {

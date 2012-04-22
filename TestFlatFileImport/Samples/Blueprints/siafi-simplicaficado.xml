@@ -21,67 +21,65 @@
 		<Rule id="esfera">[EMem]</Rule>
 	</Regex>
 
-	<Header>
-		<Line class="Header" regex="^1.*$" mandatory="true">
-			<Fields>
-				<Field position="1"		type="string"	size="1"	persit="false"					attribute="CodRegistro" />
-				<Field position="2"		type="int"		size="8"	persit="false"	regex="number"	attribute="NumSeqRegistro" />
-				<Field position="10"	type="string"	size="20"	persit="true"					attribute="CodConvenio" />
-				<Field position="30"	type="datetime" size="8"	persit="true"	regex="date"	attribute="DtGeracao" />
-				<Field position="38"	type="int"		size="6"	persit="true"	regex="number"	attribute="NumRemessa" />
-				<Field position="44"	type="string"	size="2"	persit="true"					attribute="NumVersao" />
-				<Field position="46"	type="string"	size="22"	persit="false"					attribute="FillerA" />
-				<Field position="68"	type="string"	size="8"	persit="true"					attribute="DecendioReferencia" /> <!-- Insert nos campos Ano, Mes e Decendio -->
-				<Field position="76"	type="string"	size="425"  persit="false"					attribute="FillerB" />
-			</Fields>
-		</Line>
-	</Header>
-
-	<Footer>
-		<Line class="Trailer" regex="^9[0-9]{8}.*$" mandatory="true">
-			<Fields>
-				<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
-				<Field position="2"		type="int"		size="8"					persit="false"	regex="number"	attribute="NumSeqRegistro" />
-				<Field position="10"	type="int"		size="6"					persit="true"	regex="number"	attribute="TotalRegistros" />
-				<Field position="16"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorTotalRecebido" />
-				<Field position="33"	type="string"	size="468"					persit="false"					attribute="Filler" />
-			</Fields>
-		</Line>
-	</Footer>
+	<!-- LineType: Header, Footer, Details (default) -->
+	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Gap[MIN-MAX] -->
+	<Line name="Header" regex="^1.*$" occurrence="One" type="Header" parent="">
+		<Fields>
+			<Field position="1"			type="string"	size="1"	persist="false"									name="CodRegistro" />
+			<Field position="2"			type="int"		size="8"	persist="false"					regex="number"	name="NumSeqRegistro" />
+			<Field position="10"		type="string"	size="20"	persist="true"									name="CodConvenio" />
+			<Field position="30"		type="datetime" size="8"	persist="true"					regex="date"	name="DtGeracao" />
+			<Field position="38"		type="int"		size="6"	persist="true"					regex="number"	name="NumRemessa" />
+			<Field position="44"		type="string"	size="2"	persist="true"									name="NumVersao" />
+			<Field position="46"		type="string"	size="22"	persist="false"									name="FillerA" />
+			<Field position="68"		type="string"	size="8"	persist="true"									name="DecendioReferencia" /> <!-- Insert nos campos Ano, Mes e Decendio -->
+			<Field position="76"		type="string"	size="425"  persist="false"									name="FillerB" />
+		</Fields>
+	</Line>
+	
+	<Line name="Trailer" regex="^9[0-9]{8}.*$" occurrence="One" type="Footer" parent="">
+		<Fields>
+			<Field position="1"			type="string"	size="1"	persist="false"									name="CodRegistro" />
+			<Field position="2"			type="int"		size="8"	persist="false"					regex="number"	name="NumSeqRegistro" />
+			<Field position="10"		type="int"		size="6"	persist="true"					regex="number"	name="TotalRegistros" />
+			<Field position="16"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorTotalRecebido" />
+			<Field position="33"		type="string"	size="468"	persist="false"									name="Filler" />
+		</Fields>
+	</Line>
 
 	<Registries>
 	</Registries>
 
-	<Line class="Details" regex="^2.*$" mandatory="true">
+	<Line name="Details" regex="^2.*$" occurrence="AtLeastOne" type="Details" parent="Header">
 		<Fields>
-			<Field position="1"		type="string"	size="1"					persit="false"					attribute="CodRegistro" />
-			<Field position="2"		type="int"		size="8"					persit="false"	regex="number"	attribute="NumSeqRegistro" />
-			<Field position="10"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtEmissao" />
-			<Field position="18"	type="datetime" size="8"					persit="true"	regex="date"	attribute="DtVenciemnto" />
-			<Field position="26"	type="string"	size="12"					persit="true"	regex="numdoc"	attribute="NumDocumento" />
-			<Field position="38"	type="int"		size="6"					persit="true"	regex="number"	attribute="CodUnidGestEmit" />
-			<Field position="44"	type="int"		size="5"					persit="true"	regex="number"	attribute="CodGestEmit" />
-			<Field position="49"	type="int"		size="6"					persit="true"	regex="number"	attribute="CotUnidGestTom" />
-			<Field position="55"	type="string"	size="14"					persit="true"					attribute="CnpjUnidGestTom" />
-			<Field position="69"	type="string"	size="6"					persit="true"					attribute="CodMunUnidGestTom" />
-			<Field position="75"	type="string"	size="14"					persit="true"					attribute="NumDocReceitaSubstituto" />
-			<Field position="89"	type="string"	size="6"					persit="true"					attribute="CodMunNfse" />
-			<Field position="95"	type="string"	size="5"					persit="true"					attribute="CodigoReceita" />
-			<Field position="100"	type="string"	size="1"					persit="true"	regex="esfera"	attribute="EsferaReceita" />
-			<Field position="101"	type="date"		size="6"					persit="true"	regex="period"	attribute="Competencia" /> <!-- Insert nos campos Ano e Mes -->
-			<Field position="107"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorPrincipal" />
-			<Field position="124"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorMulta" />
-			<Field position="141"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorJuros" />
-			<Field position="158"	type="string"	size="10"					persit="true"					attribute="NumeroNota" />
-			<Field position="168"	type="string"	size="5"					persit="true"					attribute="SerieNota" />
-			<Field position="173"	type="string"	size="2"					persit="true"					attribute="SubSerieNota" />
-			<Field position="175"	type="datetime"	size="8"					persit="true"	regex="date"	attribute="DtEmissaoNota" />
-			<Field position="183"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorNota" />
-			<Field position="200"	type="decimal"	size="5"	precision="3"	persit="true"	regex="number"	attribute="Aliquota" />
-			<Field position="205"	type="decimal"	size="17"	precision="2"	persit="true"	regex="number"	attribute="ValorBaseCalc" />
-			<Field position="222"	type="string"	size="234"					persit="true"					attribute="Observacao" />
-			<Field position="456"	type="string"	size="6"					persit="true"					attribute="CodMunFavorecido" />
-			<Field position="462"	type="string"	size="39"					persit="false"					attribute="Filler" />
+			<Field position="1"			type="string"	size="1"	persist="false"									name="CodRegistro" />
+			<Field position="2"			type="int"		size="8"	persist="false"					regex="number"	name="NumSeqRegistro" />
+			<Field position="10"		type="datetime" size="8"	persist="true"					regex="date"	name="DtEmissao" />
+			<Field position="18"		type="datetime" size="8"	persist="true"					regex="date"	name="DtVenciemnto" />
+			<Field position="26"		type="string"	size="12"	persist="true"					regex="numdoc"	name="NumDocumento" />
+			<Field position="38"		type="int"		size="6"	persist="true"					regex="number"	name="CodUnidGestEmit" />
+			<Field position="44"		type="int"		size="5"	persist="true"					regex="number"	name="CodGestEmit" />
+			<Field position="49"		type="int"		size="6"	persist="true"					regex="number"	name="CotUnidGestTom" />
+			<Field position="55"		type="string"	size="14"	persist="true"									name="CnpjUnidGestTom" />
+			<Field position="69"		type="string"	size="6"	persist="true"									name="CodMunUnidGestTom" />
+			<Field position="75"		type="string"	size="14"	persist="true"									name="NumDocReceitaSubstituto" />
+			<Field position="89"		type="string"	size="6"	persist="true"									name="CodMunNfse" />
+			<Field position="95"		type="string"	size="5"	persist="true"									name="CodigoReceita" />
+			<Field position="100"		type="string"	size="1"	persist="true"					regex="esfera"	name="EsferaReceita" />
+			<Field position="101"		type="date"		size="6"	persist="true"					regex="period"	name="Competencia" /> <!-- Insert nos campos Ano e Mes -->
+			<Field position="107"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorPrincipal" />
+			<Field position="124"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorMulta" />
+			<Field position="141"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorJuros" />
+			<Field position="158"		type="string"	size="10"	persist="true"									name="NumeroNota" />
+			<Field position="168"		type="string"	size="5"	persist="true"									name="SerieNota" />
+			<Field position="173"		type="string"	size="2"	persist="true"									name="SubSerieNota" />
+			<Field position="175"		type="datetime"	size="8"	persist="true"					regex="date"	name="DtEmissaoNota" />
+			<Field position="183"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorNota" />
+			<Field position="200"		type="decimal"	size="5"	persist="true"	precision="3"	regex="number"	name="Aliquota" />
+			<Field position="205"		type="decimal"	size="17"	persist="true"	precision="2"	regex="number"	name="ValorBaseCalc" />
+			<Field position="222"		type="string"	size="234"	persist="true"									name="Observacao" />
+			<Field position="456"		type="string"	size="6"	persist="true"									name="CodMunFavorecido" />
+			<Field position="462"		type="string"	size="39"	persist="false"									name="Filler" />
 		</Fields>
 	</Line>
 </Root>

@@ -1,4 +1,5 @@
-﻿using FlatFileImport.Process;
+﻿using FlatFileImport.Core;
+using FlatFileImport.Process;
 using NUnit.Framework;
 
 namespace TestFlatFileImport

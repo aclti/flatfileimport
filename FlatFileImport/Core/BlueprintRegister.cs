@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Core
 {
     public class BlueprintRegister : IBlueprintRegister
     {
@@ -11,7 +11,7 @@ namespace FlatFileImport.Process
         public Regex Begin { set; get; }
         public bool IsComplet { set; get; }
 
-        public BlueprintRegister(Blueprint blueprint)
+        public BlueprintRegister(IBlueprint blueprint)
         {
             if(blueprint == null)
                 throw new ArgumentNullException("blueprint");

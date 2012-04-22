@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace FlatFileImport.Process
+namespace FlatFileImport.Core
 {
     public interface IBlueprintLine
     {
         IBlueprint Blueprint { get; }
-        string Class { set; get; }
+        IBlueprintLine Parent { get; }
+        string Name { set; get; }
         Regex Regex { set; get; }
         List<IBlueprintField> BlueprintFields { set; get; }
-        bool Mandatory { set; get; }
+        IOccurrence Occurrence { set; get; }
     }
 }

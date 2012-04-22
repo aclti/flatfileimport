@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using FlatFileImport.Core;
 using FlatFileImport.Exception;
-using FlatFileImport.Process;
 using System.Text;
 
 namespace FlatFileImport.Validate
@@ -49,7 +48,7 @@ namespace FlatFileImport.Validate
                 sb.AppendLine();
                 sb.AppendFormat("Linha do registro: {0}", _rawDataCollection);
                 sb.AppendLine();
-                sb.AppendFormat("[NOME: {0}][VALOR: {1}]", _blueprintLine.Class, String.Join("|", _rawDataCollection));
+                sb.AppendFormat("[NOME: {0}][VALOR: {1}]", _blueprintLine.Name, String.Join("|", _rawDataCollection));
                 sb.AppendLine();
 
                 if (_blueprintLine.BlueprintFields.Count > _rawDataCollection.Length)
@@ -58,7 +57,7 @@ namespace FlatFileImport.Validate
                 }
                 else if (_blueprintLine.BlueprintFields.Count < _rawDataCollection.Length)
                 {
-                    if (_blueprintLine.Mandatory)
+                    if (/*_blueprintLine.Mandatory*/true)
                         result = new ValidResult { Message = sb.ToString(), Severity = ExceptionSeverity.Fatal, Type = ExceptionType.Error, Success = false };
                     else
                         result = new ValidResult { Message = sb.ToString(), Severity = ExceptionSeverity.Critical, Type = ExceptionType.Warnning, Success = false };
