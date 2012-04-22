@@ -42,6 +42,22 @@ PASSO:
 	
 -------------------------------------------------------------------------------
 
+-- ATRIBUTOS DEFAULTS ---------------------------------------------------------
+Regex para:
+	- Decimal
+	- int
+	- DateTime (yyyymmddhhssmm)
+Deve ser definidar com uma valor default se não for informada na blueprint, 
+porém se algum valor for informado o default será sobrescrito.
+
+-------------------------------------------------------------------------------
+
+-- PESQUISA NA BLUEPRINT ------------------------------------------------------
+- Ao encontrar um header, a pesquisa irá procurar um footer que tenha
+o mesmo pai do header ou não tenha pai no caso do root
+- Caso não encontre footer, será buscado um registro do mesmo tipo.
+-------------------------------------------------------------------------------
+
 -- CUSTOM TYPES FOR CONVERTION ------------------------------------------------
 verificar uma forma de melhora a conversão dos objetos, ja que utiliza regex e 
 grupos para identifica poderia pensar em uma forma de passar para o value, 
