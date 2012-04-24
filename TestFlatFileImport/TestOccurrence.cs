@@ -29,9 +29,9 @@ namespace TestFlatFileImport
         }
 
         [Test]
-        public void TestSetGapForOccurrence()
+        public void TestSetRangeForOccurrence()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
@@ -51,9 +51,9 @@ namespace TestFlatFileImport
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TestSetGapForOccurrenceNone()
+        public void TestSetRangeForOccurrenceNone()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
@@ -63,82 +63,82 @@ namespace TestFlatFileImport
         }
 
         [Test]
-        public void TestSetGapForOccurrenceGap()
+        public void TestSetRangeForOccurrenceRange()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[1-5]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[1-5]");
             
-            Assert.AreEqual(EnumOccurrence.Gap, occurrence.Type);
+            Assert.AreEqual(EnumOccurrence.Range, occurrence.Type);
             Assert.AreEqual(1, occurrence.Min);
             Assert.AreEqual(5, occurrence.Max);
 
-            occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[10-90]");
-            Assert.AreEqual(EnumOccurrence.Gap, occurrence.Type);
+            occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[10-90]");
+            Assert.AreEqual(EnumOccurrence.Range, occurrence.Type);
             Assert.AreEqual(10, occurrence.Min);
             Assert.AreEqual(90, occurrence.Max);
 
-            occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[1000-90000]");
-            Assert.AreEqual(EnumOccurrence.Gap, occurrence.Type);
+            occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[1000-90000]");
+            Assert.AreEqual(EnumOccurrence.Range, occurrence.Type);
             Assert.AreEqual(1000, occurrence.Min);
             Assert.AreEqual(90000, occurrence.Max);
         }
 
         [Test]
         [ExpectedException(typeof(FormatException))]
-        public void TestSetGapForOccurrenceGapWrongFormat()
+        public void TestSetRangeForOccurrenceRangeWrongFormat()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[1-E]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[1-E]");
         }
 
         [Test]
         [ExpectedException(typeof(Exception))]
-        public void TestSetGapForOccurrenceGapFormatNoGap()
+        public void TestSetRangeForOccurrenceRangeFormatNoRange()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.AtLeastOne, "Gap[1-5]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.AtLeastOne, "Range[1-5]");
         }
 
         [Test]
         [ExpectedException(typeof(Exception))]
-        public void TestSetGapForOccurrenceMinGreatMax()
+        public void TestSetRangeForOccurrenceMinGreatMax()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[10-5]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[10-5]");
         }
 
         [Test]
         [ExpectedException(typeof(Exception))]
-        public void TestSetGapForOccurrenceMinEqualtMax()
+        public void TestSetRangeForOccurrenceMinEqualtMax()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[5-5]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[5-5]");
         }
 
         [Test]
         [ExpectedException(typeof(OverflowException))]
-        public void TestSetGapForOccurrenceIntBiggerThan32Bit()
+        public void TestSetRangeForOccurrenceIntBiggerThan32Bit()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             IBlueprintLine bline = new BlueprintLineHeader(_blueprint, null);
 
-            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Gap, "Gap[5555555555555555555555555555555555555555555-888888888888888888888888888888888888888888888888888888888888888888]");
+            IOccurrence occurrence = new Occurrence(bline, EnumOccurrence.Range, "Range[5555555555555555555555555555555555555555555-888888888888888888888888888888888888888888888888888888888888888888]");
         }
     }
 }

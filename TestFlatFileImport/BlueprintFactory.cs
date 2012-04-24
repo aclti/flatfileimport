@@ -14,18 +14,29 @@ namespace TestFlatFileImport
 
         #region IBlueprintFactoy Members
 
-        public IBlueprint GetBlueprint(Type type, FileInfo toParse)
+        public IBlueprint GetBlueprint(FileInfo toParse)
         {
-            
+            throw new NotImplementedException();
+        }
+
+        public IBlueprint GetBlueprint(object selectParam)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IBlueprint GetBlueprint(object selectParam, FileInfo toParse)
+        {
+            var type = (Type) selectParam;
+
             if (type == typeof(Movie))
             {
-                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-movie.xml"));
+                BlueprintSetter = new BlueprintSetterXml(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-movie.xml"));
                 return BlueprintSetter.GetBlueprint();
             }
 
             if (type == typeof(Music))
             {
-                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-music.xml"));
+                BlueprintSetter = new BlueprintSetterXml(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-music.xml"));
                 return BlueprintSetter.GetBlueprint();
             }
 
@@ -37,12 +48,14 @@ namespace TestFlatFileImport
 
             if (type == typeof(Siafi))
             {
-                BlueprintSetter = new BlueprintXmlSetter(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-siaf.xml"));
+                BlueprintSetter = new BlueprintSetterXml(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "blue-print-siaf.xml"));
                 return BlueprintSetter.GetBlueprint();
             }
 
             throw new NotImplementedException();
         }
+
+        #endregion
 
         private IBlueprint GetBlueprintDasn(FileInfo toParse)
         {
@@ -58,7 +71,7 @@ namespace TestFlatFileImport
                     throw new NotImplementedException(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
             }
 
-            BlueprintSetter = new BlueprintXmlSetter(pathXml);
+            BlueprintSetter = new BlueprintSetterXml(pathXml);
             return BlueprintSetter.GetBlueprint();
         }
 
@@ -82,6 +95,5 @@ namespace TestFlatFileImport
 
             return values[1];
         }
-        #endregion
     }
 }

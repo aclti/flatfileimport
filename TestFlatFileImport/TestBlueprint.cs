@@ -35,7 +35,7 @@ namespace TestFlatFileImport
         public void TestBlueprintSiafi()
         {
             //TODO: Testar todas as linhas e campos.
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             Assert.AreEqual(_blueprint.BluePrintCharSepartor, '\0');

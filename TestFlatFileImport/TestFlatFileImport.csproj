@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintFactory.cs" />
+    <Compile Include="TestParsedDatas.cs" />
     <Compile Include="TestBlueprintSetter.cs" />
     <Compile Include="TestOccurrence.cs" />
     <Compile Include="Dominio\Das.cs" />

@@ -31,7 +31,7 @@ namespace TestFlatFileImport
         [Test]
         public void TempTest()
         {
-            var setter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn-resumida.xml"));
+            var setter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn-resumida.xml"));
             var bine = setter.GetBlueprint();
         }
     }

@@ -41,7 +41,7 @@ namespace FlatFileImport
 
         public Importer()
         {
-            _parsedData = new ParsedData();
+            _parsedData = new ParsedData("dummy", null);
         }
 
         public void Process(FileInfo fileInfo)
@@ -77,7 +77,7 @@ namespace FlatFileImport
             throw new NotImplementedException();
         }
 
-        private ParsedLine GetParsedLine(string rawLine, ParsedData parent)
+        private IParsedObjetct GetParsedLine(string rawLine, ParsedData parent)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using FlatFileImport.Process;
 
 namespace FlatFileImport.Core
 {

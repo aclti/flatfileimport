@@ -1,8 +1,8 @@
 ﻿namespace FlatFileImport.Core
 {
-    public class BlueprintJsonSetter : IBlueprintSetter
+    public class BlueprintSetterJson : IBlueprintSetter
     {
-        public BlueprintJsonSetter(string path)
+        public BlueprintSetterJson(string path)
         {
             throw new System.NotImplementedException();
         }

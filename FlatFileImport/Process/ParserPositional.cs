@@ -10,7 +10,7 @@ namespace FlatFileImport.Process
     {
         private string _rawDataLine;
         private IBlueprintLine _blueprintLine;
-        private ParsedLine _data;
+        private IParsedObjetct _data;
         private Converter _converter;
 
         public ParserPositional(IBlueprintLine blueprintLine, string rawDataLine)
@@ -28,9 +28,15 @@ namespace FlatFileImport.Process
         #region IParser Members
 
         // TODO: Migrar para um super classe ou para um command pattern
-        public ParsedLine GetParsedData()
+        public IParsedData GetParsedData(IParsedData parent)
         {
-            _data = new ParsedLine(_blueprintLine.Name, /*_blueprintLine.Mandatory*/true);
+            return new ParsedData("dummy", parent);
+        }
+
+        // TODO: Migrar para um super classe ou para um command pattern
+        public IParsedObjetct GetParsedLine(IParsedData parent)
+        {
+            _data = new ParsedLine(_blueprintLine.Name, parent);
 
             foreach (var field in _blueprintLine.BlueprintFields)
             {

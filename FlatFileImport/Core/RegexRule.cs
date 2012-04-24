@@ -22,10 +22,5 @@ namespace FlatFileImport.Core
         {
             get { return _rule; }
         }
-
-        //private string DecodeString(string toDecode)
-        //{
-        //    return toDecode.Replace("&lt;", "<").Replace("&gt;", ">");
-        //}
     }
 }

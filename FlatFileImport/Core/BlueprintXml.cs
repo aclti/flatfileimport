@@ -18,21 +18,6 @@ namespace FlatFileImport.Core
 
         #region IBlueprint Members
 
-        public IBlueprintLine Header
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IBlueprintLine Footer
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public ReadOnlyCollection<IBlueprintRegister> BlueprintRegistires
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public ReadOnlyCollection<IBlueprintLine> BlueprintLines
         {
             get { return _line.AsReadOnly(); }
@@ -46,11 +31,6 @@ namespace FlatFileImport.Core
         public char BluePrintCharSepartor
         {
             get { return _chaSeparator; }
-        }
-
-        public bool UseRegistries
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public void AddBlueprintLines(IBlueprintLine blueprintLine)

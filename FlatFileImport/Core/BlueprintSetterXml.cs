@@ -5,11 +5,10 @@ using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using System.Xml;
 using FlatFileImport.Exception;
-using FlatFileImport.Process;
 
 namespace FlatFileImport.Core
 {
-    public class BlueprintXmlSetter : IBlueprintSetter
+    public class BlueprintSetterXml : IBlueprintSetter
     {
         private const string RgxDate = @"^(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])(?<day>0[1-9]|[1-2][0-9]|3[0-1])((?<hour>[01][0-9]|2[0-3])(?<minute>[0-5][0-9])(?<second>[0-5][0-9]))?$";
         private const string RgxInt = @"^[0-9]+$";
@@ -21,7 +20,7 @@ namespace FlatFileImport.Core
         private readonly XmlDocument _xDoc;
         private static IBlueprint _blueprint;
 
-        public BlueprintXmlSetter(string path)
+        public BlueprintSetterXml(string path)
         {
             _path = path;
             _xmlDoc = new XPathDocument(_path);
@@ -119,12 +118,12 @@ namespace FlatFileImport.Core
             var value = GetAttributeValue(attrColl, EnumLineAttributes.Occurrence);
 
             EnumOccurrence type;
-            if (value.StartsWith(EnumOccurrence.Gap.ToString()))
-                type = EnumOccurrence.Gap;
+            if (value.StartsWith(EnumOccurrence.Range.ToString()))
+                type = EnumOccurrence.Range;
             else
                 type = (EnumOccurrence)Enum.Parse(typeof(EnumOccurrence), value);
 
-            return type == EnumOccurrence.Gap ? new Occurrence(blueprintLine, type, value) : new Occurrence(blueprintLine, type);
+            return type == EnumOccurrence.Range ? new Occurrence(blueprintLine, type, value) : new Occurrence(blueprintLine, type);
         }
 
         private bool HasParent(XmlNode node)

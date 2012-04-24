@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BlueprintJsonSetter.cs" />
+    <Compile Include="Core\BlueprintJson.cs" />
+    <Compile Include="Core\BlueprintSetterJson.cs" />
     <Compile Include="Core\BlueprintXml.cs" />
-    <Compile Include="Core\BlueprintXmlSetter.cs" />
+    <Compile Include="Core\BlueprintSetterXml.cs" />
     <Compile Include="Core\Enumeration.cs" />
     <Compile Include="Core\IBlueprintSetter.cs" />
+    <Compile Include="Data\IParsedData.cs" />
+    <Compile Include="Data\IParsedField.cs" />
+    <Compile Include="Data\IParsedObjetct.cs" />
     <Compile Include="Exception\BlueprintMissingConfigItem.cs" />
     <Compile Include="Exception\DataLengthDontMatchWithBlueprintDefinition.cs" />
     <Compile Include="Exception\Enumerations.cs" />
@@ -75,7 +79,6 @@
     <Compile Include="Core\BlueprintLineDetails.cs" />
     <Compile Include="Core\BlueprintLineFooter.cs" />
     <Compile Include="Core\BlueprintLineHeader.cs" />
-    <Compile Include="Core\BlueprintRegister.cs" />
     <Compile Include="Process\Converter.cs" />
     <Compile Include="Process\ConverterDate.cs" />
     <Compile Include="Process\ConverterNumber.cs" />
@@ -85,17 +88,11 @@
     <Compile Include="Core\IBlueprintFactoy.cs" />
     <Compile Include="Core\IBlueprintField.cs" />
     <Compile Include="Core\IBlueprintLine.cs" />
-    <Compile Include="Core\IBlueprintRegister.cs" />
     <Compile Include="Data\ParsedData.cs" />
-    <Compile Include="Data\IParsedRegister.cs" />
     <Compile Include="Core\IOccurrence.cs" />
     <Compile Include="Process\IParser.cs" />
     <Compile Include="Data\ParsedField.cs" />
     <Compile Include="Data\ParsedLine.cs" />
-    <Compile Include="Data\ParsedDataFactory.cs" />
-    <Compile Include="Data\ParsedFooter.cs" />
-    <Compile Include="Data\ParsedHeader.cs" />
-    <Compile Include="Data\ParsedRegister.cs" />
     <Compile Include="Core\Occurrence.cs" />
     <Compile Include="Process\Parser.cs" />
     <Compile Include="Process\ParserPositional.cs" />

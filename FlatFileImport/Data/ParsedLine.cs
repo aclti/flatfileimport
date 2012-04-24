@@ -4,22 +4,24 @@ using System.Collections.ObjectModel;
 
 namespace FlatFileImport.Data
 {
-    public class ParsedLine
+    public class ParsedLine : IParsedObjetct
     {
-        private ParsedData _parent;
-        private string _name;
-        private  List<ParsedField> _fields;
+        private  List<IParsedField> _fields;
 
-        public string Name { get { return _name; } }
+        public IParsedData Parent { get; private set; }
+        public string Name { get; private set; }
+        public ReadOnlyCollection<IParsedField> Fields { get { return _fields.AsReadOnly(); } }
 
-        public ReadOnlyCollection<ParsedField> Fields { get { return _fields.AsReadOnly(); } }
-
-        public ParsedLine(string name, bool mandatory)
+        public ParsedLine(string name, IParsedData parent)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            _name = name;
+            if (parent == null)
+                throw new ArgumentNullException("parent");
+
+            Name = name;
+            Parent = parent;
         }
 
         public void AddField(string name, string value, Type type)
@@ -27,7 +29,7 @@ namespace FlatFileImport.Data
             var field = new ParsedField(name, value, type, this);
 
             if(_fields == null)
-                _fields = new List<ParsedField>();
+                _fields = new List<IParsedField>();
 
             _fields.Add(field);
         }

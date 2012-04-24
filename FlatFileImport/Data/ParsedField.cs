@@ -2,19 +2,18 @@
 
 namespace FlatFileImport.Data
 {
-    public class ParsedField
+    public class ParsedField : IParsedField
     {
-        private ParsedLine _parent;
-        private string _name;
-        private Type _type;
-        private string _value;
+        #region IParsedField Members
 
-        public ParsedLine Parent { get { return _parent; } }
-        public Type Type { get { return _type; } }
-        public string Value { get { return _value; } }
-        public string Name { get { return _name; } }
+        public IParsedObjetct Parent { get; private set; }
+        public string Name { get; private set; }
+        public Type Type { get; private set; }
+        public string Value { get; private set; }
 
-        public ParsedField(string name, string value, Type type, ParsedLine line)
+        #endregion
+
+        public ParsedField(string name, string value, Type type, IParsedObjetct line)
         {
             if (line == null)
                 throw new ArgumentNullException("line");
@@ -25,10 +24,10 @@ namespace FlatFileImport.Data
             if (type == null)
                 throw new ArgumentNullException("type");
 
-            _parent = line;
-            _type = type;
-            _value = value ?? "";
-            _name = name;
+            Parent = line;
+            Type = type;
+            Value = value ?? "";
+            Name = name;
         }
     }
 }

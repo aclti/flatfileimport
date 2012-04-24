@@ -34,7 +34,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterString()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -51,7 +51,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterInt()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
@@ -81,7 +81,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(OverflowException))]
         public void TestConverterIntlInvalidSize()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -94,7 +94,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterIntlInvalid()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -106,7 +106,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterIntStringToInt()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
@@ -134,7 +134,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterDecimal()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
@@ -162,7 +162,7 @@ namespace TestFlatFileImport
             converter.Init(bLine.BlueprintFields.FirstOrDefault(f => f.Name == "VALOR"), "");
             Assert.AreEqual("0", converter.Data);
 
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -174,7 +174,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterDecimalStringToDecimal()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D3001"));
@@ -197,7 +197,7 @@ namespace TestFlatFileImport
             converter.Init(bLine.BlueprintFields.FirstOrDefault(f => f.Name == "VALOR"), "");
             Assert.AreEqual(0, decimal.Parse(converter.Data));
 
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -210,7 +210,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestConverterDecimalInvalidSize()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -223,7 +223,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterDecimalInvalid()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -236,7 +236,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterDecimalInvalidSeparator()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D3001"));
@@ -248,7 +248,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterDate()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             // TESTE PARA DATETIME
@@ -278,7 +278,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterDateStringToDate()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             // TESTE PARA DATETIME
@@ -304,7 +304,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterInvalidDateInPut()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -317,7 +317,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterInvalidDateNotPassInRegexValidadtion()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -330,7 +330,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestConverterInvalidDate()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -343,7 +343,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterInvalidDateTime()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -357,7 +357,7 @@ namespace TestFlatFileImport
         [ExpectedException(typeof(FormatException))]
         public void TestConverterInvalidPeriodCompetencia()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));

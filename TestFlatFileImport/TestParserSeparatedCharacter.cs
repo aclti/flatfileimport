@@ -33,7 +33,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataSintaxLineAndAtributtes()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             var rawData = "D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D1000"));
@@ -98,7 +98,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawData()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var rawData = "D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
@@ -106,7 +106,8 @@ namespace TestFlatFileImport
             var decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
             var p = new ParserSeparatedCharacter(bLine, rawData);
-            var data = p.GetParsedData();
+            var parent = p.GetParsedData(null);
+            var data = p.GetParsedLine(parent);
 
             Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
@@ -126,7 +127,8 @@ namespace TestFlatFileImport
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("00000"));
             rawData = "00000|07491222000101|MATOS DISTRIBUIDORA DE COSMETICOS LTDA, ME|3105|S|20050712|200907|6389,32|0,000|1,00|A|1|6389,32";
             p = new ParserSeparatedCharacter(bLine, rawData);
-            data = p.GetParsedData();
+            parent = p.GetParsedData(null);
+            data = p.GetParsedLine(parent);
 
             Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
@@ -147,7 +149,8 @@ namespace TestFlatFileImport
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D7000"));
             rawData = "D7000|074912222009001|0520100|3105|4|2442,52|8,000|0|97,70|200,00|200,00|20100713|20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter(bLine, rawData);
-            data = p.GetParsedData();
+            parent = p.GetParsedData(null);
+            data = p.GetParsedLine(parent);
 
             Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
@@ -176,7 +179,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataInclomplet()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var rawData = "D1000|010428182009003||||19960208||02071018801526456|01406041942879518599||1.0.7.0|0";
@@ -185,7 +188,8 @@ namespace TestFlatFileImport
 
             var p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
-            var data = p.GetParsedData();
+            var parent = p.GetParsedData(null);
+            var data = p.GetParsedLine(parent);
 
             Assert.AreEqual(12, data.Fields.Count);
             Assert.AreEqual("D1000", data.Fields[0].Value);
@@ -205,7 +209,8 @@ namespace TestFlatFileImport
             rawData = "00000|07491222000101||3105|S|20050712||0|0||A|1|6389,32";
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
-            data = p.GetParsedData();
+            parent = p.GetParsedData(null);
+            data = p.GetParsedLine(parent);
 
             Assert.AreEqual(13, data.Fields.Count);
             Assert.AreEqual("00000", data.Fields[0].Value);
@@ -226,7 +231,8 @@ namespace TestFlatFileImport
             rawData = "D7000|||3105|4|2442,52|8,000|||200,00|0||20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter(bLine, rawData);
             Assert.IsTrue(p.IsValid);
-            data = p.GetParsedData();
+            parent = p.GetParsedData(null);
+            data = p.GetParsedLine(parent);
 
             Assert.AreEqual(20, data.Fields.Count);
             Assert.AreEqual("D7000", data.Fields[0].Value);

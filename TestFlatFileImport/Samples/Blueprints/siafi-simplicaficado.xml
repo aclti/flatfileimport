@@ -22,7 +22,7 @@
 	</Regex>
 
 	<!-- LineType: Header, Footer, Details (default) -->
-	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Gap[MIN-MAX] -->
+	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Range[MIN-MAX] -->
 	<Line name="Header" regex="^1.*$" occurrence="One" type="Header" parent="">
 		<Fields>
 			<Field position="1"			type="string"	size="1"	persist="false"									name="CodRegistro" />

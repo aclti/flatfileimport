@@ -5,7 +5,7 @@ namespace FlatFileImport.Core
 {
     public class Occurrence : IOccurrence
     {
-        private static Regex _regex = new Regex(@"^(Gap\[)(?<min>[0-9]+)-(?<max>[0-9]+)(\])$");
+        private static Regex _regex = new Regex(@"^(Range\[)(?<min>[0-9]+)-(?<max>[0-9]+)(\])$");
 
         public Occurrence(IBlueprintLine blueprintLine, EnumOccurrence occurrence)
         {
@@ -19,9 +19,9 @@ namespace FlatFileImport.Core
             Type = occurrence;
         }
 
-        public Occurrence(IBlueprintLine blueprintLine, EnumOccurrence occurrence, string gapDefinition) :this(blueprintLine, occurrence)
+        public Occurrence(IBlueprintLine blueprintLine, EnumOccurrence occurrence, string RangeDefinition) :this(blueprintLine, occurrence)
         {
-            SetMimMax(gapDefinition);
+            SetMimMax(RangeDefinition);
         }
 
         #region IOccurrence Members
@@ -35,7 +35,7 @@ namespace FlatFileImport.Core
 
         private void SetMimMax(string values)
         {
-            if (Type != EnumOccurrence.Gap)
+            if (Type != EnumOccurrence.Range)
                 throw new System.Exception("O tipo de ocorrencia definido não possui Min e Max");
 
             var match = _regex.Match(values);

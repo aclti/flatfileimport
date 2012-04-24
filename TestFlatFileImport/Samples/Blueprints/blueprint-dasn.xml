@@ -18,7 +18,7 @@
 	</Regex>
 
 	<!-- LineType: Header, Footer, Details (default) -->
-	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Gap[MIN-MAX] -->
+	<!-- Occurrence NoOrMany, One, NoOrOne, AtLeastOne, Range[MIN-MAX] -->
 	<Line name="AAAAA" regex="^AAAAA" occurrence="One" type="Header" parent="">
 		<Fields>
 			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
@@ -96,7 +96,7 @@
 		</Fields>
 	</Line>
 
-	<Line name="D4000" regex="^D4000" occurrence="Gap[1-12]" type="Header" parent="D1000">
+	<Line name="D4000" regex="^D4000" occurrence="Range[1-12]" type="Header" parent="D1000">
 		<Fields>
 			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
 			<Field position="1"		type="string"	size="17"					persist="true"							name="NUM_SEQ" />

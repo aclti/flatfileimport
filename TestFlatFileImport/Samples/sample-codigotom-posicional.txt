@@ -463,7 +463,7 @@
 04642CAPIM                                             0430100PB                     0430100PB
 04650IGARAPE-MIRI                                      0210102PA                     0217600PA
 04669CARAUBAS                                          0430200PB                     0430100PB
-04677INHANGAPI                                         0210107PA                     0217600PA
+04677INHANRangeI                                         0210107PA                     0217600PA
 04685CASSERENGUE                                       0430102PB                     0430100PB
 04693IRITUIA                                           0210110PA                     0217600PA
 04707CATURITE                                          0430200PB                     0430100PB
@@ -2371,7 +2371,7 @@
 35637IBITITA                                           0510205BA                     0510200BA
 35653IBOTIRAMA                                         0510204BA                     0510200BA
 35670ICHU                                              0510213BA                     0510200BA
-35696IGAPORA                                           0510302BA                     0510300BA
+35696IRangeORA                                           0510302BA                     0510300BA
 35718IGUAI                                             0510300BA                     0510300BA
 35734ILHEUS                                            0510552BA                     0510552BA
 35750INHAMBUPE                                         0510401BA                     0510400BA

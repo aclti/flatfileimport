@@ -1,6 +1,4 @@
-﻿using FlatFileImport.Process;
-
-namespace FlatFileImport.Core
+﻿namespace FlatFileImport.Core
 {
     public interface IBlueprintSetter
     {

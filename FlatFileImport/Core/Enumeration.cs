@@ -35,7 +35,7 @@ namespace FlatFileImport.Core
         NoOrOne,
         AtLeastOne,
         NoOrMany,
-        Gap
+        Range
     }
 
     public enum EnumFieldSeparationType

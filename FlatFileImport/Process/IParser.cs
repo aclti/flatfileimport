@@ -5,7 +5,8 @@ namespace FlatFileImport.Process
 {
     public interface IParser
     {
-        ParsedLine GetParsedData();
+        IParsedObjetct GetParsedLine(IParsedData parent);
+        IParsedData GetParsedData(IParsedData parent);
         ValidResult Result();
         bool IsValid { get; }
     }

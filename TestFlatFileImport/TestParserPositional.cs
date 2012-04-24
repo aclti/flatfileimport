@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using FlatFileImport.Core;
+using FlatFileImport.Data;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -32,7 +33,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataSintaxLineAndAtributtes()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -51,7 +52,7 @@ namespace TestFlatFileImport
             Assert.IsFalse(p.IsValid);
 
             // tamanho menor
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -68,7 +69,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestParseRawDataValid()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
@@ -76,7 +77,8 @@ namespace TestFlatFileImport
 
             var p = new ParserPositional(bLine, rawData);
             Assert.IsTrue(p.IsValid);
-            var data = p.GetParsedData();
+            var parent = p.GetParsedData(null);
+            var data = p.GetParsedLine(parent);
 
             Assert.IsNotNull(bLine);
             Assert.AreEqual(bLine.BlueprintFields.Count, data.Fields.Count);
@@ -113,7 +115,7 @@ namespace TestFlatFileImport
         [Test]
         public void TestConverterParsedDatas()
         {
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
             
             var rawData = "20000000920111116201112052011DR8002522003588888888888888888888888888888888888888888888888888888888888888888888888888888888888888888800000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
@@ -122,7 +124,7 @@ namespace TestFlatFileImport
             var p = new ParserPositional(bLine, rawData);
             Assert.IsFalse(p.IsValid);
 
-            _blueprintSetter = new BlueprintXmlSetter(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
             _blueprint = _blueprintSetter.GetBlueprint();
 
             rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
@@ -130,7 +132,8 @@ namespace TestFlatFileImport
 
             p = new ParserPositional(bLine, rawData);
             Assert.IsTrue(p.IsValid);
-            var data = p.GetParsedData();
+            var parent = p.GetParsedData(null);
+            var data = p.GetParsedLine(parent);
 
             Assert.AreEqual(28, data.Fields.Count);
             Assert.AreEqual("2", data.Fields[0].Value);

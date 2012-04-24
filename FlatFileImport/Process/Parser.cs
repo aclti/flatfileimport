@@ -14,19 +14,19 @@ namespace FlatFileImport.Process
         //NOVOS
         //public IParsedRegister ParsedRegister { get; private set; }
         //private IParserRawDataLine _parserRawData;
-        private List<ParsedLine> _parsedDatas;
+        private List<IParsedObjetct> _parsedDatas;
         public IValidate Validate;
         private FileInfo _fileInfo;
 
         // TODO: Mandar sinal que o processamento do arquivo acabou
         private IBlueprint _blueprint;
         private IBlueprintLine _currentBlueprintLine;
-        private IBlueprintRegister _register;
+        //private IBlueprintRegister _register;
 
         public List<IBlueprintLine> BlueprintLines { get { return null; } }
-        public List<IBlueprintRegister> Registers { get { return null; } }
-        public IBlueprintLine Footer { get { return _blueprint.Footer; } }
-        public IBlueprintLine Header { get { return _blueprint.Header; } }
+        //public List<IBlueprintRegister> Registers { get { return null; } }
+        public IBlueprintLine Footer { get { return null; } }
+        public IBlueprintLine Header { get { return null; } }
 
         private string _rawLineData;
 
@@ -35,7 +35,7 @@ namespace FlatFileImport.Process
             //RegisterObserver(observer);
             _fileInfo = file;
             _blueprint = blueprint;
-            _register = _blueprint.BlueprintRegistires[0];
+            //_register = _blueprint.BlueprintRegistires[0];
             //_parserRawData = GetParserRawDataLine();
         }
 
@@ -94,7 +94,7 @@ namespace FlatFileImport.Process
         public void ProcessHeader()
         {
             _rawLineData = _fileInfo.Header;
-            _currentBlueprintLine = _blueprint.Header;
+            //_currentBlueprintLine = _blueprint.Header;
 
             //_parserRawData.ParseRawLineData(_rawLineData);
 
@@ -128,10 +128,10 @@ namespace FlatFileImport.Process
                 _rawLineData = _fileInfo.Line;
                 _currentBlueprintLine = GetBlueprintLine();
 
-                if (_blueprint.UseRegistries)
-                    ProcessRegister();
-                else
-                    ProcessLine();
+                //if (_blueprint.UseRegistries)
+                //    ProcessRegister();
+                //else
+                //    ProcessLine();
             }
         }
 
@@ -141,11 +141,11 @@ namespace FlatFileImport.Process
             if (_currentBlueprintLine == null)
                 return;
 
-            if (_register.Begin.Match(_rawLineData).Success)
-            {
-                _register.IsComplet = false;
-                _parsedDatas = new List<ParsedLine>();
-            }
+            //if (_register.Begin.Match(_rawLineData).Success)
+            //{
+            //    _register.IsComplet = false;
+            //    _parsedDatas = new List<ParsedLine>();
+            //}
 
             //_parserRawData.ParseRawLineData(_rawLineData);
 
@@ -157,14 +157,14 @@ namespace FlatFileImport.Process
                 //_parsedDatas.AddRange(_parserRawData.ParsedDatas);    
             }
             
-            if (_register.End.Match(_rawLineData).Success)
-                _register.IsComplet = true;
+            //if (_register.End.Match(_rawLineData).Success)
+            //    _register.IsComplet = true;
 
-            if (_register.IsComplet)
-            {
-                //NotifyObservers();
-                _parsedDatas = null;
-            }
+            //if (_register.IsComplet)
+            //{
+            //    //NotifyObservers();
+            //    _parsedDatas = null;
+            //}
         }
 
         private void ProcessLine()
@@ -174,7 +174,7 @@ namespace FlatFileImport.Process
                 return;
 
             //_parserRawData.ParseRawLineData(_rawLineData);
-            _parsedDatas = new List<ParsedLine>();
+            _parsedDatas = new List<IParsedObjetct>();
 
             ValidLine();
 

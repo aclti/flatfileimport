@@ -22,7 +22,7 @@ namespace TestFlatFileImport
             _path = AppDomain.CurrentDomain.BaseDirectory;
             _blueprintPath = Path.Combine(_path, @"Samples\Blueprints\blueprint-dasn.xml"); ;
 
-            _blueprintSetter = new BlueprintXmlSetter(_blueprintPath);
+            _blueprintSetter = new BlueprintSetterXml(_blueprintPath);
             _blueprint = _blueprintSetter.GetBlueprint();
         }
 

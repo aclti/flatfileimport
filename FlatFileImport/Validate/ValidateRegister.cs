@@ -6,9 +6,9 @@ namespace FlatFileImport.Validate
 {
     public class ValidateRegister : IValidate
     {
-        private List<ParsedLine> _parsedDatas;
+        private List<IParsedObjetct> _parsedDatas;
 
-        public ValidateRegister(List<ParsedLine> parsedDatas, List<IBlueprintField> blueprintFields)
+        public ValidateRegister(List<IParsedObjetct> parsedDatas, List<IBlueprintField> blueprintFields)
         {
             // TODO: Complete member initialization
             _parsedDatas = parsedDatas;
