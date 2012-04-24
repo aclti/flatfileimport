@@ -99,6 +99,7 @@
     <Compile Include="Process\ParserSeparatedCharacter.cs" />
     <Compile Include="Core\RegexRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Totalizer\ITotal.cs" />
     <Compile Include="Validate\IValidate.cs" />
     <Compile Include="Validate\ValidateField.cs" />
     <Compile Include="Validate\ValidateLine.cs" />
