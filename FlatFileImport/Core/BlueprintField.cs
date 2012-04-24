@@ -1,8 +1,9 @@
 ﻿using System;
+using FlatFileImport.Aggregate;
 
 namespace FlatFileImport.Core
 {
-    public class BlueprintField : IBlueprintField
+    public class BlueprintField : IBlueprintField, IAggregateSubject
     {
         public IBlueprintLine Parent { private set; get; }
         public string Name { set; get; }

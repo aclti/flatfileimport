@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregate\Average.cs" />
+    <Compile Include="Aggregate\Count.cs" />
+    <Compile Include="Aggregate\IAggregateSubject.cs" />
+    <Compile Include="Aggregate\Sum.cs" />
     <Compile Include="Core\BlueprintJson.cs" />
     <Compile Include="Core\BlueprintSetterJson.cs" />
     <Compile Include="Core\BlueprintXml.cs" />
@@ -99,7 +103,7 @@
     <Compile Include="Process\ParserSeparatedCharacter.cs" />
     <Compile Include="Core\RegexRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Totalizer\ITotal.cs" />
+    <Compile Include="Aggregate\ITotal.cs" />
     <Compile Include="Validate\IValidate.cs" />
     <Compile Include="Validate\ValidateField.cs" />
     <Compile Include="Validate\ValidateLine.cs" />

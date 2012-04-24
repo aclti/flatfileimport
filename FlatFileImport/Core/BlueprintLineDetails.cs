@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using FlatFileImport.Aggregate;
 
 namespace FlatFileImport.Core
 {
-    public class BlueprintLineDetails: IBlueprintLine
+    public class BlueprintLineDetails : IBlueprintLine, IAggregateSubject
     {
         public BlueprintLineDetails(IBlueprint blueprint, IBlueprintLine parent)
         {

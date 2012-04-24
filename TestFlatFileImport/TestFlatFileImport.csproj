@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintFactory.cs" />
+    <Compile Include="TestAggregate.cs" />
     <Compile Include="TestParsedDatas.cs" />
     <Compile Include="TestBlueprintSetter.cs" />
     <Compile Include="TestOccurrence.cs" />
@@ -117,6 +118,7 @@
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090601-01.zip" />
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090602-01.zip" />
     <None Include="Samples\Files\Das\Single\02-3105-DAS-20090722-01.zip" />
+    <None Include="Samples\Files\sample-siafi-posicional.ret" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

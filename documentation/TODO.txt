@@ -39,7 +39,13 @@ PASSO:
 	- Armazenar
 	- Passar para a proxima linha
 	- Disparar um erro
-	
+-------------------------------------------------------------------------------
+
+-- PATTERN PARA A FUNCIONALIDADE AGGREGATE ------------------------------------
+Pesquisar os seguinte patterns para melhorar essa funcionalidade:
+	- Command Pattern
+	- Decorator Pattern
+	- Interator Pattern
 -------------------------------------------------------------------------------
 
 -- FAZER JÀ -------------------------------------------------------------------
