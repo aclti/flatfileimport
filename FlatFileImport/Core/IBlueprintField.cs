@@ -1,4 +1,5 @@
 ﻿using System;
+using FlatFileImport.Aggregate;
 
 namespace FlatFileImport.Core
 {
@@ -12,5 +13,6 @@ namespace FlatFileImport.Core
         RegexRule Regex { set; get; }
         bool Persist { set; get; }
         int Position { get; set; }
+        IAggregate Aggregate { set; get; }
     }
 }

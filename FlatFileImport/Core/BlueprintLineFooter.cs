@@ -7,15 +7,6 @@ namespace FlatFileImport.Core
 {
     public class BlueprintLineFooter : IBlueprintLine, IAggregateSubject
     {
-        public BlueprintLineFooter(IBlueprint blueprint, IBlueprintLine parent)
-        {
-            if (blueprint == null)
-                throw new ArgumentNullException("blueprint");
-
-            Blueprint = blueprint;
-            Parent = parent;
-        }
-
         #region IBlueprintLine Members
 
         public IBlueprint Blueprint { get; private set; }
@@ -24,7 +15,17 @@ namespace FlatFileImport.Core
         public Regex Regex { get; set; }
         public List<IBlueprintField> BlueprintFields { get; set; }
         public IOccurrence Occurrence { get; set; }
+        public IAggregate Aggregate { set; get; }
 
         #endregion
+
+        public BlueprintLineFooter(IBlueprint blueprint, IBlueprintLine parent)
+        {
+            if (blueprint == null)
+                throw new ArgumentNullException("blueprint");
+
+            Blueprint = blueprint;
+            Parent = parent;
+        }   
     }
 }

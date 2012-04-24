@@ -7,6 +7,18 @@ namespace FlatFileImport.Core
 {
     public class BlueprintLineDetails : IBlueprintLine, IAggregateSubject
     {
+        #region IBlueprintLine Members
+
+        public IBlueprint Blueprint { get; private set; }
+        public IBlueprintLine Parent { get; private set; }
+        public string Name { get; set; }
+        public Regex Regex { get; set; }
+        public List<IBlueprintField> BlueprintFields { get; set; }
+        public IOccurrence Occurrence { get; set; }
+        public IAggregate Aggregate { set; get; }
+
+        #endregion
+
         public BlueprintLineDetails(IBlueprint blueprint, IBlueprintLine parent)
         {
             if (blueprint == null)
@@ -18,16 +30,5 @@ namespace FlatFileImport.Core
             Blueprint = blueprint;
             Parent = parent;
         }
-
-        #region IBlueprintLine Members
-
-        public IBlueprint Blueprint { get; private set; }
-        public IBlueprintLine Parent { get; private set; }
-        public string Name { get; set; }
-        public Regex Regex{get;set;}
-        public List<IBlueprintField> BlueprintFields{get; set; }
-        public IOccurrence Occurrence{get;set;}
-
-        #endregion
     }
 }

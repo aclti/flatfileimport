@@ -7,6 +7,7 @@ namespace FlatFileImport.Core
         Occurrence,
         Type,
         Parent,
+        Aggregate
     }
 
     public enum EnumFieldAttributes
@@ -17,7 +18,8 @@ namespace FlatFileImport.Core
         Size,
         Persist,
         Regex,
-        Precision
+        Precision,
+        Aggregate
     }
 
     public enum EnumLineType
@@ -51,5 +53,13 @@ namespace FlatFileImport.Core
         FieldSeparationType,
         Splitter,
         UseResgister
+    }
+
+    public enum EnumAggregate
+    {
+        None = 0,
+        Sum,
+        Count,
+        Average
     }
 }

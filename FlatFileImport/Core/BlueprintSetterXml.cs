@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using System.Xml;
+using FlatFileImport.Aggregate;
 using FlatFileImport.Exception;
 
 namespace FlatFileImport.Core
@@ -86,7 +87,7 @@ namespace FlatFileImport.Core
         {
             var nodes = _xDoc.SelectNodes("//Root/Line");
 
-            if(nodes == null)
+            if (nodes == null)
                 throw new System.Exception("Nenhuma Line foi definida para esta Blueprint. Consulte a documentação.");
 
             var lines = new List<IBlueprintLine>();
@@ -98,10 +99,12 @@ namespace FlatFileImport.Core
 
                 line.Name = GetAttributeValue(node.Attributes, EnumLineAttributes.Name);
                 line.Occurrence = GetOccurrence(node, line);
+                line.Aggregate = GetAggregate(node, line);
 
                 var regex = GetAttributeValue(node.Attributes, EnumLineAttributes.Regex);
                 line.Regex = !String.IsNullOrEmpty(regex) ? new Regex(regex) : null;
                 line.BlueprintFields = GetListFiels(node, line);
+
                 lines.Add(line);
             }
 
@@ -113,7 +116,7 @@ namespace FlatFileImport.Core
             var attrColl = node.Attributes;
 
             if (!HasAttribute(attrColl, EnumLineAttributes.Occurrence))
-                return new Occurrence(blueprintLine, EnumOccurrence.AtLeastOne);
+                return new Occurrence(blueprintLine, EnumOccurrence.NoOrMany);
 
             var value = GetAttributeValue(attrColl, EnumLineAttributes.Occurrence);
 
@@ -124,6 +127,36 @@ namespace FlatFileImport.Core
                 type = (EnumOccurrence)Enum.Parse(typeof(EnumOccurrence), value);
 
             return type == EnumOccurrence.Range ? new Occurrence(blueprintLine, type, value) : new Occurrence(blueprintLine, type);
+        }
+
+        private IAggregateSubject GetSubject(IBlueprintLine blueprintLine)
+        {
+            if (blueprintLine is BlueprintLineDetails)
+                return (BlueprintLineDetails)blueprintLine;
+
+            if (blueprintLine is BlueprintLineFooter)
+                return (BlueprintLineFooter)blueprintLine;
+
+            return (BlueprintLineHeader)blueprintLine;
+        }
+
+        private IAggregate GetAggregate(XmlNode node, IBlueprintLine blueprintLine)
+        {
+            var attrColl = node.Attributes;
+
+            if (!HasAttribute(attrColl, EnumLineAttributes.Aggregate))
+                return new NonAggregate(GetSubject(blueprintLine));
+
+            var value = GetAttributeValue(attrColl, EnumLineAttributes.Aggregate);
+            var type = (EnumAggregate)Enum.Parse(typeof(EnumAggregate), value);
+
+            if(type == EnumAggregate.Sum)
+                return new Sum(GetSubject(blueprintLine));
+
+            if(type ==  EnumAggregate.Average)
+                return new Average(GetSubject(blueprintLine));
+
+            return new Count(GetSubject(blueprintLine));
         }
 
         private bool HasParent(XmlNode node)
@@ -200,16 +233,16 @@ namespace FlatFileImport.Core
                     field.Regex = GetRegex(GetAttributeValue(attr, EnumFieldAttributes.Regex));
                 else
                 {
-                    if(field.Type == typeof(int))
+                    if (field.Type == typeof(int))
                         field.Regex = new RegexRule("int", RgxInt);
-                    else if(field.Type == typeof(decimal))
+                    else if (field.Type == typeof(decimal))
                         field.Regex = new RegexRule("decimal", RgxDecimal);
                     else if (field.Type == typeof(DateTime))
                         field.Regex = new RegexRule("datetime", RgxDate);
                 }
 
                 field.Size = GetNullableInt(GetAttributeValue(attr, EnumFieldAttributes.Size)) ?? -1;
-                
+
 
                 fields.Add(field);
             }

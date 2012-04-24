@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using FlatFileImport.Aggregate;
 
 namespace FlatFileImport.Core
 {
@@ -11,5 +12,6 @@ namespace FlatFileImport.Core
         Regex Regex { set; get; }
         List<IBlueprintField> BlueprintFields { set; get; }
         IOccurrence Occurrence { set; get; }
+        IAggregate Aggregate { set; get; }
     }
 }
