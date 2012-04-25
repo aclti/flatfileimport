@@ -1,0 +1,8 @@
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\bin\Debug\TesteImportDasn.exe
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\bin\Debug\TesteImportDasn.pdb
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\bin\Debug\FlatFileImport.dll
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\bin\Debug\Ionic.Zip.dll
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\bin\Debug\FlatFileImport.pdb
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\obj\x86\Debug\TesteImportDasn.exe
+C:\Temp\_WEBISS\_PROJETOS\flat-file-import\TesteImportDasn\obj\x86\Debug\TesteImportDasn.pdb

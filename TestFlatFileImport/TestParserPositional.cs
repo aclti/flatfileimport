@@ -39,16 +39,22 @@ namespace TestFlatFileImport
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
             var rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            var p = new ParserPositional(bLine, rawData);
+            var p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsTrue(p.IsValid);
 
             // conteudo diferente do definido na regex de validação
             rawData = "20000000920111116201155555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            p = new ParserPositional(bLine, rawData);
+            p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsFalse(p.IsValid);
 
             rawData = "D1000|010428182009003|w|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
-            p = new ParserPositional(bLine, rawData);
+            p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsFalse(p.IsValid);
 
             // tamanho menor
@@ -57,12 +63,16 @@ namespace TestFlatFileImport
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
             rawData = "20000000920111116201112052011DR800252200350000012003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            p = new ParserPositional(bLine, rawData);
+            p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsFalse(p.IsValid);
 
             // conteudo diferente do definido na regex de validação
             rawData = "20000000920111116201155555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
-            p = new ParserPositional(bLine, rawData);
+            p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsFalse(p.IsValid);
         }
 
@@ -75,9 +85,11 @@ namespace TestFlatFileImport
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
             const string rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
 
-            var p = new ParserPositional(bLine, rawData);
+            var p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsTrue(p.IsValid);
-            var parent = p.GetParsedData(null);
+            var parent = (IParsedData)p.GetParsedData(null);
             var data = p.GetParsedLine(parent);
 
             Assert.IsNotNull(bLine);
@@ -121,7 +133,9 @@ namespace TestFlatFileImport
             var rawData = "20000000920111116201112052011DR8002522003588888888888888888888888888888888888888888888888888888888888888888888888888888888888888888800000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
-            var p = new ParserPositional(bLine, rawData);
+            var p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsFalse(p.IsValid);
 
             _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "siafi-simplicaficado.xml"));
@@ -130,9 +144,11 @@ namespace TestFlatFileImport
             rawData = "20000000920111116201112052011DR80025220035000001200350003944940029379841239748122000011698437109999M2011110000000000002901500000000000000000000000000000000000000000967     0020111103000000000009671700300000000000000967166RETENÇÃO DE TRIBUTOS FEDERAIS SOBRE NF 967 EMITIDA PELA SETSYS                SERVIÇOS GERAIS LTDA - CRONOGRAMA 008/2010.                                                                                                                 985401                                       ";
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Details");
 
-            p = new ParserPositional(bLine, rawData);
+            p = new ParserPositional();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
             Assert.IsTrue(p.IsValid);
-            var parent = p.GetParsedData(null);
+            var parent = (IParsedData)p.GetParsedData(null);
             var data = p.GetParsedLine(parent);
 
             Assert.AreEqual(28, data.Fields.Count);

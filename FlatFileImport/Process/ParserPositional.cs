@@ -13,29 +13,52 @@ namespace FlatFileImport.Process
         private IParsedObjetct _data;
         private Converter _converter;
 
-        public ParserPositional(IBlueprintLine blueprintLine, string rawDataLine)
+        #region IParser Members
+
+        public void SetDataToParse(string rawLine)
+        {
+            if (String.IsNullOrEmpty(rawLine))
+                throw new ArgumentNullException("rawLine");
+
+            _rawDataLine = rawLine;
+        }
+
+        public void SetBlueprintLine(IBlueprintLine blueprintLine)
         {
             if (blueprintLine == null)
                 throw new ArgumentNullException("blueprintLine");
 
-            if (String.IsNullOrEmpty(rawDataLine))
-                throw new ArgumentNullException("rawDataLine");
-
-            _rawDataLine = rawDataLine;
             _blueprintLine = blueprintLine;
         }
 
-        #region IParser Members
 
         // TODO: Migrar para um super classe ou para um command pattern
-        public IParsedData GetParsedData(IParsedData parent)
+        public IParsedObjetct GetParsedData(IParsedData parent)
         {
-            return new ParsedData("dummy", parent);
+            HasBluprint();
+            HasDataToParse();
+
+            _data = new ParsedData(_blueprintLine.Name, parent);
+
+            foreach (var field in _blueprintLine.BlueprintFields)
+            {
+                var data = _rawDataLine.Substring(field.Position - 1, field.Size);
+
+                _converter = Converter.GetConvert(field.Type);
+                _converter.Init(field, data);
+
+                _data.AddField(field.Name, _converter.Data, field.Type);
+            }
+
+            return _data;
         }
 
         // TODO: Migrar para um super classe ou para um command pattern
         public IParsedObjetct GetParsedLine(IParsedData parent)
         {
+            HasBluprint();
+            HasDataToParse();
+
             _data = new ParsedLine(_blueprintLine.Name, parent);
 
             foreach (var field in _blueprintLine.BlueprintFields)
@@ -54,16 +77,36 @@ namespace FlatFileImport.Process
         // TODO: Migrar para um super classe ou para um command pattern
         public ValidResult Result()
         {
+            HasBluprint();
+            HasDataToParse();
             throw new NotImplementedException();
         }
 
         // TODO: Migrar para um super classe ou para um command pattern
         public bool IsValid
         {
-            get { return IsValidSintaxLine() && IsValidSintaxAttribute(); }
+            get
+            {
+                HasBluprint();
+                HasDataToParse();
+
+                return IsValidSintaxLine() && IsValidSintaxAttribute();
+            }
         }
 
         #endregion
+
+        private void HasBluprint()
+        {
+            if (_blueprintLine == null)
+                throw new System.Exception("Nenhum BluprintLine configurada para o parser.");
+        }
+
+        private void HasDataToParse()
+        {
+            if (String.IsNullOrEmpty(_rawDataLine))
+                throw new System.Exception("Nenhum Dado para ser analisado e importado.");
+        }
 
         //TODO: Ser migrar para uma super classe deve ser um método abstrato
         private bool IsValidSintaxLine()

@@ -98,6 +98,7 @@
     <Content Include="Samples\config-extension-missconfig-attributecase.xml" />
     <Content Include="Samples\config-extension-missconfig-tagcase.xml" />
     <Content Include="Samples\config-extension.xml" />
+    <Content Include="Samples\DataBase\siafi.sql" />
     <Content Include="Samples\def-samples-movies.txt" />
     <Content Include="Samples\def-samplesfiles.txt" />
     <Content Include="Samples\defincao-siafi.txt" />

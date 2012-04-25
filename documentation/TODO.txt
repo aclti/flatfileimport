@@ -48,11 +48,9 @@ Pesquisar os seguinte patterns para melhorar essa funcionalidade:
 	- Interator Pattern
 -------------------------------------------------------------------------------
 
--- FAZER JÀ -------------------------------------------------------------------
-- Criar a classe para o parse de ParsedData, atualente temos apenas ParseLine
-como retorno.
--------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------
+DONE
 -- ATRIBUTOS DEFAULTS ---------------------------------------------------------
 Regex para:
 	- Decimal
@@ -60,7 +58,6 @@ Regex para:
 	- DateTime (yyyymmddhhssmm)
 Deve ser definidar com uma valor default se não for informada na blueprint, 
 porém se algum valor for informado o default será sobrescrito.
-
 -------------------------------------------------------------------------------
 
 -- PESQUISA NA BLUEPRINT ------------------------------------------------------

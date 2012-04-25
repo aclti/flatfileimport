@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6C2888C1-2AA9-4A4F-A968-73649A344173}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TesteImportDasn</RootNamespace>
+    <AssemblyName>TesteImportDasn</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlueprintFactory.cs" />
+    <Compile Include="Dasn.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewMain.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlatFileImport\FlatFileImport.csproj">
+      <Project>{BBEBA345-0679-4D30-A797-0889E37AAB90}</Project>
+      <Name>FlatFileImport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Samples\Blueprints\blueprint-dasn-resumida.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Samples\Blueprints\blueprint-dasn.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Samples\Files\02-3105-DASN10-20100515-01.txt" />
+    <Content Include="Samples\Files\02-3105-DASN10-20100615-01.txt" />
+    <Content Include="Samples\Files\02-3105-DASN10-20100731-01.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Samples\Files\02-3105-DASN10-20100531-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20100630-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20100715-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20100815-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20100915-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20101001-01.zip" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>xcopy $(ProjectDir)Samples /e /i /y /r $(TargetDir)Samples</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

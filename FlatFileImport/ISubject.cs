@@ -6,6 +6,8 @@ namespace FlatFileImport
     {
         void RegisterObserver(IObserver observer);
         void UnRegisterObserver(IObserver observer);
-        void NotifyObservers(ParsedData parsedData);
+        void NotifyObservers(IParsedData data);
+        void NotifyObservers(IParsedObjetct data);
+        void NotifyObservers(string[] data);
     }
 }

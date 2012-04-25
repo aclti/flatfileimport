@@ -1,7 +1,11 @@
-﻿namespace FlatFileImport
+﻿using FlatFileImport.Data;
+
+namespace FlatFileImport
 {
     public interface IObserver
     {
-        void Notify(object args);
+        void Notify(IParsedData data);
+        void Notify(IParsedObjetct data);
+        void Notify(string[] data);
     }
 }

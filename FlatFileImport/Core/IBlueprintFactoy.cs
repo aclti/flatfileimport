@@ -1,11 +1,10 @@
-﻿using FileInfo = FlatFileImport.Input.FileInfo;
+﻿using FlatFileImport.Input;
 
 namespace FlatFileImport.Core
 {
     public interface IBlueprintFactoy
     {
-        IBlueprint GetBlueprint(FileInfo toParse);
-        IBlueprint GetBlueprint(object selectParam);
-        IBlueprint GetBlueprint(object selectParam, FileInfo toParse);
+        IBlueprint GetBlueprint(IFileInfo toParse);
+        IBlueprint GetBlueprint(object selectParam, IFileInfo toParse);
     }
 }

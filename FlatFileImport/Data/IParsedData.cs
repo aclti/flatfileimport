@@ -7,11 +7,14 @@ namespace FlatFileImport.Data
     {
         IParsedData Parent { get; }
         string Name { get; }
-        ReadOnlyCollection<IParsedData> Datas { get; }
-        ReadOnlyCollection<IParsedObjetct> Lines { get; }
+        ReadOnlyCollection<IParsedData> Headers { get; }
+        ReadOnlyCollection<IParsedObjetct> Details { get; }
+        ReadOnlyCollection<IParsedField> Fields { get; }
 
         void AddField(string name, string value, Type type);
         void AddParsedData(string name);
+        void AddParsedData(IParsedData header);
         void AddLine(string name);
+        void AddLine(IParsedObjetct details);
     }
 }

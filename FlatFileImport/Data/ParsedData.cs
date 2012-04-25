@@ -36,8 +36,8 @@ namespace FlatFileImport.Data
 
         #region IParsedData Members
 
-        public ReadOnlyCollection<IParsedData> Datas { get { return _datas.AsReadOnly(); } }
-        public ReadOnlyCollection<IParsedObjetct> Lines { get { return _lines.AsReadOnly(); } }
+        public ReadOnlyCollection<IParsedData> Headers { get { return _datas.AsReadOnly(); } }
+        public ReadOnlyCollection<IParsedObjetct> Details { get { return _lines.AsReadOnly(); } }
 
         public void AddParsedData(string name)
         {
@@ -45,6 +45,34 @@ namespace FlatFileImport.Data
                 _datas = new List<IParsedData>();
 
             _datas.Add(new ParsedData(name, this));
+        }
+
+        public void AddParsedData(IParsedData header)
+        {
+            if(header == null)
+                throw new ArgumentNullException("header");
+
+            if(header.Parent != this)
+                throw new System.Exception("Pai errado.............");
+
+            if (_datas == null)
+                _datas = new List<IParsedData>();
+
+            _datas.Add(header);
+        }
+
+        public void AddLine(IParsedObjetct details)
+        {
+            if (details == null)
+                throw new ArgumentNullException("details");
+
+            if (details.Parent != this)
+                throw new System.Exception("Pai errado.............");
+
+            if (_lines == null)
+                _lines = new List<IParsedObjetct>();
+
+            _lines.Add(details);
         }
 
         public void AddLine(string name)

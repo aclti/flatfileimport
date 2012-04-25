@@ -2,10 +2,8 @@
 using System.IO;
 using FlatFileImport.Core;
 using FlatFileImport.Input;
-using TestFlatFileImport.Dominio;
-using TestFlatFileImport.Dominio.Siafi;
 
-namespace TestFlatFileImport
+namespace TesteImportDasn
 {
     public class BlueprintFactory : IBlueprintFactoy
     {
@@ -28,31 +26,7 @@ namespace TestFlatFileImport
 
             var type = (Type) selectParam;
 
-            if (type == typeof(Movie))
-            {
-                BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blue-print-movie.xml"));
-                return BlueprintSetter.GetBlueprint();
-            }
-
-            if (type == typeof(Music))
-            {
-                BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blue-print-music.xml"));
-                return BlueprintSetter.GetBlueprint();
-            }
-
-            if (type == typeof(Das))
-                return GetBlueprintDas(toParse);
-
-            if (type == typeof(Dasn))
-                return GetBlueprintDasn(toParse);
-
-            if (type == typeof(Siafi))
-            {
-                BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blue-print-siaf.xml"));
-                return BlueprintSetter.GetBlueprint();
-            }
-
-            return null;
+            return type == typeof(Dasn) ? GetBlueprintDasn(toParse) : null;
         }
 
         #endregion
@@ -68,10 +42,10 @@ namespace TestFlatFileImport
                     break;
 
                 default:
-                    throw new NotImplementedException(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
+                    throw new Exception(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
             }
 
-            BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn-resumida.xml"));
             return BlueprintSetter.GetBlueprint();
         }
 
