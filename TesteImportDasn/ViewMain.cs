@@ -54,8 +54,19 @@ namespace TesteImportDasn
 
         #region IObserver Members
 
+        public void Notify(IParsedData[] data)
+        {
+            
+        }
+
         public void Notify(IParsedData data)
         {
+            if (data.Name == "AAAAA")
+            {
+                Console.WriteLine("Header Recebido");
+                return;
+            }
+
             var headers = data.Headers.Where(h => h.Name == "D1000");
 
             var sb = new StringBuilder();
@@ -74,7 +85,7 @@ namespace TesteImportDasn
 
             foreach (var h in headers)
             {
-                foreach(var f in h.Fields)
+                foreach (var f in h.Fields)
                 {
                     sb.AppendFormat("{0} : {1}", f.Name, f.Value);
                     sb.AppendLine();
@@ -83,13 +94,12 @@ namespace TesteImportDasn
                 sb.AppendLine("".PadLeft(80, '-'));
             }
 
-            
+
             Console.WriteLine(sb.ToString());
         }
 
         public void Notify(IParsedObjetct data)
         {
-            throw new NotImplementedException();
         }
 
         public void Notify(string[] data)
