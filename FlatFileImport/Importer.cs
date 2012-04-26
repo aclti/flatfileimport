@@ -29,7 +29,7 @@ namespace FlatFileImport
 
         public Importer()
         {
-            _parsedDatas = new ParsedData[2];
+            _parsedDatas = new IParsedData[2];
             _headers = new List<IParsedData>();
             _details = new List<IParsedObjetct>();
         }
@@ -42,12 +42,11 @@ namespace FlatFileImport
             if (_file == null)
                 throw new System.Exception("Não foi definido um arquivo para ser processado.");
 
-            //var result = new[] { _file.LineNumber.ToString(""), _file.Header };
-            //NotifyObservers(result);
-            _parser = SetParser();
-            
-            var bline = GetBlueprintLine(_file.Header);
+            var bline = MatchBlueprintLine(_file.Header);
 
+            SetAggergates();
+
+            _parser = SetParser();
             _parser.SetBlueprintLine(bline);
             _parser.SetDataToParse(_file.Header);
 
@@ -56,50 +55,57 @@ namespace FlatFileImport
 
             _headers.Add((IParsedData)_parser.GetParsedData(null));
 
-            
-
             while (_file.MoveToNext())
             {
-                bline = GetBlueprintLine(_file.Line);
+                bline = MatchBlueprintLine(_file.Line);
 
                 if(bline == null)
                     continue;
 
-                var parent = _headers.FindLast(p => bline.Parent != null && p.Name == bline.Parent.Name);
-
                 _parser.SetBlueprintLine(bline);
                 _parser.SetDataToParse(_file.Line);
+
+                IParsedData parent = null;
+                if(bline.Parent != null)
+                    parent = _headers.FindLast(p => p.Name == bline.Parent.Name);
 
                 if(!_parser.IsValid)
                     throw new System.Exception("Dados corrompidos............");
 
-                if (bline is BlueprintLineHeader)
+                if (bline is BlueprintLineHeader && parent != null)
                 {
                     var pdata = (IParsedData) _parser.GetParsedData(parent);
                     parent.AddParsedData(pdata);
+                    _headers.Add(pdata);
+                }
+
+                if(bline is BlueprintLineFooter)
+                {
+                    var pdata = (IParsedData)_parser.GetParsedData(parent);
+
+                    if(parent != null)
+                        parent.AddParsedData(pdata);
 
                     _headers.Add(pdata);
                 }
-                    
 
-                //if (bline is BlueprintLineFooter)
-                //{
-                //    if (bline.Parent == null)
-                //        _parsedDatas[0] = new ParsedData(bline.Name, null);
-                //}
-
-                if (bline is BlueprintLineDetails)
+                if (bline is BlueprintLineDetails && parent != null)
                 {
                     var pdata = _parser.GetParsedLine(parent);
                     parent.AddLine(pdata);
                     _details.Add(pdata);
                 }
-                    
 
-                //result = new[] {_file.LineNumber.ToString(""), _file.Line};
-                //NotifyObservers(result);
+                var aggregate = GetAggregate(bline);
+                if (aggregate != null)
+                    aggregate.AddOperand(1);
+
             }
 
+            _parsedDatas[0] = _headers.Find(h => h.Parent == null && h.Name == GetRootHeader().Name);
+            _parsedDatas[1] = _headers.Find(h => h.Parent == null && h.Name == GetRootFooter().Name);
+            var px = _headers.Count(h => h.Name == "D1000");
+            NotifyObservers(_parsedDatas);
             NotifyObservers(_headers.First());
 
             //Parser = new Parser(BlueprintFactoy.GetBlueprint(Type, fileInfo), fileInfo, observer);
@@ -116,6 +122,31 @@ namespace FlatFileImport
             //Console.WriteLine("".PadLeft(80, '*'));
             //Console.WriteLine(String.Format("FINAL DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Path));
             //Console.WriteLine("".PadLeft(80, '*'));
+        }
+
+        private void SetAggergates()
+        {
+            _aggregates = new List<IAggregate>();
+
+            foreach (var bline in _blueprint.BlueprintLines)
+                if(!(bline.Aggregate is NonAggregate))
+                    _aggregates.Add(bline.Aggregate);
+
+        }
+
+        private IAggregate GetAggregate(IBlueprintLine bline)
+        {
+            return _aggregates.FirstOrDefault(ag => ag.Subject.Name == bline.Name);
+        }
+
+        private IBlueprintLine GetRootHeader()
+        {
+            return _blueprint.BlueprintLines.FirstOrDefault(h => h.Parent == null && h is BlueprintLineHeader);
+        }
+
+        private IBlueprintLine GetRootFooter()
+        {
+            return _blueprint.BlueprintLines.FirstOrDefault(h => h.Parent == null && h is BlueprintLineFooter);
         }
 
         public void SetBlueprint(IBlueprint blueprint)
@@ -150,7 +181,7 @@ namespace FlatFileImport
             throw new System.Exception("Parser não encontrado...........");
         }
 
-        private IBlueprintLine GetBlueprintLine(string rawLine)
+        private IBlueprintLine MatchBlueprintLine(string rawLine)
         {
             return _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Regex.IsMatch(rawLine));
         }
@@ -189,6 +220,12 @@ namespace FlatFileImport
         }
 
         public void NotifyObservers(IParsedObjetct data)
+        {
+            if (_observers != null && _observers.Count > 0)
+                _observers.ForEach(o => o.Notify(data));
+        }
+
+        public void NotifyObservers(IParsedData[] data)
         {
             if (_observers != null && _observers.Count > 0)
                 _observers.ForEach(o => o.Notify(data));

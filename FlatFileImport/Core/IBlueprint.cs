@@ -9,6 +9,9 @@ namespace FlatFileImport.Core
         EnumFieldSeparationType FieldSeparationType { get; }
         char BluePrintCharSepartor { get; }
 
+        //IBlueprintLine GetHeader(IBlueprintLine parent);
+        //IBlueprintLine GetFooter(IBlueprintLine parent);
+        //IBlueprintLine GetRootHeader();
         void AddBlueprintLines(IBlueprintLine blueprintLine);
         void AddBlueprintLines(List<IBlueprintLine> blueprintLines);
     }
