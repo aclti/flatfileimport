@@ -67,7 +67,13 @@ namespace TestFlatFileImport
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
+
+            rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|";
+            p = new ParserSeparatedCharacter();
+            p.SetBlueprintLine(bLine);
+            p.SetDataToParse(rawData);
+            Assert.IsTrue(p.IsValid);
 
             rawData = "D1000|||||||||||";
             p = new ParserSeparatedCharacter();
@@ -79,19 +85,19 @@ namespace TestFlatFileImport
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
 
             rawData = "D1000|||";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
             
             rawData = "D1000";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsFalse(p.IsValid);
+            Assert.IsTrue(p.IsValid);
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D3001"));
             rawData = "D3001|200810|88168,20";

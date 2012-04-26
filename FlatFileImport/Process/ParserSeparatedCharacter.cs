@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Validate;
@@ -21,7 +22,7 @@ namespace FlatFileImport.Process
                 throw new ArgumentNullException("rawLine");
 
             _rawDataLine = rawLine;
-
+            _rawDataLine = NormalizeRawData();
             _rawDataColl = _rawDataLine.Split(_blueprintLine.Blueprint.BluePrintCharSepartor);
         }
 
@@ -96,6 +97,24 @@ namespace FlatFileImport.Process
         }
 
         #endregion
+
+        private int AmountSplitInRawDataCharacter()
+        {
+            return _rawDataLine.Count(c => c == _blueprintLine.Blueprint.BluePrintCharSepartor);
+        }
+
+        private string NormalizeRawData()
+        {
+            var amoutFields = _blueprintLine.BlueprintFields.Count - 1;
+
+            if (AmountSplitInRawDataCharacter() >= amoutFields)
+                return _rawDataLine;
+
+            var splitChar = _blueprintLine.Blueprint.BluePrintCharSepartor;
+            var amoutToInsert = amoutFields - AmountSplitInRawDataCharacter();
+            
+            return String.Concat(_rawDataLine, "".PadRight(amoutToInsert, splitChar));
+        }
 
         private void HasBluprint()
         {
