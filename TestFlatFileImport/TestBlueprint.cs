@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using FlatFileImport.Aggregate;
 using FlatFileImport.Core;
 using FlatFileImport.Process;
 using NUnit.Framework;
@@ -32,6 +33,37 @@ namespace TestFlatFileImport
         }
 
         [Test]
+        public void TestBlueprintDasn()
+        {
+            _blueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            _blueprint = _blueprintSetter.GetBlueprint();
+
+            var bline = _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Name == "AAAAA");
+            Assert.IsNotNull(bline);
+            Assert.AreEqual(EnumOccurrence.One, bline.Occurrence.Type);
+            Assert.IsTrue(bline.Aggregate is Count);
+
+            bline = _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Name == "D1000");
+            Assert.IsNotNull(bline);
+            Assert.AreEqual(EnumOccurrence.AtLeastOne, bline.Occurrence.Type);
+            Assert.IsTrue(bline.Aggregate is Count);
+
+            bline = _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Name == "D4000");
+            Assert.IsNotNull(bline);
+            Assert.AreEqual(EnumOccurrence.Range, bline.Occurrence.Type);
+            Assert.IsTrue(bline.Aggregate is Count);
+
+            bline = _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Name == "D7000");
+            Assert.IsNotNull(bline);
+            Assert.AreEqual(EnumOccurrence.NoOrMany, bline.Occurrence.Type);
+            Assert.IsNull(bline.Aggregate);
+
+            bline = _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Name == "D2000");
+            Assert.IsNotNull(bline);
+            Assert.AreEqual(EnumOccurrence.NoOrMany, bline.Occurrence.Type);
+            Assert.IsNull(bline.Aggregate);
+        }
+        [Test]
         public void TestBlueprintSiafi()
         {
             //TODO: Testar todas as linhas e campos.
@@ -56,6 +88,8 @@ namespace TestFlatFileImport
             // Teste HEADER FIELDS
             var bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Header");
             var bFiled = bLine.BlueprintFields.FirstOrDefault(f => f.Name == "CodRegistro"); //_blueprint.BlueprintLines.FirstOrDefault(b => b.Name == "Header"); //bLine.BlueprintFields[0];
+            Assert.AreEqual(EnumOccurrence.One, bLine.Occurrence.Type);
+            Assert.IsTrue(bLine.Aggregate is Count);
             Assert.IsNotNull(bLine);
             Assert.IsNotNull(bFiled);
             Assert.AreEqual("CodRegistro", bFiled.Name);

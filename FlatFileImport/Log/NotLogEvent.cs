@@ -1,5 +1,6 @@
 ﻿using System;
 using FlatFileImport.Exception;
+using FlatFileImport.Validate;
 
 namespace FlatFileImport.Log
 {
@@ -22,7 +23,7 @@ namespace FlatFileImport.Log
             return String.Empty;
         }
 
-        public bool SetMessage(Validate.ValidResult result)
+        public bool SetMessage(IResult result)
         {
             return true;
         }

@@ -99,7 +99,7 @@ namespace FlatFileImport.Core
 
                 line.Name = GetAttributeValue(node.Attributes, EnumLineAttributes.Name);
                 line.Occurrence = GetOccurrence(node, line);
-                line.Aggregate = GetAggregate(node, line);
+                line.Aggregate = GetAggregate(line);
 
                 var regex = GetAttributeValue(node.Attributes, EnumLineAttributes.Regex);
                 line.Regex = !String.IsNullOrEmpty(regex) ? new Regex(regex) : null;
@@ -140,8 +140,23 @@ namespace FlatFileImport.Core
             return (BlueprintLineHeader)blueprintLine;
         }
 
+        private IAggregate GetAggregate(IBlueprintLine blueprintLine)
+        {
+            if(blueprintLine.Occurrence.Type == EnumOccurrence.NoOrOne || blueprintLine.Occurrence.Type == EnumOccurrence.NoOrMany)
+                return null;
+
+            return new Count((IAggregateSubject)blueprintLine);
+        }
+
+        private IAggregate GetAggregate(IBlueprintField blueprintField)
+        {
+            throw new NotImplementedException();
+        }
+
         private IAggregate GetAggregate(XmlNode node, IBlueprintLine blueprintLine)
         {
+            throw new NotImplementedException();
+
             var attrColl = node.Attributes;
 
             if (!HasAttribute(attrColl, EnumLineAttributes.Aggregate))

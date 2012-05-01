@@ -6,27 +6,15 @@ namespace FlatFileImport.Validate
 {
     public class ValidateRegister : IValidate
     {
-        private List<IParsedObjetct> _parsedDatas;
-
-        public ValidateRegister(List<IParsedObjetct> parsedDatas, List<IBlueprintField> blueprintFields)
-        {
-            // TODO: Complete member initialization
-            _parsedDatas = parsedDatas;
-        }
 
         #region IValidate Members
 
-        public bool IsValid()
+        public bool IsValid
         {
-            throw new System.NotImplementedException();
+            get { throw new System.NotImplementedException(); }
         }
 
-        public ValidResult Valid()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public ValidResult ValidateResult
+        public IResult Result
         {
             get { throw new System.NotImplementedException(); }
         }

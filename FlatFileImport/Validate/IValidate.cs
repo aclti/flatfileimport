@@ -2,8 +2,7 @@
 {
     public interface IValidate
     {
-        bool IsValid();
-        ValidResult Valid();
-        ValidResult ValidateResult { get; }
+        bool IsValid { get; }
+        IResult Result { get; }
     }
 }

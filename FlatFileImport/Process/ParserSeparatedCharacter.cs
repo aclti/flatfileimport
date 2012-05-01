@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
+using FlatFileImport.Exception;
 using FlatFileImport.Validate;
 
 namespace FlatFileImport.Process
@@ -13,6 +16,13 @@ namespace FlatFileImport.Process
         private IBlueprintLine _blueprintLine;
         private IParsedObjetct _data;
         private Converter _converter;
+        private IValidate _validate;
+        private List<IResult> _results;
+
+        public ParserSeparatedCharacter()
+        {
+            _results = new List<IResult>();
+        }
 
         #region IParser Members
 
@@ -76,23 +86,24 @@ namespace FlatFileImport.Process
             return _data;
         }
 
-        // TODO: Migrar para um super classe ou para um command pattern
-        public ValidResult Result()
+        public ReadOnlyCollection<IResult> Result
         {
-            HasBluprint();
-            HasDataToParse();
-            throw new NotImplementedException();
+            get
+            {
+                HasBluprint();
+                HasDataToParse();
+                return _results.AsReadOnly();    
+            }
         }
 
-        // TODO: Migrar para um super classe ou para um command pattern
         public bool IsValid
         {
             get
             {
                 HasBluprint();
                 HasDataToParse();
-
-                return IsValidSintaxLine() && IsValidSintaxAttribute();
+                
+                return ValidSintaxLine() && ValidSintaxAttribute();
             }
         }
 
@@ -126,35 +137,39 @@ namespace FlatFileImport.Process
         {
             if (String.IsNullOrEmpty(_rawDataLine))
                 throw new System.Exception("Nenhum Dado para ser analisado e importado.");
-
         }
 
-        //TODO: Ser migrar para uma super classe deve ser um método abstrato
-        private bool IsValidSintaxLine()
+        private bool ValidSintaxLine()
         {
-            return _blueprintLine.Regex.IsMatch(_rawDataLine) && _rawDataColl.Length == _blueprintLine.BlueprintFields.Count;
+            _validate = new ValidateLineSeparatedCharacter(_rawDataLine, _blueprintLine);
+
+            if (!_validate.IsValid)
+                _results.Add(_validate.Result);
+
+            return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0;
         }
 
-        // TODO: Migrar para um super classe ou para um command pattern
-        private bool IsValidSintaxAttribute()
+        private bool ValidSintaxAttribute()
         {
             for (var i = 0; i < _rawDataColl.Length; i++)
             {
                 var field = _blueprintLine.BlueprintFields[i];
-                var regex = field.Regex;
                 var data = _rawDataColl[i];
+                _validate = new ValidateField(data, field);
 
-                if (String.IsNullOrEmpty(data))
+                if (_validate.IsValid) 
                     continue;
 
-                if (regex != null && !regex.Rule.IsMatch(data))
-                    return false;
+                if (_blueprintLine.Occurrence.Type != EnumOccurrence.NoOrMany && _blueprintLine.Occurrence.Type != EnumOccurrence.NoOrOne && _validate.Result.Type == ExceptionType.Warnning)
+                {
+                    _validate.Result.SetExceptionType(ExceptionType.Error);
+                    _validate.Result.SetExceptionSeverity(ExceptionSeverity.Critical);
+                }
 
-                if (field.Type == typeof(string) && data.Length > field.Size)
-                    return false;
+                _results.Add(_validate.Result);
             }
 
-            return true;
+            return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0;
         }
     }
 }

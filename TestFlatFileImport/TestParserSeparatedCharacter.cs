@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
+using FlatFileImport.Exception;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -61,39 +62,40 @@ namespace TestFlatFileImport
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
 
             rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
 
             rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
 
             rawData = "D1000|||||||||||";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
 
             rawData = "D1000|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
 
-            rawData = "D1000|||";
+            bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D7000"));
+            rawData = "D7000|||";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
             Assert.IsTrue(p.IsValid);
             
-            rawData = "D1000";
+            rawData = "D7000";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
@@ -231,7 +233,10 @@ namespace TestFlatFileImport
             var p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
+            var result = p.Result;
+            Assert.AreEqual(5, result.Count(r => r.Type == ExceptionType.Error));
+            Assert.AreEqual(5, result.Count(r => r.Severity == ExceptionSeverity.Critical));
             var parent = (IParsedData)p.GetParsedData(null);
             var data = p.GetParsedLine(parent);
 
@@ -254,7 +259,10 @@ namespace TestFlatFileImport
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
             p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            Assert.IsFalse(p.IsValid);
+            result = p.Result;
+            Assert.AreEqual(3, result.Count(r => r.Type == ExceptionType.Error));
+            Assert.AreEqual(3, result.Count(r => r.Severity == ExceptionSeverity.Critical));
             parent = (IParsedData)p.GetParsedData(null);
             data = p.GetParsedLine(parent);
 

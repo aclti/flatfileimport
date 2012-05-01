@@ -1,5 +1,5 @@
-﻿using FlatFileImport.Validate;
-using FlatFileImport.Exception;
+﻿using FlatFileImport.Exception;
+using FlatFileImport.Validate;
 
 namespace FlatFileImport.Log
 {
@@ -8,7 +8,7 @@ namespace FlatFileImport.Log
         string GetShotMessage();
         string GetMessage();
         string GetFullMessage();
-        bool SetMessage(ValidResult result);
+        bool SetMessage(IResult result);
         bool SetMessage(string message);
         bool SetMessage(System.Exception exception);
         bool SetMessage(IImporterException exception);

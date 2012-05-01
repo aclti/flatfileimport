@@ -35,7 +35,7 @@
 		</Fields>
 	</Line>
 
-	<Line name="D1000" regex="^D1000" occurrence="AtLeastOne" aggregate="Count" type="Header" parent="AAAAA">
+	<Line name="D1000" regex="^D1000" occurrence="AtLeastOne" type="Header" parent="AAAAA">
 		<Fields>
 			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
 			<Field position="1"		type="string"	size="15"					persist="true"							name="ID_DECLARACAO" />

@@ -23,7 +23,7 @@ namespace FlatFileImport.Log
             throw new NotImplementedException();
         }
 
-        public bool SetMessage(ValidResult result)
+        public bool SetMessage(IResult result)
         {
             throw new NotImplementedException();
         }

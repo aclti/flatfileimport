@@ -74,7 +74,7 @@
     <Compile Include="Input\HandlerZip.cs" />
     <Compile Include="Input\IFileInfo.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
-    <Compile Include="Input\ValidateFileDir.cs" />
+    <Compile Include="Validate\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="ISubject.cs" />
     <Compile Include="Log\DefaultEventLog.cs" />
@@ -99,17 +99,19 @@
     <Compile Include="Data\ParsedField.cs" />
     <Compile Include="Data\ParsedLine.cs" />
     <Compile Include="Core\Occurrence.cs" />
+    <Compile Include="Validate\IResult.cs" />
     <Compile Include="Process\Parser.cs" />
     <Compile Include="Process\ParserPositional.cs" />
     <Compile Include="Process\ParserSeparatedCharacter.cs" />
     <Compile Include="Core\RegexRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Aggregate\IAggregate.cs" />
+    <Compile Include="Validate\Result.cs" />
     <Compile Include="Validate\IValidate.cs" />
     <Compile Include="Validate\ValidateField.cs" />
-    <Compile Include="Validate\ValidateLine.cs" />
+    <Compile Include="Validate\ValidateLinePositional.cs" />
+    <Compile Include="Validate\ValidateLineSeparatedCharacter.cs" />
     <Compile Include="Validate\ValidateRegister.cs" />
-    <Compile Include="Validate\ValidResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Factory\" />

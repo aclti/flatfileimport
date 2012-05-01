@@ -1,4 +1,5 @@
-﻿using FlatFileImport.Core;
+﻿using System.Collections.ObjectModel;
+using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Validate;
 
@@ -10,7 +11,7 @@ namespace FlatFileImport.Process
         IParsedObjetct GetParsedData(IParsedData parent);
         void SetBlueprintLine(IBlueprintLine blueprintLine);
         void SetDataToParse(string rawLine);
-        ValidResult Result();
+        ReadOnlyCollection<IResult> Result { get; }
         bool IsValid { get; }
     }
 }
