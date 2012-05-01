@@ -3,7 +3,7 @@
 /FlatFileImport/_ReSharper.FlatFileImport
 */bin/*
 */obj/*
-/FlatFileImport.6.0.ReSharper.user
+*.user
 *.suo
 *.user
 */obj/*
@@ -36,3 +36,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+*/[Bb]in/[Dd]ebug/*
