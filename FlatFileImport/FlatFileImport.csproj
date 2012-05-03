@@ -73,6 +73,10 @@
     <Compile Include="Input\HandlerText.cs" />
     <Compile Include="Input\HandlerZip.cs" />
     <Compile Include="Input\IFileInfo.cs" />
+    <Compile Include="Input\IRawField.cs" />
+    <Compile Include="Input\IRawLine.cs" />
+    <Compile Include="Input\RawField.cs" />
+    <Compile Include="Input\RawLine.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
     <Compile Include="Validate\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
