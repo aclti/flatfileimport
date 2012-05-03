@@ -126,7 +126,7 @@
 		</Fields>
 	</Line>
 
-	<Line name="P9999" regex="^99999" occurrence="One" type="Footer" parent="D4000">
+	<Line name="P9999" regex="^99999" occurrence="AtLeastOne" type="Footer" parent="D4000">
 		<Fields>
 			<Field position="0"		type="string"	size="5"					persist="false"							name="TIPO_REG" />
 			<Field position="1"		type="int"									persist="true"							name="QTD_LINHAS" />
@@ -475,7 +475,7 @@
 		</Fields>
 	</Line>
 
-	<!--<Line name="D5300" regex="^D5300" type="Header" parent="D1000">
+	<Line name="D5300" regex="^D5300" type="Header" parent="D1000">
 		<Fields>
 			<Field position="0"		type="string"	size="5"					persist="false"							name="REG" />
 			<Field position="1"		type="string"	size="4"					persist="true"							name="NUM_ESTABELECIMENTO" />
@@ -677,7 +677,7 @@
 			<Field position="4"		type="string"	size="5"					persist="true"							name="COD_MUNIC" />
 			<Field position="5"		type="decimal"	size="17"	precision="2"	persist="true"							name="VALOR" />
 		</Fields>
-	</Line>-->
+	</Line>
 	
 	<Line name="D6000" regex="^D6000" occurrence="NoOrMany" type="Details" parent="D1000">
 		<Fields>

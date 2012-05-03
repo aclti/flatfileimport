@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using FlatFileImport.Aggregate;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
+using FlatFileImport.Exception;
 using FlatFileImport.Input;
 using FlatFileImport.Log;
 using FlatFileImport.Process;
@@ -19,71 +21,130 @@ namespace FlatFileImport
         private IBlueprint _blueprint;
         private IParsedData[] _parsedDatas;
         private IEventLog _loger;
-        private IValidate _validate;
         private IFileInfo _file;
         private List<IParsedData> _headers;
         private List<IParsedObjetct> _details;
+        private List<IResult> _results;
 
         public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
 
+
+        private List<IBlueprintLine> _stack;
+        private IBlueprintLine _active;
 
         public Importer()
         {
             _parsedDatas = new IParsedData[2];
             _headers = new List<IParsedData>();
             _details = new List<IParsedObjetct>();
+            _results = new List<IResult>();
+            _stack = new List<IBlueprintLine>();
         }
 
-        public void Process()
+        public ReadOnlyCollection<IResult> Results { get { return _results.AsReadOnly(); } }
+        public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
+        
+
+        public void Valid()
         {
-            if (_blueprint == null)
-                throw new System.Exception("A Blueprint não foi definida.");
-
-            if (_file == null)
-                throw new System.Exception("Não foi definido um arquivo para ser processado.");
-
-            var bline = MatchBlueprintLine(_file.Header);
-
-            SetAggergates();
-
+            CheckFileAndBluprint();
+            _file.Restart();
             _parser = SetParser();
-            _parser.SetBlueprintLine(bline);
-            _parser.SetDataToParse(_file.Header);
-
-            if (!_parser.IsValid)
-                throw new System.Exception("O cabeçalho do arquivo não está correto: " + _file.Path);
-
-            _headers.Add((IParsedData)_parser.GetParsedData(null));
 
             while (_file.MoveToNext())
             {
-                bline = MatchBlueprintLine(_file.Line);
+                var newLine = MatchBlueprintLine(_file.Line);
+                
+                if (newLine == null)
+                {
+                    _results.Add(new Result("Linha não encontrada", "Blueprint Match", _file.Line, "A linha importada não está definida na Blueprint. Linha: [" + _file.LineNumber + "] " + _file.Line, ExceptionType.Error, ExceptionSeverity.Critical));
+                    continue;
+                }
 
-                if(bline == null)
+                _parser.SetBlueprintLine(newLine);
+                _parser.SetDataToParse(_file.Line);
+
+                if (newLine.Aggregate != null && newLine.Aggregate is Count)
+                    newLine.Aggregate.AddOperand(1);
+
+                if (IsRoot(newLine))
+                  {
+                    _active = newLine;
+                    continue;
+                }
+
+                //if(!_parser.IsValid)
+                //    _results.AddRange(_parser.Result);
+
+                var flag = true;
+                while (flag)
+                {
+                    if(_active == null)
+                    {
+                        _results.Add(new Result("", "", _file.Line, String.Format("Linha: {0} | Hieraquia de registro não está de acordo com a Blueprint.", _file.LineNumber), ExceptionType.Error, ExceptionSeverity.Fatal));
+                        break;
+                    }
+
+                    if (IsSibiling(newLine))
+                    {
+                        _active = newLine;
+                        flag = false;
+                    }
+
+                    if (IsParent(newLine))
+                    {
+                        StackUp(newLine);
+                        flag = false;
+                    }
+
+                    if(flag)
+                    {
+                        var c = _blueprint.BlueprintLines.Where(b => b.Parent == _active.Parent).ToList();
+
+                        foreach (var bline in c)
+                            if(!CheckOccurrence(bline))
+                                _results.Add(new Result("", "", _file.Line, String.Format("Linha: {0} | Quantidade errada de regsitros.", _file.LineNumber), ExceptionType.Error, ExceptionSeverity.Fatal));
+                        
+                        
+                        Unstacking();
+                    }
+                        
+                }
+            }
+        }
+
+
+        public void Process()
+        {
+            CheckFileAndBluprint();
+            _file.Restart();
+            _parser = SetParser();
+
+            while (_file.MoveToNext())
+            {
+                var bline = MatchBlueprintLine(_file.Line);
+
+                if (bline == null)
                     continue;
 
+                SetAggergates();
                 _parser.SetBlueprintLine(bline);
                 _parser.SetDataToParse(_file.Line);
 
                 IParsedData parent = null;
-                if(bline.Parent != null)
+                if (bline.Parent != null)
                     parent = _headers.FindLast(p => p.Name == bline.Parent.Name);
 
-                if(!_parser.IsValid)
-                    throw new System.Exception("Dados corrompidos............");
-
-                if (bline is BlueprintLineHeader && parent != null)
+                if (!_parser.IsValid)
                 {
-                    var pdata = (IParsedData) _parser.GetParsedData(parent);
-                    parent.AddParsedData(pdata);
-                    _headers.Add(pdata);
+                    NotifyObservers(_parser.Result.ToList());
                 }
 
-                if(bline is BlueprintLineFooter)
+                if (bline is BlueprintLineHeader || bline is BlueprintLineFooter)
                 {
                     var pdata = (IParsedData)_parser.GetParsedData(parent);
 
-                    if(parent != null)
+                    if (parent != null)
                         parent.AddParsedData(pdata);
 
                     _headers.Add(pdata);
@@ -102,10 +163,10 @@ namespace FlatFileImport
 
             }
 
-            _parsedDatas[0] = _headers.Find(h => h.Parent == null && h.Name == GetRootHeader().Name);
-            _parsedDatas[1] = _headers.Find(h => h.Parent == null && h.Name == GetRootFooter().Name);
-            var px = _headers.Count(h => h.Name == "D1000");
-            NotifyObservers(_parsedDatas);
+            //_parsedDatas[0] = _headers.Find(h => h.Parent == null && h.Name == GetRootHeader().Name);
+            //_parsedDatas[1] = _headers.Find(h => h.Parent == null && h.Name == GetRootFooter().Name);
+            //var px = _headers.Count(h => h.Name == "D1000");
+            //NotifyObservers(_parsedDatas);
             NotifyObservers(_headers.First());
 
             //Parser = new Parser(BlueprintFactoy.GetBlueprint(Type, fileInfo), fileInfo, observer);
@@ -124,12 +185,74 @@ namespace FlatFileImport
             //Console.WriteLine("".PadLeft(80, '*'));
         }
 
+        private void StackUp(IBlueprintLine newLine)
+        {
+            _stack.Add(_active);
+            _active = newLine;
+        }
+
+        private void Unstacking()
+        {
+            _active = _stack.LastOrDefault();
+            _stack.Remove(_active);
+        }
+
+        private bool IsParent(IBlueprintLine newLine)
+        {
+            if (_active == newLine.Parent)
+                return true;
+
+            return false;
+        }
+
+        private bool IsSibiling(IBlueprintLine newLine)
+        {
+            if (newLine.Parent == _active.Parent)
+                return true;
+
+            return false;
+        }
+
+        private bool IsRoot(IBlueprintLine newLine)
+        {
+            if (newLine.Parent == null && _active == null && _stack.Count == 0)
+                return true;
+
+            return false;
+        }
+
+        private bool CheckOccurrence(IBlueprintLine line)
+        {
+            var ocuurence = line.Occurrence;
+            var count = line.Aggregate != null ? line.Aggregate.Result : 0;
+
+            if (ocuurence.Type == EnumOccurrence.One && count != 1)
+                return false;
+
+            if (ocuurence.Type == EnumOccurrence.AtLeastOne && count < 1)
+                return false;
+
+            if (ocuurence.Type == EnumOccurrence.Range && (count < ocuurence.Min || count > ocuurence.Max))
+                return false;
+
+            return true;
+        }
+
+        private void CheckFileAndBluprint()
+        {
+            if (_blueprint == null)
+                throw new System.Exception("A Blueprint não foi definida.");
+
+            if (_file == null)
+                throw new System.Exception("Não foi definido um arquivo para ser processado.");
+        }
+
         private void SetAggergates()
         {
             _aggregates = new List<IAggregate>();
 
             foreach (var bline in _blueprint.BlueprintLines)
-                if(!(bline.Aggregate is NonAggregate))
+                if (bline.Aggregate != null)
                     _aggregates.Add(bline.Aggregate);
 
         }
@@ -137,16 +260,6 @@ namespace FlatFileImport
         private IAggregate GetAggregate(IBlueprintLine bline)
         {
             return _aggregates.FirstOrDefault(ag => ag.Subject.Name == bline.Name);
-        }
-
-        private IBlueprintLine GetRootHeader()
-        {
-            return _blueprint.BlueprintLines.FirstOrDefault(h => h.Parent == null && h is BlueprintLineHeader);
-        }
-
-        private IBlueprintLine GetRootFooter()
-        {
-            return _blueprint.BlueprintLines.FirstOrDefault(h => h.Parent == null && h is BlueprintLineFooter);
         }
 
         public void SetBlueprint(IBlueprint blueprint)
@@ -165,11 +278,6 @@ namespace FlatFileImport
             _file = file;
         }
 
-        private IParsedData GetParent(IParsedData node, IParsedObjetct blueprint)
-        {
-            return _parsedDatas[0].Headers.Last(h => h.Name == blueprint.Name);
-        }
-
         private IParser SetParser()
         {
             if (_blueprint.FieldSeparationType == EnumFieldSeparationType.Character)
@@ -184,16 +292,6 @@ namespace FlatFileImport
         private IBlueprintLine MatchBlueprintLine(string rawLine)
         {
             return _blueprint.BlueprintLines.FirstOrDefault(bl => bl.Regex.IsMatch(rawLine));
-        }
-
-        private ParsedData GetParsedData(string rawLine, ParsedData parent)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IParsedObjetct GetParsedLine(string rawLine, ParsedData parent)
-        {
-            throw new NotImplementedException();
         }
 
         #region ISubject Members
@@ -237,6 +335,11 @@ namespace FlatFileImport
                 _observers.ForEach(o => o.Notify(data));
         }
 
+        public void NotifyObservers(List<IResult> results)
+        {
+            if (_observers != null && _observers.Count > 0)
+                _observers.ForEach(o => o.Notify(results));
+        }
         #endregion
     }
 }

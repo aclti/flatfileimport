@@ -1,4 +1,6 @@
-﻿using FlatFileImport.Data;
+﻿using System.Collections.Generic;
+using FlatFileImport.Data;
+using FlatFileImport.Validate;
 
 namespace FlatFileImport
 {
@@ -10,5 +12,7 @@ namespace FlatFileImport
         void NotifyObservers(IParsedObjetct data);
         void NotifyObservers(IParsedData[] data);
         void NotifyObservers(string[] data);
+        void NotifyObservers(List<IResult> data);
     }
 }
+

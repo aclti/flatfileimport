@@ -7,11 +7,11 @@ namespace FlatFileImport.Validate
     {
         public Result(string name, string expected, string value, string message, ExceptionType type, ExceptionSeverity severity)
         {
-            if(String.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+            //if(String.IsNullOrEmpty(name))
+            //    throw new ArgumentNullException("name");
 
-            if (String.IsNullOrEmpty(expected))
-                throw new ArgumentNullException("expected");
+            //if (String.IsNullOrEmpty(expected))
+            //    throw new ArgumentNullException("expected");
 
             if (String.IsNullOrEmpty(message))
                 throw new ArgumentNullException("message");

@@ -45,7 +45,7 @@ namespace TesteImportDasn
                     throw new Exception(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
             }
 
-            BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn-resumida.xml"));
+            BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
             return BlueprintSetter.GetBlueprint();
         }
 

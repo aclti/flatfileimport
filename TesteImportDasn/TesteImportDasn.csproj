@@ -65,6 +65,10 @@
     <Content Include="Samples\Files\02-3105-DASN10-20100515-01.txt" />
     <Content Include="Samples\Files\02-3105-DASN10-20100615-01.txt" />
     <Content Include="Samples\Files\02-3105-DASN10-20100731-01.txt" />
+    <Content Include="Samples\Files\dasn-estrutura-errada-onerecord.txt" />
+    <Content Include="Samples\Files\dasn-estrutura-tworecord.txt" />
+    <Content Include="Samples\Files\dasn-estrutura-onerecord.txt" />
+    <Content Include="Samples\Files\dasn-resumido-001.txt" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

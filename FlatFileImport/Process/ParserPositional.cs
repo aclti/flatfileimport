@@ -141,12 +141,6 @@ namespace FlatFileImport.Process
                 if (_validate.IsValid)
                     continue;
 
-                if ((_blueprintLine.Occurrence.Type != EnumOccurrence.NoOrMany || _blueprintLine.Occurrence.Type != EnumOccurrence.NoOrOne) && _validate.Result.Type == ExceptionType.Warnning)
-                {
-                    _validate.Result.SetExceptionType(ExceptionType.Error);
-                    _validate.Result.SetExceptionSeverity(ExceptionSeverity.Critical);
-                }
-
                 _results.Add(_validate.Result);
             }
 

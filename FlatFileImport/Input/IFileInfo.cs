@@ -10,5 +10,6 @@
         FileExtension Extesion { get; }
         string Header { get; }
         bool MoveToNext();
+        void Restart();
     }
 }

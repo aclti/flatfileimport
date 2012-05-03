@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using FlatFileImport;
 using FlatFileImport.Core;
 using FlatFileImport.Input;
@@ -36,15 +37,47 @@ namespace TesteImportDasn
                 
             //}
 
+            // Chamando o Process
+            //var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "02-3105-DASN10-20100731-01.txt"), new FileExtension("txt", FileType.Text));
+            //var bPrint = factoy.GetBlueprint(typeof(Dasn), file);
+            //importer.SetBlueprint(bPrint);
+            //importer.SetFileToProcess(file);
+            //importer.RegisterObserver(view);
+            //importer.Process();
+            //view.ShowHeader(file.Name);
+            //view.ShowContent();
+            //view.ShowFooter();
+
+
             var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "02-3105-DASN10-20100731-01.txt"), new FileExtension("txt", FileType.Text));
             var bPrint = factoy.GetBlueprint(typeof(Dasn), file);
             importer.SetBlueprint(bPrint);
             importer.SetFileToProcess(file);
             importer.RegisterObserver(view);
-            importer.Process();
-            view.ShowHeader(file.Name);
-            view.ShowContent();
-            view.ShowFooter();
+            importer.Valid();
+
+            if(importer.IsValid)
+                importer.Process();
+            else
+            {
+                var sb = new StringBuilder();
+
+                foreach (var s in importer.Results)
+                {
+                    
+                    sb.AppendLine();
+                    sb.AppendFormat("[ {0} ][ {1} ][ {2} ][ {3} ]", s.Value, s.Message, s.Type, s.Severity);
+                }
+
+                Console.WriteLine(sb.ToString());
+            }
+            //view.ShowHeader(file.Name);
+            //view.ShowContent();
+            //view.ShowFooter();
+
+            Console.WriteLine("Pressione qualquer tecla para continuar.");
+            Console.ReadKey();
+
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FlatFileImport;
 using FlatFileImport.Data;
+using FlatFileImport.Validate;
 
 namespace TesteImportDasn
 {
@@ -108,6 +109,25 @@ namespace TesteImportDasn
                 _results = new List<Result>();
 
             _results.Add(new Result { Num = data[0], Line = data[1] });
+        }
+
+        #endregion
+
+        #region IObserver Members
+
+
+        public void Notify(List<IResult> data)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var s in data)
+            {
+                sb.AppendLine();
+                sb.AppendFormat("[Nome: {0} ]\n[Messagem: {1} ]\n[Esperado: {2} ]\n[Valor: {3} ]\n[Excecption {4} ]\n[Gravidade {5} ]", s.Name, s.Message, s.Expected, s.Value, s.Type, s.Severity);
+                sb.AppendLine();
+            }
+
+            Console.WriteLine(sb.ToString());
         }
 
         #endregion

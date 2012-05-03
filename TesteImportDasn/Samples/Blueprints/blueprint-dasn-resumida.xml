@@ -92,7 +92,7 @@
 		</Fields>
 	</Line>
 
-	<Line name="P9999" regex="^99999" occurrence="One" type="Footer" parent="D4000">
+	<Line name="P9999" regex="^99999" occurrence="AtLeastOne" type="Footer" parent="D4000">
 		<Fields>
 			<Field position="0"		type="string"	size="5"	persist="false"										name="TIPO_REG" />
 			<Field position="1"		type="int"					persist="true"					regex="int"			name="QTD_LINHAS" />

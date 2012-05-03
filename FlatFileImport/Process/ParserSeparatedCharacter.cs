@@ -41,6 +41,7 @@ namespace FlatFileImport.Process
             if (blueprintLine == null)
                 throw new ArgumentNullException("blueprintLine");
 
+            _results = new List<IResult>();
             _blueprintLine = blueprintLine;
         }
 
@@ -62,6 +63,8 @@ namespace FlatFileImport.Process
                 _data.AddField(fields.Name, _converter.Data, fields.Type);
             }
 
+            _blueprintLine = null;
+            _rawDataLine = null;
             return _data;
         }
 
@@ -83,6 +86,8 @@ namespace FlatFileImport.Process
                 _data.AddField(fields.Name, _converter.Data, fields.Type);
             }
 
+            _blueprintLine = null;
+            _rawDataLine = null;
             return _data;
         }
 
@@ -159,12 +164,6 @@ namespace FlatFileImport.Process
 
                 if (_validate.IsValid) 
                     continue;
-
-                if (_blueprintLine.Occurrence.Type != EnumOccurrence.NoOrMany && _blueprintLine.Occurrence.Type != EnumOccurrence.NoOrOne && _validate.Result.Type == ExceptionType.Warnning)
-                {
-                    _validate.Result.SetExceptionType(ExceptionType.Error);
-                    _validate.Result.SetExceptionSeverity(ExceptionSeverity.Critical);
-                }
 
                 _results.Add(_validate.Result);
             }
