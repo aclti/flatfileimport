@@ -5,13 +5,14 @@ using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Exception;
+using FlatFileImport.Input;
 using FlatFileImport.Validate;
 
 namespace FlatFileImport.Process
 {
     public class ParserPositional : IParser
     {
-        private string _rawDataLine;
+        private IRawLine _rawLine;
         private IBlueprintLine _blueprintLine;
         private IParsedObjetct _data;
         private Converter _converter;
@@ -25,12 +26,16 @@ namespace FlatFileImport.Process
 
         #region IParser Members
 
-        public void SetDataToParse(string rawLine)
+        public void SetDataToParse(IRawLine rawLine)
         {
-            if (String.IsNullOrEmpty(rawLine))
+            if (rawLine == null)
                 throw new ArgumentNullException("rawLine");
 
-            _rawDataLine = rawLine;
+            _rawLine = rawLine;
+
+            if(ValidSintaxLine())
+                foreach (var field in _blueprintLine.BlueprintFields)
+                    _rawLine.AddRawFiled(_rawLine.Value.Substring(field.Position - 1, field.Size));
         }
 
         public void SetBlueprintLine(IBlueprintLine blueprintLine)
@@ -48,11 +53,13 @@ namespace FlatFileImport.Process
             HasBluprint();
             HasDataToParse();
 
+            var rawFields = _rawLine.RawFields;
             _data = new ParsedData(_blueprintLine.Name, parent);
 
-            foreach (var field in _blueprintLine.BlueprintFields)
+            for (var i = 0; i < _blueprintLine.BlueprintFields.Count; i++)
             {
-                var data = _rawDataLine.Substring(field.Position - 1, field.Size);
+                var data = rawFields[i].Value;
+                var field = _blueprintLine.BlueprintFields[i];
 
                 _converter = Converter.GetConvert(field.Type);
                 _converter.Init(field, data);
@@ -69,11 +76,13 @@ namespace FlatFileImport.Process
             HasBluprint();
             HasDataToParse();
 
+            var rawFields = _rawLine.RawFields;
             _data = new ParsedLine(_blueprintLine.Name, parent);
 
-            foreach (var field in _blueprintLine.BlueprintFields)
+            for (var i = 0; i < _blueprintLine.BlueprintFields.Count; i++)
             {
-                var data = _rawDataLine.Substring(field.Position - 1, field.Size);
+                var data = rawFields[i].Value;
+                var field = _blueprintLine.BlueprintFields[i];
 
                 _converter = Converter.GetConvert(field.Type);
                 _converter.Init(field, data);
@@ -116,13 +125,13 @@ namespace FlatFileImport.Process
 
         private void HasDataToParse()
         {
-            if (String.IsNullOrEmpty(_rawDataLine))
+            if (_rawLine == null)
                 throw new System.Exception("Nenhum Dado para ser analisado e importado.");
         }
 
         private bool ValidSintaxLine()
         {
-            _validate = new ValidateLinePositional(_rawDataLine, _blueprintLine);
+            _validate = new ValidateLinePositional(_rawLine, _blueprintLine);
 
             if (!_validate.IsValid)
                 _results.Add(_validate.Result);
@@ -132,9 +141,12 @@ namespace FlatFileImport.Process
 
         private bool ValidSintaxAttribute()
         {
-            foreach (var field in _blueprintLine.BlueprintFields)
+            var rawFields = _rawLine.RawFields;
+
+            for (var i = 0; i < _blueprintLine.BlueprintFields.Count; i++)
             {
-                var data = _rawDataLine.Substring(field.Position - 1, field.Size);
+                var field = _blueprintLine.BlueprintFields[i];
+                var data = rawFields[i];
 
                 _validate = new ValidateField(data, field);
 
@@ -144,7 +156,7 @@ namespace FlatFileImport.Process
                 _results.Add(_validate.Result);
             }
 
-            return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0;
+            return _results.Count == 0;// || _results.Count(r => r.Type == ExceptionType.Error) == 0;
         }
     }
 }

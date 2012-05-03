@@ -15,7 +15,7 @@ namespace FlatFileImport.Validate
 
             _path = path;
         }
-        
+
         #region IValidate Members
 
         bool IValidate.IsValid
@@ -28,7 +28,7 @@ namespace FlatFileImport.Validate
 
                 if (String.IsNullOrEmpty(dir))
                 {
-                    Result = new Result("Directory", "Valid Directory", dir, "Invalid Directory", ExceptionType.Error, ExceptionSeverity.Fatal);
+                    Result = new Result("Invalid Directory", ExceptionType.Error, ExceptionSeverity.Fatal) { Value = dir };
                     return false;
                 }
 
@@ -38,7 +38,7 @@ namespace FlatFileImport.Validate
                 if (File.Exists(path))
                     return true;
 
-                Result = new Result("File Path", "Valid File Path", dir, "Invalid File Path", ExceptionType.Error, ExceptionSeverity.Fatal);
+                Result = new Result("Invalid File Path", ExceptionType.Error, ExceptionSeverity.Fatal) { Value = path };
                 return false;
             }
         }

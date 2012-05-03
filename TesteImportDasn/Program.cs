@@ -4,6 +4,7 @@ using System.Text;
 using FlatFileImport;
 using FlatFileImport.Core;
 using FlatFileImport.Input;
+using FlatFileImport.Exception;
 
 namespace TesteImportDasn
 {
@@ -47,7 +48,6 @@ namespace TesteImportDasn
             //view.ShowHeader(file.Name);
             //view.ShowContent();
             //view.ShowFooter();
-
 
             var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "02-3105-DASN10-20100731-01.txt"), new FileExtension("txt", FileType.Text));
             var bPrint = factoy.GetBlueprint(typeof(Dasn), file);

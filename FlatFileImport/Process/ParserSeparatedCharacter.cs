@@ -5,14 +5,14 @@ using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Exception;
+using FlatFileImport.Input;
 using FlatFileImport.Validate;
 
 namespace FlatFileImport.Process
 {
     public class ParserSeparatedCharacter : IParser
     {
-        private string _rawDataLine;
-        private string[] _rawDataColl;
+        private IRawLine _rawLine;
         private IBlueprintLine _blueprintLine;
         private IParsedObjetct _data;
         private Converter _converter;
@@ -26,14 +26,18 @@ namespace FlatFileImport.Process
 
         #region IParser Members
 
-        public void SetDataToParse(string rawLine)
+        public void SetDataToParse(IRawLine rawLine)
         {
-            if (String.IsNullOrEmpty(rawLine))
+            if (rawLine==null)
                 throw new ArgumentNullException("rawLine");
 
-            _rawDataLine = rawLine;
-            _rawDataLine = NormalizeRawData();
-            _rawDataColl = _rawDataLine.Split(_blueprintLine.Blueprint.BluePrintCharSepartor);
+            // FEI PRA CARALHO........ Essa estrutura precisa ser melhorada.
+            _rawLine = rawLine;
+            _rawLine = new RawLine(_rawLine.Number, NormalizeRawData());
+
+            if(ValidSintaxLine())
+                foreach (var field in _rawLine.Value.Split(_blueprintLine.Blueprint.BluePrintCharSepartor).ToList())
+                    _rawLine.AddRawFiled(field);
         }
 
         public void SetBlueprintLine(IBlueprintLine blueprintLine)
@@ -51,20 +55,19 @@ namespace FlatFileImport.Process
             HasBluprint();
             HasDataToParse();
 
+            var rawFields = _rawLine.RawFields;
             _data = new ParsedData(_blueprintLine.Name, parent);
 
-            foreach (var fields in _blueprintLine.BlueprintFields)
+            foreach (var field in _blueprintLine.BlueprintFields)
             {
-                var data = _rawDataColl[fields.Position];
+                var data = rawFields[field.Position].Value;
 
-                _converter = Converter.GetConvert(fields.Type);
-                _converter.Init(fields, data);
+                _converter = Converter.GetConvert(field.Type);
+                _converter.Init(field, data);
 
-                _data.AddField(fields.Name, _converter.Data, fields.Type);
+                _data.AddField(field.Name, _converter.Data, field.Type);
             }
 
-            _blueprintLine = null;
-            _rawDataLine = null;
             return _data;
         }
 
@@ -74,20 +77,19 @@ namespace FlatFileImport.Process
             HasBluprint();
             HasDataToParse();
 
+            var rawFields = _rawLine.RawFields;
             _data = new ParsedLine(_blueprintLine.Name, parent);
 
-            foreach (var fields in _blueprintLine.BlueprintFields)
+            foreach (var field in _blueprintLine.BlueprintFields)
             {
-                var data = _rawDataColl[fields.Position];
+                var data = rawFields[field.Position].Value;
 
-                _converter = Converter.GetConvert(fields.Type);
-                _converter.Init(fields, data);
+                _converter = Converter.GetConvert(field.Type);
+                _converter.Init(field, data);
 
-                _data.AddField(fields.Name, _converter.Data, fields.Type);
+                _data.AddField(field.Name, _converter.Data, field.Type);
             }
 
-            _blueprintLine = null;
-            _rawDataLine = null;
             return _data;
         }
 
@@ -116,7 +118,7 @@ namespace FlatFileImport.Process
 
         private int AmountSplitInRawDataCharacter()
         {
-            return _rawDataLine.Count(c => c == _blueprintLine.Blueprint.BluePrintCharSepartor);
+            return _rawLine.Value.Count(c => c == _blueprintLine.Blueprint.BluePrintCharSepartor);
         }
 
         private string NormalizeRawData()
@@ -124,12 +126,12 @@ namespace FlatFileImport.Process
             var amoutFields = _blueprintLine.BlueprintFields.Count - 1;
 
             if (AmountSplitInRawDataCharacter() >= amoutFields)
-                return _rawDataLine;
+                return _rawLine.Value;
 
             var splitChar = _blueprintLine.Blueprint.BluePrintCharSepartor;
             var amoutToInsert = amoutFields - AmountSplitInRawDataCharacter();
             
-            return String.Concat(_rawDataLine, "".PadRight(amoutToInsert, splitChar));
+            return String.Concat(_rawLine.Value, "".PadRight(amoutToInsert, splitChar));
         }
 
         private void HasBluprint()
@@ -140,26 +142,26 @@ namespace FlatFileImport.Process
 
         private void HasDataToParse()
         {
-            if (String.IsNullOrEmpty(_rawDataLine))
+            if (_rawLine == null)
                 throw new System.Exception("Nenhum Dado para ser analisado e importado.");
         }
 
         private bool ValidSintaxLine()
         {
-            _validate = new ValidateLineSeparatedCharacter(_rawDataLine, _blueprintLine);
+            _validate = new ValidateLineSeparatedCharacter(_rawLine, _blueprintLine);
 
             if (!_validate.IsValid)
                 _results.Add(_validate.Result);
 
-            return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0;
+            return _results.Count == 0;// || _results.Count(r => r.Type == ExceptionType.Error) == 0;
         }
 
         private bool ValidSintaxAttribute()
         {
-            for (var i = 0; i < _rawDataColl.Length; i++)
+            for (var i = 0; i < _rawLine.RawFields.Count; i++)
             {
                 var field = _blueprintLine.BlueprintFields[i];
-                var data = _rawDataColl[i];
+                var data = _rawLine.RawFields[i];
                 _validate = new ValidateField(data, field);
 
                 if (_validate.IsValid) 
@@ -168,7 +170,7 @@ namespace FlatFileImport.Process
                 _results.Add(_validate.Result);
             }
 
-            return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0;
+            return _results.Count == 0;// || _results.Count(r => r.Type == ExceptionType.Error) == 0;
         }
     }
 }

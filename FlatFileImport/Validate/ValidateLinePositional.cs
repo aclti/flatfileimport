@@ -2,17 +2,18 @@
 using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Exception;
+using FlatFileImport.Input;
 
 namespace FlatFileImport.Validate
 {
     public class ValidateLinePositional : IValidate
     {
         private IBlueprintLine _blueprintLine;
-        private string _rawDataLine;
+        private IRawLine _rawDataLine;
 
-        public ValidateLinePositional(string rawLine, IBlueprintLine blueprintLine)
+        public ValidateLinePositional(IRawLine rawLine, IBlueprintLine blueprintLine)
         {
-            if (String.IsNullOrEmpty(rawLine))
+            if (rawLine == null)
                 throw new ArgumentNullException("rawLine");
 
             if (blueprintLine == null)
@@ -28,28 +29,30 @@ namespace FlatFileImport.Validate
         {
             get
             {
-                if (!_blueprintLine.Regex.IsMatch(_rawDataLine))
+                if (!_blueprintLine.Regex.IsMatch(_rawDataLine.Value))
                 {
-                    Result = new Result(_blueprintLine.Name, 
-                                        _blueprintLine.Regex.ToString(), 
-                                        _rawDataLine, 
-                                        "A linha não casa com o padrão definido na Regex da Blueprint.", 
-                                        ExceptionType.Error, 
-                                        ExceptionSeverity.Fatal);
+                    Result = new Result("A linha não casa com o padrão definido na Regex da Blueprint.", ExceptionType.Error, ExceptionSeverity.Fatal)
+                    {
+                        LineName = _blueprintLine.Name,
+                        LineNumber = _rawDataLine.Number,
+                        Value = _rawDataLine.Value,
+                        Expected = _blueprintLine.Regex.ToString(),
+                    };
 
                     return false;
                 }
 
                 var sum = _blueprintLine.BlueprintFields.Sum(b => b.Size);
 
-                if(_rawDataLine.Length != sum)
+                if(_rawDataLine.Value.Length != sum)
                 {
-                    Result = new Result(_blueprintLine.Name, 
-                                        sum.ToString(""), 
-                                        _rawDataLine.Length.ToString(""), 
-                                        "A soma do tamanho do campos, definidos na Blueprint, é diferente do tamanho da linha importada.", 
-                                        ExceptionType.Error, 
-                                        ExceptionSeverity.Fatal);
+                    Result = new Result("A soma do tamanho do campos, definidos na Blueprint, é diferente do tamanho da linha importada.", ExceptionType.Error, ExceptionSeverity.Fatal)
+                    {
+                        LineName = _blueprintLine.Name,
+                        LineNumber = _rawDataLine.Number,
+                        Value = _rawDataLine.Value.Length.ToString(""),
+                        Expected = sum.ToString(""),
+                    };
 
                     return false;
                 }

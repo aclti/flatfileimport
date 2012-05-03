@@ -5,6 +5,7 @@ using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
 using FlatFileImport.Exception;
+using FlatFileImport.Input;
 using FlatFileImport.Process;
 using NUnit.Framework;
 
@@ -42,94 +43,94 @@ namespace TestFlatFileImport
 
             var p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
 
             Assert.IsTrue(p.IsValid);
 
             rawData = "D1000|010428182009003|w|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);   
 
             rawData = "D1000|01042818200900399999|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);          
 
             rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             rawData = "D1000||||||19960208|02071018801526456|01406041942879518599|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             rawData = "D1000|||||||||||";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             rawData = "D1000|";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D7000"));
             rawData = "D7000|||";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            p.SetDataToParse(new RawLine(1, rawData));
+            Assert.IsFalse(p.IsValid);
             
             rawData = "D7000";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            p.SetDataToParse(new RawLine(1, rawData));
+            Assert.IsFalse(p.IsValid);
 
             bLine = _blueprint.BlueprintLines.FirstOrDefault(b => b.Regex.IsMatch("D3001"));
             rawData = "D3001|200810|88168,20";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|88168.20";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|efrwqr";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
 
             rawData = "D3001|200810|88168";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsTrue(p.IsValid);
 
             rawData = "D3001|200810|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsTrue(p.IsValid);
         }
 
@@ -145,7 +146,7 @@ namespace TestFlatFileImport
 
             var p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             var parent = (IParsedData)p.GetParsedData(null);
             var data = p.GetParsedLine(parent);
 
@@ -168,7 +169,7 @@ namespace TestFlatFileImport
             rawData = "00000|07491222000101|MATOS DISTRIBUIDORA DE COSMETICOS LTDA, ME|3105|S|20050712|200907|6389,32|0,000|1,00|A|1|6389,32";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             parent = (IParsedData)p.GetParsedData(null);
             data = p.GetParsedLine(parent);
 
@@ -192,7 +193,7 @@ namespace TestFlatFileImport
             rawData = "D7000|074912222009001|0520100|3105|4|2442,52|8,000|0|97,70|200,00|200,00|20100713|20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             parent = (IParsedData)p.GetParsedData(null);
             data = p.GetParsedLine(parent);
 
@@ -232,11 +233,10 @@ namespace TestFlatFileImport
 
             var p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
             var result = p.Result;
-            Assert.AreEqual(5, result.Count(r => r.Type == ExceptionType.Error));
-            Assert.AreEqual(5, result.Count(r => r.Severity == ExceptionSeverity.Critical));
+            Assert.AreEqual(5, result.Count);
             var parent = (IParsedData)p.GetParsedData(null);
             var data = p.GetParsedLine(parent);
 
@@ -258,11 +258,10 @@ namespace TestFlatFileImport
             rawData = "00000|07491222000101||3105|S|20050712||0|0||A|1|6389,32";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
+            p.SetDataToParse(new RawLine(1, rawData));
             Assert.IsFalse(p.IsValid);
             result = p.Result;
-            Assert.AreEqual(3, result.Count(r => r.Type == ExceptionType.Error));
-            Assert.AreEqual(3, result.Count(r => r.Severity == ExceptionSeverity.Critical));
+            Assert.AreEqual(3, result.Count);
             parent = (IParsedData)p.GetParsedData(null);
             data = p.GetParsedLine(parent);
 
@@ -285,8 +284,8 @@ namespace TestFlatFileImport
             rawData = "D7000|||3105|4|2442,52|8,000|||200,00|0||20100728|LUCIA ROSA SILVA SANTOS|DELEGADO DA RECEITA FEDERAL DO BRASIL|0002439|ARACAJU|0|0|0";
             p = new ParserSeparatedCharacter();
             p.SetBlueprintLine(bLine);
-            p.SetDataToParse(rawData);
-            Assert.IsTrue(p.IsValid);
+            p.SetDataToParse(new RawLine(1, rawData));
+            Assert.IsFalse(p.IsValid);
             parent = (IParsedData)p.GetParsedData(null);
             data = p.GetParsedLine(parent);
 

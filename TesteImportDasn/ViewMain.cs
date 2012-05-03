@@ -123,8 +123,7 @@ namespace TesteImportDasn
             foreach (var s in data)
             {
                 sb.AppendLine();
-                sb.AppendFormat("[Nome: {0} ]\n[Messagem: {1} ]\n[Esperado: {2} ]\n[Valor: {3} ]\n[Excecption {4} ]\n[Gravidade {5} ]", s.Name, s.Message, s.Expected, s.Value, s.Type, s.Severity);
-                sb.AppendLine();
+                sb.Append(s.FullMessage);
             }
 
             Console.WriteLine(sb.ToString());

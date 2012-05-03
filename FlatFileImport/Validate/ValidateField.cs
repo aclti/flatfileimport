@@ -1,16 +1,17 @@
 ﻿using System;
 using FlatFileImport.Core;
 using FlatFileImport.Exception;
+using FlatFileImport.Input;
 
 
 namespace FlatFileImport.Validate
 {
     public class ValidateField : IValidate
     {
-        private string _rawData;
+        private IRawField _rawData;
         private IBlueprintField _blueprintField;
 
-        public ValidateField(string rawData, IBlueprintField blueprintField)
+        public ValidateField(IRawField rawData, IBlueprintField blueprintField)
         {
             if (blueprintField == null)
                 throw new ArgumentNullException("blueprintField");
@@ -27,22 +28,46 @@ namespace FlatFileImport.Validate
             {
                 var regex = _blueprintField.Regex;
 
-                if (String.IsNullOrEmpty(_rawData))
+                if (String.IsNullOrEmpty(_rawData.Value))
                 {
-                    Result = new Result(_blueprintField.Name, _blueprintField.Type.Name, _rawData, "O campo importado não possui valor.", ExceptionType.Warnning, ExceptionSeverity.Information);
+                    Result = new Result("O campo importado não possui valor.", ExceptionType.Warnning, ExceptionSeverity.Information)
+                                 {
+                                     LineName = _blueprintField.Parent.Name,
+                                     LineNumber = _rawData.Parent.Number,
+                                     FieldName =_blueprintField.Name,
+                                     Value = _rawData.Value,
+                                     Expected = _blueprintField.Type.Name,
+                                 };
+
                     return false;
                 }
 
-                if (regex != null && !regex.Rule.IsMatch(_rawData))
+                if (regex != null && !regex.Rule.IsMatch(_rawData.Value))
                 {
-                    Result = new Result(_blueprintField.Name, _blueprintField.Regex.Name, _rawData, "O campo não casa com a Regex definida na Blueprint", ExceptionType.Error, ExceptionSeverity.Fatal);
+                    Result = new Result("O campo não casa com a Regex definida na Blueprint", ExceptionType.Error, ExceptionSeverity.Fatal)
+                                 {
+                                     LineName = _blueprintField.Parent.Name,
+                                     LineNumber = _rawData.Parent.Number,
+                                     FieldName =_blueprintField.Name, 
+                                     Value = _rawData.Value,
+                                     Expected = _blueprintField.Regex.Name,
+                                 };
+
                     return false;
                 }
                     
 
-                if (_blueprintField.Type == typeof(string) && _rawData.Length > _blueprintField.Size)
+                if (_blueprintField.Type == typeof(string) && _rawData.Value.Length > _blueprintField.Size)
                 {
-                    Result = new Result(_blueprintField.Name, _blueprintField.Size.ToString(""), _rawData.Length.ToString(""), "O tamanho do campo é maior que o tamanho definido na Bluenprint" , ExceptionType.Error, ExceptionSeverity.Fatal);
+                    Result = new Result("O tamanho do campo é maior que o tamanho definido na Bluenprint" , ExceptionType.Error, ExceptionSeverity.Fatal)
+                                 {
+                                     LineName = _blueprintField.Parent.Name,
+                                     LineNumber = _rawData.Parent.Number,
+                                     FieldName =_blueprintField.Name, 
+                                     Value = _rawData.Value.Length.ToString(""),
+                                     Expected = _blueprintField.Size.ToString(""),
+                                 };
+
                     return false;
                 }
 
