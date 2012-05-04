@@ -23,12 +23,12 @@ namespace FlatFileImport.Input
             var zip = ZipFile.Read(path);
 
             if (zip.Entries.Count > 1)
-                throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL");
+                throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Varios arquivos no Zip) | " + path);
 
             foreach (var e in zip)
             {
                 if (e.IsDirectory)
-                    throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL");
+                    throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Zip com diretório) | " + path);
 
                 e.Extract(System.IO.Path.GetTempPath(), ExtractExistingFileAction.OverwriteSilently);
                 _dataFile = e.FileName;
