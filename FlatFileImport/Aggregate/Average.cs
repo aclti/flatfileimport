@@ -35,10 +35,13 @@ namespace FlatFileImport.Aggregate
                 var o = _operand;
                 _qtd = null;
                 _operand = 0;
-                return o / q;
+                Cache = o/q;
+
+                return Cache;
             }
         }
 
+        public long Cache { get; private set; }
         public IAggregateSubject Subject { get; private set; }
 
         #endregion

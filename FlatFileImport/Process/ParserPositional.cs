@@ -33,8 +33,8 @@ namespace FlatFileImport.Process
 
             _rawLine = rawLine;
 
-            if(ValidSintaxLine())
-                foreach (var field in _blueprintLine.BlueprintFields)
+            foreach (var field in _blueprintLine.BlueprintFields)
+                if (field.Position - 1 + field.Size <= _rawLine.Value.Length)
                     _rawLine.AddRawFiled(_rawLine.Value.Substring(field.Position - 1, field.Size));
         }
 

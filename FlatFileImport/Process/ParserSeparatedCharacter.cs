@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using FlatFileImport.Core;
 using FlatFileImport.Data;
-using FlatFileImport.Exception;
 using FlatFileImport.Input;
 using FlatFileImport.Validate;
 
@@ -28,16 +27,16 @@ namespace FlatFileImport.Process
 
         public void SetDataToParse(IRawLine rawLine)
         {
-            if (rawLine==null)
+            if (rawLine == null)
                 throw new ArgumentNullException("rawLine");
 
             // FEI PRA CARALHO........ Essa estrutura precisa ser melhorada.
             _rawLine = rawLine;
             _rawLine = new RawLine(_rawLine.Number, NormalizeRawData());
 
-            if(ValidSintaxLine())
-                foreach (var field in _rawLine.Value.Split(_blueprintLine.Blueprint.BluePrintCharSepartor).ToList())
-                    _rawLine.AddRawFiled(field);
+            var aux = _rawLine.Value.Split(_blueprintLine.Blueprint.BluePrintCharSepartor);
+            foreach (var field in aux.ToList())
+                _rawLine.AddRawFiled(field);
         }
 
         public void SetBlueprintLine(IBlueprintLine blueprintLine)
@@ -99,7 +98,7 @@ namespace FlatFileImport.Process
             {
                 HasBluprint();
                 HasDataToParse();
-                return _results.AsReadOnly();    
+                return _results.AsReadOnly();
             }
         }
 
@@ -109,7 +108,7 @@ namespace FlatFileImport.Process
             {
                 HasBluprint();
                 HasDataToParse();
-                
+
                 return ValidSintaxLine() && ValidSintaxAttribute();
             }
         }
@@ -130,7 +129,7 @@ namespace FlatFileImport.Process
 
             var splitChar = _blueprintLine.Blueprint.BluePrintCharSepartor;
             var amoutToInsert = amoutFields - AmountSplitInRawDataCharacter();
-            
+
             return String.Concat(_rawLine.Value, "".PadRight(amoutToInsert, splitChar));
         }
 
@@ -164,7 +163,7 @@ namespace FlatFileImport.Process
                 var data = _rawLine.RawFields[i];
                 _validate = new ValidateField(data, field);
 
-                if (_validate.IsValid) 
+                if (_validate.IsValid)
                     continue;
 
                 _results.Add(_validate.Result);

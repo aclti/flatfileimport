@@ -107,10 +107,11 @@ namespace FlatFileImport
 
                     foreach (var bline in c)
                         if(!CheckOccurrence(bline))
-                            _results.Add(new Result(_file.LineNumber, "Quantidade errada de regsitros.", ExceptionType.Error, ExceptionSeverity.Fatal)
+                            _results.Add(new Result(_file.LineNumber, "A quantidade de registro não está de acordo com o espcificado na Blueprint. Verifique a documentação de importação do arquivo e a definição da Blueprint.", ExceptionType.Error, ExceptionSeverity.Fatal)
                                              {
+                                                 Value = bline.Aggregate.Cache.ToString(""),
                                                  LineName = bline.Name,
-                                                 Expected = bline.Occurrence.Type.ToString()
+                                                 Expected = GetValuesOccorence(bline.Occurrence)
                                              });
 
                     Unstacking();
@@ -122,6 +123,17 @@ namespace FlatFileImport
                 NotifyObservers(_results);
         }
 
+
+        private string GetValuesOccorence(IOccurrence occurrence)
+        {
+            if (occurrence.Type == EnumOccurrence.One)
+                return "Um e apenas um.";
+
+            if (occurrence.Type == EnumOccurrence.AtLeastOne)
+                return "No mínimo um.";
+
+            return String.Format("No mínimo {0} e no máximo {1}", occurrence.Min, occurrence.Max);
+        }
 
         public void Process()
         {

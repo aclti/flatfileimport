@@ -17,6 +17,7 @@ namespace FlatFileImport.Aggregate
         public void AddOperand(long operand){}
         public long Result { get { return 0; } }
         public IAggregateSubject Subject { get; private set; }
+        public long Cache { get { return 0; } }
 
         #endregion
         }

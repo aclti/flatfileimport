@@ -49,7 +49,7 @@ namespace TesteImportDasn
             //view.ShowContent();
             //view.ShowFooter();
 
-            var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "02-3105-DASN10-20100731-01.txt"), new FileExtension("txt", FileType.Text));
+            var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "dasn-resumido-001.txt"), new FileExtension("txt", FileType.Text));
             var bPrint = factoy.GetBlueprint(typeof(Dasn), file);
             importer.SetBlueprint(bPrint);
             importer.SetFileToProcess(file);

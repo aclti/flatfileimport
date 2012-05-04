@@ -6,7 +6,7 @@ namespace FlatFileImport.Aggregate
     {
         private IAggregateSubject _subject;
         private long _result;
-
+        
         public Sum(IAggregateSubject subject)
         {
             if (subject == null)
@@ -26,12 +26,13 @@ namespace FlatFileImport.Aggregate
         {
             get
             {
-                var aux = _result;
+                Cache = _result;
                 _result = 0;
-                return aux;
+                return Cache;
             }
         }
 
+        public long Cache { get; private set; }
         public IAggregateSubject Subject { get; private set; }
 
         #endregion

@@ -25,12 +25,13 @@ namespace FlatFileImport.Aggregate
         {
             get
             {
-                var aux = _incremment;
+                Cache = _incremment;
                 _incremment = 0;
-                return aux;
+                return Cache;
             }
         }
 
+        public long Cache { get; private set; }
         public IAggregateSubject Subject { get; private set; }
 
         #endregion
