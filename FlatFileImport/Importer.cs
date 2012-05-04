@@ -42,6 +42,15 @@ namespace FlatFileImport
             _stack = new List<IBlueprintLine>();
         }
 
+        public void Reset()
+        {
+            _parsedDatas = new IParsedData[2];
+            _headers = new List<IParsedData>();
+            _details = new List<IParsedObjetct>();
+            _results = new List<IResult>();
+            _stack = new List<IBlueprintLine>();
+        }
+
         public void Valid()
         {
             CheckFileAndBluprint();
