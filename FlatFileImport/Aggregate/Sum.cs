@@ -4,7 +4,6 @@ namespace FlatFileImport.Aggregate
 {
     public class Sum : IAggregate
     {
-        private IAggregateSubject _subject;
         private long _result;
         
         public Sum(IAggregateSubject subject)
