@@ -60,7 +60,7 @@ namespace FlatFileImport
             while (_file.MoveToNext())
             {
                 var newLine = MatchBlueprintLine(_file.Line);
-                
+
                 if (newLine == null)
                 {
                     _results.Add(new Result(_file.LineNumber, "A linha importada não está definida na Blueprint. Consulte a documentação de importação do arquivo e verifique a definição da Blueprint", ExceptionType.Error, ExceptionSeverity.Critical)
@@ -77,10 +77,13 @@ namespace FlatFileImport
                     newLine.Aggregate.AddOperand(1);
 
                 if (IsRoot(newLine))
-                  {
+                {
                     _active = newLine;
                     continue;
                 }
+
+                if (!IsRoot(newLine) && _active == null)
+                    break;
 
                 if (!_parser.IsValid && IsMandatory(newLine.Occurrence) && _parser.Result.Any(r => r.Severity != ExceptionSeverity.Information && r.Type != ExceptionType.Warnning))
                     _results.AddRange(_parser.Result);
@@ -88,7 +91,7 @@ namespace FlatFileImport
                 var flag = true;
                 while (flag)
                 {
-                    if(_active == null)
+                    if (_active == null)
                     {
                         _results.Add(new Result(_file.LineNumber, "Hieraquia de registro não está de acordo com a Blueprint.", ExceptionType.Error, ExceptionSeverity.Fatal) { Value = _file.Line });
                         break;
@@ -106,13 +109,13 @@ namespace FlatFileImport
                         flag = false;
                     }
 
-                    if (!flag) 
+                    if (!flag)
                         continue;
 
                     var c = _blueprint.BlueprintLines.Where(b => b.Parent == _active.Parent).ToList();
 
                     foreach (var bline in c)
-                        if(!CheckOccurrence(bline))
+                        if (!CheckOccurrence(bline))
                             _results.Add(new Result(_file.LineNumber, "A quantidade de registro não está de acordo com o espcificado na Blueprint. Verifique a documentação de importação do arquivo e a definição da Blueprint.", ExceptionType.Error, ExceptionSeverity.Fatal)
                                              {
                                                  Value = bline.Aggregate.Cache.ToString(""),
@@ -153,7 +156,7 @@ namespace FlatFileImport
             while (_file.MoveToNext())
             {
                 var bline = MatchBlueprintLine(_file.Line);
-                
+
                 _parser.SetBlueprintLine(bline);
                 _parser.SetDataToParse(new RawLine(_file.LineNumber, _file.Line));
 
@@ -173,10 +176,10 @@ namespace FlatFileImport
 
                     if (parent == null && bline is BlueprintLineFooter)
                         _parsedDatas[1] = pdata;
-                    
-                    if(parent != null)
+
+                    if (parent != null)
                         parent.AddParsedData(pdata);
-                    
+
                     _headers.Add(pdata);
                 }
 
