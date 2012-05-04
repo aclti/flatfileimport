@@ -16,7 +16,7 @@ namespace FlatFileImport
     public class Importer : ISubject
     {
         private List<IObserver> _observers;
-        private List<IAggregate> _aggregates;
+        //private List<IAggregate> _aggregates;
         private IParser _parser;
         private IBlueprint _blueprint;
         private IParsedData[] _parsedDatas;
@@ -25,12 +25,13 @@ namespace FlatFileImport
         private List<IParsedData> _headers;
         private List<IParsedObjetct> _details;
         private List<IResult> _results;
-
-        public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
-
-
         private List<IBlueprintLine> _stack;
         private IBlueprintLine _active;
+
+        public ReadOnlyCollection<IResult> Results { get { return _results.AsReadOnly(); } }
+        public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
+        public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
+        public bool IgnoreOpcionalRecordWithError { set; get; }
 
         public Importer()
         {
@@ -40,10 +41,6 @@ namespace FlatFileImport
             _results = new List<IResult>();
             _stack = new List<IBlueprintLine>();
         }
-
-        public ReadOnlyCollection<IResult> Results { get { return _results.AsReadOnly(); } }
-        public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
-        
 
         public void Valid()
         {
@@ -76,7 +73,7 @@ namespace FlatFileImport
                     continue;
                 }
 
-                if (!_parser.IsValid && _parser.Result.Any(r => r.Severity != ExceptionSeverity.Information && r.Type != ExceptionType.Warnning))
+                if (!_parser.IsValid && IsMandatory(newLine.Occurrence) && _parser.Result.Any(r => r.Severity != ExceptionSeverity.Information && r.Type != ExceptionType.Warnning))
                     _results.AddRange(_parser.Result);
 
                 var flag = true;
@@ -115,7 +112,6 @@ namespace FlatFileImport
                                              });
 
                     Unstacking();
-                    // _results.Add(new Result("", "", _file.Line, String.Format("Linha: {0} | Quantidade errada de regsitros.", _file.LineNumber), ExceptionType.Error, ExceptionSeverity.Fatal));
                 }
             }
 
@@ -123,6 +119,10 @@ namespace FlatFileImport
                 NotifyObservers(_results);
         }
 
+        private bool IsMandatory(IOccurrence occurrence)
+        {
+            return occurrence.Type != EnumOccurrence.NoOrMany || occurrence.Type != EnumOccurrence.NoOrOne;
+        }
 
         private string GetValuesOccorence(IOccurrence occurrence)
         {
@@ -137,93 +137,49 @@ namespace FlatFileImport
 
         public void Process()
         {
-            //CheckFileAndBluprint();
-            //_file.Restart();
-            //_parser = SetParser();
+            CheckFileAndBluprint();
+            _file.Restart();
+            _parser = SetParser();
 
-            //while (_file.MoveToNext())
-            //{
-            //    var bline = MatchBlueprintLine(_file.Line);
+            while (_file.MoveToNext())
+            {
+                var bline = MatchBlueprintLine(_file.Line);
+                
+                _parser.SetBlueprintLine(bline);
+                _parser.SetDataToParse(new RawLine(_file.LineNumber, _file.Line));
 
-            //    if (bline == null)
-            //        continue;
+                if (!_parser.IsValid && IsMandatory(bline.Occurrence) && _parser.Result.Any(r => r.Severity != ExceptionSeverity.Information && r.Type != ExceptionType.Warnning))
+                    continue;
 
-            //    SetAggergates();
-            //    _parser.SetBlueprintLine(bline);
-            //    _parser.SetDataToParse(new RawLine(_file.LineNumber, _file.Line));
+                IParsedData parent = null;
+                if (bline.Parent != null)
+                    parent = _headers.FindLast(p => p.Name == bline.Parent.Name);
 
-            //    IParsedData parent = null;
-            //    if (bline.Parent != null)
-            //        parent = _headers.FindLast(p => p.Name == bline.Parent.Name);
+                if (bline is BlueprintLineHeader || bline is BlueprintLineFooter)
+                {
+                    var pdata = (IParsedData)_parser.GetParsedData(parent);
 
-            //    if (!_parser.IsValid)
-            //    {
-            //        NotifyObservers(_parser.Result.ToList());
-            //    }
+                    if (parent == null && bline is BlueprintLineHeader)
+                        _parsedDatas[0] = pdata;
 
-            //    if (bline is BlueprintLineHeader || bline is BlueprintLineFooter)
-            //    {
-            //        var pdata = (IParsedData)_parser.GetParsedData(parent);
+                    if (parent == null && bline is BlueprintLineFooter)
+                        _parsedDatas[1] = pdata;
+                    
+                    if(parent != null)
+                        parent.AddParsedData(pdata);
+                    
+                    _headers.Add(pdata);
+                }
 
-            //        if (parent != null)
-            //            parent.AddParsedData(pdata);
+                if (bline is BlueprintLineDetails && parent != null)
+                {
+                    var pdata = _parser.GetParsedLine(parent);
+                    parent.AddLine(pdata);
+                    _details.Add(pdata);
+                }
+            }
 
-            //        _headers.Add(pdata);
-            //    }
-
-            //    if (bline is BlueprintLineDetails && parent != null)
-            //    {
-            //        var pdata = _parser.GetParsedLine(parent);
-            //        parent.AddLine(pdata);
-            //        _details.Add(pdata);
-            //    }
-
-            //    var aggregate = GetAggregate(bline);
-            //    if (aggregate != null)
-            //        aggregate.AddOperand(1);
-
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //_parsedDatas[0] = _headers.Find(h => h.Parent == null && h.Name == GetRootHeader().Name);
-            //_parsedDatas[1] = _headers.Find(h => h.Parent == null && h.Name == GetRootFooter().Name);
-            //var px = _headers.Count(h => h.Name == "D1000");
-            //NotifyObservers(_parsedDatas);
-            NotifyObservers(_headers.First());
-
-            //Parser = new Parser(BlueprintFactoy.GetBlueprint(Type, fileInfo), fileInfo, observer);
-            //Parser.ProcessHeader();
-
-            //Console.WriteLine("".PadLeft(80, '*'));
-            //Console.WriteLine(String.Format("INICIO DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Path));
-            //Console.WriteLine("".PadLeft(80, '*'));
-
-            //Parser.Process();
-
-            //Parser.UnRegisterObserver(observer);
-
-            //Console.WriteLine("".PadLeft(80, '*'));
-            //Console.WriteLine(String.Format("FINAL DO PROCESSAMENTO: ARQUIVO [{0}]", fileInfo.Path));
-            //Console.WriteLine("".PadLeft(80, '*'));
+            NotifyObservers(_parsedDatas);
         }
 
         private void StackUp(IBlueprintLine newLine)
@@ -288,21 +244,6 @@ namespace FlatFileImport
                 throw new System.Exception("Não foi definido um arquivo para ser processado.");
         }
 
-        private void SetAggergates()
-        {
-            _aggregates = new List<IAggregate>();
-
-            foreach (var bline in _blueprint.BlueprintLines)
-                if (bline.Aggregate != null)
-                    _aggregates.Add(bline.Aggregate);
-
-        }
-
-        private IAggregate GetAggregate(IBlueprintLine bline)
-        {
-            return _aggregates.FirstOrDefault(ag => ag.Subject.Name == bline.Name);
-        }
-
         public void SetBlueprint(IBlueprint blueprint)
         {
             if (blueprint == null)
@@ -352,25 +293,7 @@ namespace FlatFileImport
                 _observers.Remove(observer);
         }
 
-        public void NotifyObservers(IParsedData data)
-        {
-            if (_observers != null && _observers.Count > 0)
-                _observers.ForEach(o => o.Notify(data));
-        }
-
-        public void NotifyObservers(IParsedObjetct data)
-        {
-            if (_observers != null && _observers.Count > 0)
-                _observers.ForEach(o => o.Notify(data));
-        }
-
         public void NotifyObservers(IParsedData[] data)
-        {
-            if (_observers != null && _observers.Count > 0)
-                _observers.ForEach(o => o.Notify(data));
-        }
-
-        public void NotifyObservers(string[] data)
         {
             if (_observers != null && _observers.Count > 0)
                 _observers.ForEach(o => o.Notify(data));
