@@ -5,6 +5,7 @@ using System.Text;
 using FlatFileImport;
 using FlatFileImport.Data;
 using FlatFileImport.Validate;
+using System.IO;
 
 namespace TesteImportDasn
 {
@@ -17,6 +18,8 @@ namespace TesteImportDasn
     class ViewMain : IObserver
     {
         private List<Result> _results;
+
+        public string FilePath { set; get; }
 
         public void ShowHeader(string header)
         {
@@ -53,27 +56,52 @@ namespace TesteImportDasn
             Console.ReadKey(true);
         }
 
+
         #region IObserver Members
 
         public void Notify(IParsedData[] data)
         {
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+
             var header = data[0];
             var fotter = data[1];
 
-            Console.WriteLine("Header e footer recebidos");
+            var sb = new StringBuilder();
+            sb.AppendLine("".PadLeft(160, ':'));
+            sb.AppendLine("".PadLeft(160, ':'));
+            sb.AppendLine("SUCESSO NA IMPORTAÇÃO: " + FilePath);
+            sb.AppendLine("".PadLeft(160, ':'));
+            sb.AppendLine("".PadLeft(160, ':'));
+
+            using (var file = new StreamWriter(path + "Log.txt", true))
+            {
+                file.WriteLine(sb.ToString());
+            }
         }
 
         public void Notify(List<IResult> data)
         {
+            var path = AppDomain.CurrentDomain.BaseDirectory;
             var sb = new StringBuilder();
+
+            sb.AppendLine("".PadLeft(160, '*'));
+            sb.AppendLine(FilePath);
+            sb.AppendLine("".PadLeft(160, '*'));
 
             foreach (var s in data)
             {
-                sb.AppendLine();
                 sb.Append(s.FullMessage);
             }
 
-            Console.WriteLine(sb.ToString());
+            sb.AppendLine("".PadLeft(160, '*'));
+            sb.AppendLine("".PadLeft(160, '*'));
+
+            Console.WriteLine(FilePath + " ".PadLeft(30, '.'));
+
+            using (var file = new StreamWriter(path + "Log_" +DateTime.Now.Ticks+ ".txt", true))
+            {
+                file.WriteLine(sb.ToString());
+            }
         }
 
         #endregion

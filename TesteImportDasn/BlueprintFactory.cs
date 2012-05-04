@@ -38,14 +38,14 @@ namespace TesteImportDasn
             switch (GetVersion(toParse))
             {
                 case "108":
-                    pathXml = Path.Combine(_blueprintPath, "blue-print-dasn_108.xml");
+                    pathXml = Path.Combine(_blueprintPath, "blueprint-dasn.xml");
                     break;
 
                 default:
-                    throw new Exception(toParse.Header + " [ " + toParse.Path + " ] [ " + toParse.Path + " ]");
+                    return null;
             }
 
-            BlueprintSetter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn.xml"));
+            BlueprintSetter = new BlueprintSetterXml(pathXml);
             return BlueprintSetter.GetBlueprint();
         }
 
