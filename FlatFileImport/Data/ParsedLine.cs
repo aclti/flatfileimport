@@ -20,6 +20,8 @@ namespace FlatFileImport.Data
             if (parent == null)
                 throw new ArgumentNullException("parent");
 
+            _fields = new List<IParsedField>();
+
             Name = name;
             Parent = parent;
         }
@@ -27,9 +29,6 @@ namespace FlatFileImport.Data
         public void AddField(string name, string value, Type type)
         {
             var field = new ParsedField(name, value, type, this);
-
-            if(_fields == null)
-                _fields = new List<IParsedField>();
 
             _fields.Add(field);
         }

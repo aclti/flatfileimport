@@ -16,7 +16,11 @@ namespace FlatFileImport.Data
                 throw new ArgumentNullException("name");
 
             Name = name;
-            Parent = parent;   
+            Parent = parent;
+
+            _datas = new List<IParsedData>();
+            _lines = new List<IParsedObjetct>();
+            _fields = new List<IParsedField>();
         }
 
         #region IParsedData,IParsedObjetct Members
@@ -26,9 +30,6 @@ namespace FlatFileImport.Data
 
         public void AddField(string name, string value, Type type)
         {
-            if (_fields == null)
-                _fields = new List<IParsedField>();
-
             _fields.Add(new ParsedField(name, value, type, this));
         }
 
@@ -41,9 +42,6 @@ namespace FlatFileImport.Data
 
         public void AddParsedData(string name)
         {
-            if(_datas == null)
-                _datas = new List<IParsedData>();
-
             _datas.Add(new ParsedData(name, this));
         }
 
@@ -54,9 +52,6 @@ namespace FlatFileImport.Data
 
             if(header.Parent != this)
                 throw new System.Exception("Pai errado.............");
-
-            if (_datas == null)
-                _datas = new List<IParsedData>();
 
             _datas.Add(header);
         }
@@ -69,17 +64,11 @@ namespace FlatFileImport.Data
             if (details.Parent != this)
                 throw new System.Exception("Pai errado.............");
 
-            if (_lines == null)
-                _lines = new List<IParsedObjetct>();
-
             _lines.Add(details);
         }
 
         public void AddLine(string name)
         {
-            if (_lines == null)
-                _lines = new List<IParsedObjetct>();
-
             _lines.Add(new ParsedLine(name, this));
         }
 
