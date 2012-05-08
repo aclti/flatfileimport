@@ -36,7 +36,7 @@ namespace FlatFileImport.Process
 
             var aux = _rawLine.Value.Split(_blueprintLine.Blueprint.BluePrintCharSepartor);
             foreach (var field in aux.ToList())
-                _rawLine.AddRawFiled(field);
+                _rawLine.AddRawFiled(field.Trim());
         }
 
         public void SetBlueprintLine(IBlueprintLine blueprintLine)
