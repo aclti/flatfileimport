@@ -12,8 +12,8 @@ namespace FlatFileImport.Core
     public class BlueprintSetterXml : IBlueprintSetter
     {
         private const string RgxDate = @"^(?<year>[1-9][0-9]{3})(?<month>1[0-2]|0[1-9])(?<day>0[1-9]|[1-2][0-9]|3[0-1])((?<hour>[01][0-9]|2[0-3])(?<minute>[0-5][0-9])(?<second>[0-5][0-9]))?$";
-        private const string RgxInt = @"^[0-9]+$";
-        private const string RgxDecimal = @"^[0-9]+([.,][0-9]+)?$";
+        private const string RgxInt = @"^(-)?[0-9]+$";
+        private const string RgxDecimal = @"^(-)?[0-9]+([,.][0-9]+)?$";
 
         private readonly string _path;
         private readonly XPathDocument _xmlDoc;
