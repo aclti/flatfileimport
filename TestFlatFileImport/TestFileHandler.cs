@@ -90,7 +90,7 @@ namespace TestFlatFileImport
             Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
             Assert.AreEqual(2, info.LineNumber);
 
-            info.Restart();
+            info.Reset();
             Assert.AreEqual(String.Empty, info.Line);
             Assert.AreEqual(0, info.LineNumber);
 
@@ -102,6 +102,41 @@ namespace TestFlatFileImport
             Assert.AreEqual("D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0", info.Line);
             Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
             Assert.AreEqual(2, info.LineNumber);
+        }
+
+        [Test]
+        public void TestFileInfoTextDispose()
+        {
+            var pathFileToDelete = Path.Combine(SigleDasn, "teste-delete.txt");
+            File.Copy(Path.Combine(SigleDasn, "02-3105-DASN10-20100715-01.txt"), pathFileToDelete, true);
+            var handler = Handler.GetHandler(pathFileToDelete);
+            Assert.IsTrue(handler is HandlerText);
+
+            var enumerator = handler.GetEnumerator();
+            if (!enumerator.MoveNext())
+                throw new Exception("Nenhum FileInfo econtrado.");
+
+            var info = enumerator.Current;
+
+            Assert.IsNotNull(info);
+            Assert.AreEqual(Path.GetFileName(pathFileToDelete), info.Name);
+            Assert.AreEqual(pathFileToDelete, info.Path);
+
+            info.MoveToNext();
+            Assert.AreEqual("AAAAA|108|20100701|20100715", info.Line);
+            Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
+            Assert.AreEqual(1, info.LineNumber);
+
+            info.MoveToNext();
+            Assert.AreEqual("D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0", info.Line);
+            Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
+            Assert.AreEqual(2, info.LineNumber);
+
+            info.Release();
+            Assert.AreEqual(String.Empty, info.Line);
+            Assert.AreEqual(0, info.LineNumber);
+            File.Delete(info.Path);
+            Assert.IsFalse(File.Exists(info.Path));
         }
     }
 }

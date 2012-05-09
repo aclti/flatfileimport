@@ -9,7 +9,6 @@ namespace FlatFileImport.Input
         private StreamReader _stream;
         private FileExtension _extension;
         private readonly FileInfo _parent;
-        private int _lineNumber;
 
         public FileInfo(string path, FileExtension extension)
         {
@@ -24,10 +23,7 @@ namespace FlatFileImport.Input
             
             _stream = new StreamReader(_path);
             Header = _stream.ReadLine();
-            _stream.Close();
-            _stream.Dispose();
-            _stream = null;
-            Line = String.Empty;
+            ClearAll();
         }
 
         public FileInfo(string path, FileExtension extension, FileInfo parent) : this(path, extension)
@@ -36,6 +32,11 @@ namespace FlatFileImport.Input
                 throw new ArgumentNullException("parent");
 
             _parent = parent;
+        }
+
+        ~FileInfo()
+        {
+            ClearAll();
         }
 
         #region IFileInfo Members
@@ -47,6 +48,7 @@ namespace FlatFileImport.Input
 
         public string Header { get; private set; }
         public string Line { get; private set; }
+        public int LineNumber { get; private set; }
 
         public bool MoveToNext()
         {
@@ -56,20 +58,14 @@ namespace FlatFileImport.Input
             if (_stream.EndOfStream)
                 return false;
 
-            _lineNumber++;
+            LineNumber++;
             Line = _stream.ReadLine();
             return true;
         }
 
-        public int LineNumber
+        public void Reset()
         {
-            get { return _lineNumber; }
-        }
-
-        public void Restart()
-        {
-            _lineNumber = 0;
-            Line = String.Empty;
+            Clear();
 
             if (_stream == null) 
                 return;
@@ -80,9 +76,27 @@ namespace FlatFileImport.Input
 
         public void Release()
         {
+            ClearAll();
+        }
+
+        #endregion
+
+        private void ClearAll()
+        {
+            Clear();
+
+            if(_stream == null)
+                return;
+
+            _stream.Close();
             _stream.Dispose();
             _stream = null;
         }
-        #endregion
+
+        private void Clear()
+        {
+            LineNumber = 0;
+            Line = String.Empty;
+        }
     }
 }
