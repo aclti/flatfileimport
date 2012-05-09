@@ -54,7 +54,7 @@ namespace FlatFileImport
         public void Valid()
         {
             CheckFileAndBluprint();
-            _file.Restart();
+            _file.Reset();
             _parser = SetParser();
 
             while (_file.MoveToNext())
@@ -150,7 +150,7 @@ namespace FlatFileImport
         public void Process()
         {
             CheckFileAndBluprint();
-            _file.Restart();
+            _file.Reset();
             _parser = SetParser();
 
             while (_file.MoveToNext())
