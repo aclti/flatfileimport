@@ -157,21 +157,21 @@ namespace FlatFileImport.Core
         {
             throw new NotImplementedException();
 
-            var attrColl = node.Attributes;
+            //var attrColl = node.Attributes;
 
-            if (!HasAttribute(attrColl, EnumLineAttributes.Aggregate))
-                return new NonAggregate(GetSubject(blueprintLine));
+            //if (!HasAttribute(attrColl, EnumLineAttributes.Aggregate))
+            //    return new NonAggregate(GetSubject(blueprintLine));
 
-            var value = GetAttributeValue(attrColl, EnumLineAttributes.Aggregate);
-            var type = (EnumAggregate)Enum.Parse(typeof(EnumAggregate), value);
+            //var value = GetAttributeValue(attrColl, EnumLineAttributes.Aggregate);
+            //var type = (EnumAggregate)Enum.Parse(typeof(EnumAggregate), value);
 
-            if(type == EnumAggregate.Sum)
-                return new Sum(GetSubject(blueprintLine));
+            //if(type == EnumAggregate.Sum)
+            //    return new Sum(GetSubject(blueprintLine));
 
-            if(type ==  EnumAggregate.Average)
-                return new Average(GetSubject(blueprintLine));
+            //if(type ==  EnumAggregate.Average)
+            //    return new Average(GetSubject(blueprintLine));
 
-            return new Count(GetSubject(blueprintLine));
+            //return new Count(GetSubject(blueprintLine));
         }
 
         private bool HasParent(XmlNode node)

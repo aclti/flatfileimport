@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using FlatFileImport.Core;
-using FlatFileImport.Process;
 using NUnit.Framework;
 
 namespace TestFlatFileImport
@@ -10,8 +9,6 @@ namespace TestFlatFileImport
     {
         private string _path;
         private string _blueprintPath;
-
-        private IBlueprint _blueprint;
 
         [SetUp]
         public void Setup()
@@ -25,14 +22,6 @@ namespace TestFlatFileImport
         {
             _path = String.Empty;
             _blueprintPath = String.Empty;
-            _blueprint = null;
-        }
-
-        [Test]
-        public void TempTest()
-        {
-            var setter = new BlueprintSetterXml(Path.Combine(_blueprintPath, "blueprint-dasn-resumida.xml"));
-            var bine = setter.GetBlueprint();
         }
     }
 }
