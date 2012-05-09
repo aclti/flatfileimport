@@ -110,6 +110,10 @@ namespace TestFlatFileImport
 
             Assert.IsNotNull(fileInfo);
             Assert.AreEqual("AAAAA|120|20090722|20090722", fileInfo.Header);
+            Assert.AreEqual(String.Empty, fileInfo.Line);
+            Assert.AreEqual(0, fileInfo.LineNumber);
+
+            fileInfo.MoveToNext();
             Assert.AreEqual("AAAAA|120|20090722|20090722", fileInfo.Line);
             Assert.AreEqual(1, fileInfo.LineNumber);
 

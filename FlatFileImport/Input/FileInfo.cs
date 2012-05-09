@@ -9,7 +9,6 @@ namespace FlatFileImport.Input
         private StreamReader _stream;
         private FileExtension _extension;
         private readonly FileInfo _parent;
-        private string _line;
         private int _lineNumber;
 
         public FileInfo(string path, FileExtension extension)
@@ -28,6 +27,7 @@ namespace FlatFileImport.Input
             _stream.Close();
             _stream.Dispose();
             _stream = null;
+            Line = String.Empty;
         }
 
         public FileInfo(string path, FileExtension extension, FileInfo parent) : this(path, extension)
@@ -46,11 +46,7 @@ namespace FlatFileImport.Input
         public FileExtension Extesion { get { return _parent == null ? _extension : _parent.Extesion; } set { _extension = value; } }
 
         public string Header { get; private set; }
-
-        public string Line
-        {
-            get { return _lineNumber <= 1 ? Header : _line; }
-        }
+        public string Line { get; private set; }
 
         public bool MoveToNext()
         {
@@ -61,7 +57,7 @@ namespace FlatFileImport.Input
                 return false;
 
             _lineNumber++;
-            _line = _stream.ReadLine();
+            Line = _stream.ReadLine();
             return true;
         }
 
@@ -73,11 +69,20 @@ namespace FlatFileImport.Input
         public void Restart()
         {
             _lineNumber = 0;
+            Line = String.Empty;
 
-            if(_stream != null)
-                _stream.BaseStream.Seek(0, 0);
+            if (_stream == null) 
+                return;
+
+            _stream.DiscardBufferedData();
+            _stream.BaseStream.Seek(0, SeekOrigin.Begin);
         }
 
+        public void Release()
+        {
+            _stream.Dispose();
+            _stream = null;
+        }
         #endregion
     }
 }

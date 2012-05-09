@@ -11,5 +11,6 @@
         string Header { get; }
         bool MoveToNext();
         void Restart();
+        void Release();
     }
 }
