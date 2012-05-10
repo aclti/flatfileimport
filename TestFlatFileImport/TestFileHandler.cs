@@ -2,6 +2,8 @@
 using System.IO;
 using FlatFileImport.Input;
 using NUnit.Framework;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace TestFlatFileImport
 {
@@ -137,6 +139,39 @@ namespace TestFlatFileImport
             Assert.AreEqual(0, info.LineNumber);
             File.Delete(info.Path);
             Assert.IsFalse(File.Exists(info.Path));
+        }
+
+        [Test]
+        public void TestFileInfoTextDisposeZipHandler()
+        {
+            var pathFileToDelete = Path.Combine(SigleDasn, "teste-delete" + DateTime.Now.Ticks + ".zip");
+            File.Copy(Path.Combine(SigleDasn, "02-3105-DASN10-20100415-01.zip"), pathFileToDelete, true);
+            var handler = Handler.GetHandler(pathFileToDelete);
+            Assert.IsTrue(handler is HandlerZip);
+
+            var file = handler.FirstOrDefault();
+            
+            Assert.IsNotNull(file);
+
+            Assert.IsNotNull(file);
+            Assert.AreEqual(Path.GetFileName(pathFileToDelete), file.Name);
+            Assert.AreEqual(pathFileToDelete, file.Path);
+
+            file.MoveToNext();
+            Assert.AreEqual("AAAAA|108|20100401|20100415", file.Line);
+            Assert.AreEqual("AAAAA|108|20100401|20100415", file.Header);
+            Assert.AreEqual(1, file.LineNumber);
+
+            file.MoveToNext();
+            Assert.AreEqual("D1000|000689662009001|1|2009|CHAME TAXI LTDA EPP|19940517|19940517|02071009400003615|00206062898925166181|20100404084639|1.0.1.0|0", file.Line);
+            Assert.AreEqual("AAAAA|108|20100401|20100415", file.Header);
+            Assert.AreEqual(2, file.LineNumber);
+
+            file.Release();
+            Assert.AreEqual(String.Empty, file.Line);
+            Assert.AreEqual(0, file.LineNumber);
+            File.Delete(file.Path);
+            Assert.IsFalse(File.Exists(file.Path));
         }
     }
 }

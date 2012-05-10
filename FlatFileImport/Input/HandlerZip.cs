@@ -20,23 +20,25 @@ namespace FlatFileImport.Input
 
         private string ExtractZip(string path)
         {
-            var zip = ZipFile.Read(path);
-
-            if (zip.Entries.Count > 1)
-                throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Varios arquivos no Zip) | " + path);
-
-            foreach (var e in zip)
+            using (var zip = ZipFile.Read(path))
             {
-                if (e.IsDirectory)
-                    throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Zip com diretório) | " + path);
+                if (zip.Entries.Count > 1)
+                    throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Varios arquivos no Zip) | " + path);
 
-                e.Extract(System.IO.Path.GetTempPath(), ExtractExistingFileAction.OverwriteSilently);
-                _dataFile = e.FileName;
+                foreach (var e in zip)
+                {
+                    if (e.IsDirectory)
+                        throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Zip com diretório) | " + path);
 
-                return System.IO.Path.Combine(System.IO.Path.GetTempPath(), _dataFile);
+                    e.Extract(System.IO.Path.GetTempPath(), ExtractExistingFileAction.OverwriteSilently);
+                    _dataFile = e.FileName;
+
+                    return System.IO.Path.Combine(System.IO.Path.GetTempPath(), _dataFile);
+                }
+
+                zip.Dispose();
+                return null;
             }
-
-            return null;
         }   
     }
 }
