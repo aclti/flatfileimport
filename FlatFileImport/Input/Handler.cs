@@ -8,12 +8,12 @@ using FlatFileImport.Exception;
 
 namespace FlatFileImport.Input
 {
-    public abstract class Handler : IEnumerable<FileInfo>, IEnumerator<FileInfo>
+    public abstract class Handler : IEnumerable<IFileInfo>, IEnumerator<IFileInfo>
     {
         protected static SupportedExtension SupportedExtension;
         private readonly string _path;
         private int _pos;
-        protected List<FileInfo> FileInfos;
+        protected List<IFileInfo> FileInfos;
 
         public static ReadOnlyCollection<FileExtension> Extensions { get { return SupportedExtension.Extensions; } }
         public string Path { get { return _path; } }
@@ -37,10 +37,10 @@ namespace FlatFileImport.Input
             if (!IsValid())
                 throw new ArgumentException("O Path informado não é válido.");
 
-            FileInfos = new List<FileInfo>();
+            FileInfos = new List<IFileInfo>();
         }
 
-        public static IEnumerable<FileInfo> GetHandler(string path)
+        public static IEnumerable<IFileInfo> GetHandler(string path)
         {
             if (IsDirectory(path))
                 return new HandlerDirectory(path);
@@ -94,9 +94,9 @@ namespace FlatFileImport.Input
             return dInfo.Exists;
         }
 
-        #region IEnumerable<FileInfo> Members
+        #region IEnumerable<IFileInfo> Members
 
-        public IEnumerator<FileInfo> GetEnumerator()
+        public IEnumerator<IFileInfo> GetEnumerator()
         {
             return FileInfos.GetEnumerator();
         }
@@ -112,9 +112,9 @@ namespace FlatFileImport.Input
 
         #endregion
 
-        #region IEnumerator<FileInfo> Members
+        #region IEnumerator<IFileInfo> Members
 
-        public FileInfo Current
+        public IFileInfo Current
         {
             get { return FileInfos[_pos]; }
         }

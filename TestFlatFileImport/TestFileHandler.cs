@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using FlatFileImport.Input;
 using NUnit.Framework;
 using System.Linq;
@@ -170,6 +171,7 @@ namespace TestFlatFileImport
             file.Release();
             Assert.AreEqual(String.Empty, file.Line);
             Assert.AreEqual(0, file.LineNumber);
+            
             File.Delete(file.Path);
             Assert.IsFalse(File.Exists(file.Path));
         }

@@ -31,7 +31,7 @@ namespace FlatFileImport.Input
         {
             foreach (var s in _paths)
             {
-                IEnumerable<FileInfo> h = GetHandler(s);
+                IEnumerable<IFileInfo> h = GetHandler(s);
 
                 foreach (var fileInfo in h)
                     FileInfos.Add(fileInfo);
