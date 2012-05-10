@@ -70,6 +70,7 @@
     <Compile Include="Input\FileInfo.cs" />
     <Compile Include="Input\Handler.cs" />
     <Compile Include="Input\HandlerDirectory.cs" />
+    <Compile Include="Input\HandlerDummy.cs" />
     <Compile Include="Input\HandlerText.cs" />
     <Compile Include="Input\HandlerZip.cs" />
     <Compile Include="Input\IFileInfo.cs" />

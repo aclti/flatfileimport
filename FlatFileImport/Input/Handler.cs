@@ -14,6 +14,7 @@ namespace FlatFileImport.Input
         private readonly string _path;
         private int _pos;
         protected List<IFileInfo> FileInfos;
+        public static string[] IgnoreExtensions { get; set; }
 
         public static ReadOnlyCollection<FileExtension> Extensions { get { return SupportedExtension.Extensions; } }
         public string Path { get { return _path; } }
@@ -44,6 +45,9 @@ namespace FlatFileImport.Input
         {
             if (IsDirectory(path))
                 return new HandlerDirectory(path);
+
+            if (IgnoreExtensions != null && IgnoreExtensions.Any(e => e.ToUpper() == System.IO.Path.GetExtension(path).ToUpper()))
+                return new HandlerDummy(path);
 
             if (IsPlainText(path))
                 return new HandlerText(path);

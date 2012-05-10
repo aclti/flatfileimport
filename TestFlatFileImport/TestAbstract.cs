@@ -11,6 +11,7 @@ namespace TestFlatFileImport
         protected string MultDasn;
         protected string SigleDas;
         protected string MultDas;
+        protected string IgnoreExtensions;
 
         [SetUp]
         public void Setup()
@@ -20,6 +21,7 @@ namespace TestFlatFileImport
             SigleDasn = Path.Combine(PathSamples, @"Dasn\Single");
             MultDas = Path.Combine(PathSamples, @"Das\Mult");
             MultDasn = Path.Combine(PathSamples, @"Dasn\Mult");
+            IgnoreExtensions = Path.Combine(PathSamples, @"IgnoreExtensions");
         }
 
         [TearDown]

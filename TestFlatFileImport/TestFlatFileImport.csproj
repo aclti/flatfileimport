@@ -108,6 +108,7 @@
     <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090723-01.txt" />
     <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090810-01.txt" />
     <Content Include="Samples\Files\Das\Single\02-3105-DAS-20090816-01.txt" />
+    <Content Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100715-01.txt" />
     <Content Include="Samples\Files\movies.txt" />
     <Content Include="Samples\sample-codigotom-posicional.txt" />
     <Content Include="Samples\sample-movies-pipe.txt" />
@@ -119,6 +120,8 @@
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090601-01.zip" />
     <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090602-01.zip" />
     <None Include="Samples\Files\Das\Single\02-3105-DAS-20090722-01.zip" />
+    <None Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100415-01.zip" />
+    <None Include="Samples\Files\IgnoreExtensions\movies.foo" />
     <None Include="Samples\Files\sample-siafi-posicional.ret" />
   </ItemGroup>
   <ItemGroup />

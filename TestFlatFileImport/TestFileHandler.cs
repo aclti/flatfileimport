@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using FlatFileImport.Exception;
 using FlatFileImport.Input;
 using NUnit.Framework;
 using System.Linq;
@@ -38,9 +39,9 @@ namespace TestFlatFileImport
         {
             var handler = Handler.GetHandler(Path.Combine(SigleDasn, "02-3105-DASN10-20100715-01.txt"));
             Assert.IsTrue(handler is HandlerText);
-            
+
             var enumerator = handler.GetEnumerator();
-            if(!enumerator.MoveNext())
+            if (!enumerator.MoveNext())
                 throw new Exception("Nenhum FileInfo econtrado.");
 
             var info = enumerator.Current;
@@ -151,7 +152,7 @@ namespace TestFlatFileImport
             Assert.IsTrue(handler is HandlerZip);
 
             var file = handler.FirstOrDefault();
-            
+
             Assert.IsNotNull(file);
 
             Assert.IsNotNull(file);
@@ -171,9 +172,37 @@ namespace TestFlatFileImport
             file.Release();
             Assert.AreEqual(String.Empty, file.Line);
             Assert.AreEqual(0, file.LineNumber);
-            
+
             File.Delete(file.Path);
             Assert.IsFalse(File.Exists(file.Path));
+        }
+
+
+        [Test]
+        public void TestHandlerIgnoreExtension()
+        {
+            Handler.IgnoreExtensions = new[] { ".foo" };
+            var handler = Handler.GetHandler(IgnoreExtensions);
+
+            Assert.IsTrue(handler is HandlerDirectory);
+            Assert.AreEqual(2, handler.Count());
+
+            Handler.IgnoreExtensions = new[] { ".foo", ".zip" };
+            handler = Handler.GetHandler(IgnoreExtensions);
+
+            Assert.IsTrue(handler is HandlerDirectory);
+            Assert.AreEqual(1, handler.Count());
+        }
+
+        [Test]
+        [ExpectedException(typeof(WrongTypeFileException))]
+        public void TestHandlerIgnoreExtensionNotInformed()
+        {
+            Handler.IgnoreExtensions = null;
+            var handler = Handler.GetHandler(IgnoreExtensions);
+
+            Assert.IsTrue(handler is HandlerDirectory);
+            Assert.AreEqual(2, handler.Count());
         }
     }
 }
