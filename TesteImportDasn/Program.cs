@@ -35,8 +35,8 @@ namespace TesteImportDasn
 
             IBlueprintFactoy factoy = new BlueprintFactory();
             var importer = new Importer();
-            IEnumerable<FlatFileImport.Input.FileInfo> handler = null;
-            IEnumerator<FlatFileImport.Input.FileInfo> enumerator = null;
+            IEnumerable<IFileInfo> handler = null;
+            IEnumerator<IFileInfo> enumerator = null;
 
             try
             {
