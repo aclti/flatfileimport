@@ -8,6 +8,7 @@ namespace FlatFileImport
     {
         void Notify(IParsedData[] data);
         void Notify(List<IResult> data);
+        void Notify(IParsedObjetct data);
     }
 }
 

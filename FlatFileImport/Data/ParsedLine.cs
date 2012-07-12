@@ -17,8 +17,8 @@ namespace FlatFileImport.Data
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            if (parent == null)
-                throw new ArgumentNullException("parent");
+            //if (parent == null)
+            //    throw new ArgumentNullException("parent");
 
             _fields = new List<IParsedField>();
 

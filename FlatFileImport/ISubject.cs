@@ -10,6 +10,7 @@ namespace FlatFileImport
         void UnRegisterObserver(IObserver observer);
         void NotifyObservers(IParsedData[] data);
         void NotifyObservers(List<IResult> data);
+        void NotifyObservers(IParsedObjetct data);
     }
 }
 

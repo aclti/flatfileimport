@@ -32,6 +32,7 @@ namespace FlatFileImport
         public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
         public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
         public bool IgnoreOpcionalRecordWithError { set; get; }
+        public bool NotifyLine { set; get; }
 
         public Importer()
         {
@@ -164,34 +165,48 @@ namespace FlatFileImport
                     continue;
 
                 IParsedData parent = null;
-                if (bline.Parent != null)
+                if (bline.Parent != null && !NotifyLine)
                     parent = _headers.FindLast(p => p.Name == bline.Parent.Name);
 
                 if (bline is BlueprintLineHeader || bline is BlueprintLineFooter)
                 {
-                    var pdata = (IParsedData)_parser.GetParsedData(parent);
+                    var pdata = _parser.GetParsedData(parent);
+
+                    if (NotifyLine)
+                    {
+                        NotifyObservers(pdata);
+                        continue;
+                    }
 
                     if (parent == null && bline is BlueprintLineHeader)
-                        _parsedDatas[0] = pdata;
+                        _parsedDatas[0] = (IParsedData)pdata;
 
                     if (parent == null && bline is BlueprintLineFooter)
-                        _parsedDatas[1] = pdata;
+                        _parsedDatas[1] = (IParsedData)pdata;
 
                     if (parent != null)
-                        parent.AddParsedData(pdata);
+                        parent.AddParsedData((IParsedData)pdata);
 
-                    _headers.Add(pdata);
+                    _headers.Add((IParsedData)pdata);
                 }
 
-                if (bline is BlueprintLineDetails && parent != null)
+                if (bline is BlueprintLineDetails)
                 {
                     var pdata = _parser.GetParsedLine(parent);
+
+                    if (NotifyLine)
+                    {
+                        NotifyObservers(pdata);
+                        continue;
+                    }
+
                     parent.AddLine(pdata);
                     _details.Add(pdata);
                 }
             }
 
-            NotifyObservers(_parsedDatas);
+            if (!NotifyLine)
+                NotifyObservers(_parsedDatas);
         }
 
         private void StackUp(IBlueprintLine newLine)
@@ -316,6 +331,13 @@ namespace FlatFileImport
             if (_observers != null && _observers.Count > 0)
                 _observers.ForEach(o => o.Notify(results));
         }
+
+        public void NotifyObservers(IParsedObjetct data)
+        {
+            if (_observers != null && _observers.Count > 0)
+                _observers.ForEach(o => o.Notify(data));
+        }
+
         #endregion
     }
 }
