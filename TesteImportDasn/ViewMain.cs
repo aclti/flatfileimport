@@ -104,6 +104,12 @@ namespace TesteImportDasn
             }
         }
 
+
+        public void Notify(IParsedObjetct data)
+        {
+            Console.WriteLine(data.Name + " >> " + data.GetType().Name);
+        }
+
         #endregion
     }
 }

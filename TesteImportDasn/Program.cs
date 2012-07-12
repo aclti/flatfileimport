@@ -42,9 +42,10 @@ namespace TesteImportDasn
             {
                 //var handler = Handler.GetHandler(Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
                 //var handler = Handler.GetHandler(Path.Combine(_path, "dasn-resumido-001.txt")) ;
-                handler = Handler.GetHandler(@"C:\Temp\_WEBISS\_PROJETOS\ss-importer\DASN\DASN");
+                //handler = Handler.GetHandler(@"C:\Temp\_WEBISS\_PROJETOS\ss-importer\DASN\DASN");
+                handler = Handler.GetHandler(_path);//Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
                 enumerator = handler.GetEnumerator();
-
+                importer.NotifyLine = true;
                 importer.RegisterObserver(view);
             }
             catch (Exception ex)
