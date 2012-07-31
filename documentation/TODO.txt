@@ -94,3 +94,17 @@ Implementar somatorio ou contagem de de um derterminado campo linha. Validar
 o resultado contra um determinado campo de uma linha qualquer ou 
 contra o footer.
 -------------------------------------------------------------------------------
+
+--	DEFAULT PERSISTENCE -------------------------------------------------------
+Implementar com dao a funcionalide de fazer a inserção dos dados importados
+em uma persistencia, banco de dados, direta dos dados importados.
+Utilizando as validações e estruturas configuradas na blueprint é possível 
+inserir os dados diretos no banco de dados sem a necessidade de passar por um 
+cliente.
+
+Essa funcionlidade será muito util nas situações em que não será feito nenhum
+tratamento previo dos dados e também não será apalicada nenhuma lógica complexa
+nos dados importados.
+
+Apenas a importação será efetuada.
+-------------------------------------------------------------------------------
