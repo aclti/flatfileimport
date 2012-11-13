@@ -71,6 +71,9 @@ namespace FlatFileImport
                     continue;
                 }
 
+                if (_results.Count > 500)
+                    throw new System.Exception("Arquivo com muito erros.");
+
                 _parser.SetBlueprintLine(newLine);
                 _parser.SetDataToParse(new RawLine(_file.LineNumber, _file.Line));
 
