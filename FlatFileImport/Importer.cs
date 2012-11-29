@@ -27,12 +27,14 @@ namespace FlatFileImport
         private List<IResult> _results;
         private List<IBlueprintLine> _stack;
         private IBlueprintLine _active;
+        private IParsePolicy _parserPolicy;
 
         public ReadOnlyCollection<IResult> Results { get { return _results.AsReadOnly(); } }
         public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
         public IEventLog Loger { set { _loger = value; } get { return _loger ?? new DefaultEventLog(); } }
         public bool IgnoreOpcionalRecordWithError { set; get; }
         public bool NotifyLine { set; get; }
+        public IParsePolicy ParsePolicy { set { _parserPolicy = value; } get { return _parserPolicy ?? (_parserPolicy = new DefaultParsePolicy()); } }
 
         public Importer()
         {
@@ -161,9 +163,12 @@ namespace FlatFileImport
             {
                 var bline = MatchBlueprintLine(_file.Line);
 
+                if (ParsePolicy.IgnoreLine(bline))
+                    continue;
+
                 _parser.SetBlueprintLine(bline);
                 _parser.SetDataToParse(new RawLine(_file.LineNumber, _file.Line));
-
+                
                 if (!_parser.IsValid && IsMandatory(bline.Occurrence) && _parser.Result.Any(r => r.Severity != ExceptionSeverity.Information && r.Type != ExceptionType.Warnning))
                     continue;
 
@@ -174,6 +179,9 @@ namespace FlatFileImport
                 if (bline is BlueprintLineHeader || bline is BlueprintLineFooter)
                 {
                     var pdata = _parser.GetParsedData(parent);
+
+                    if (ParsePolicy.IgnoreData(pdata))
+                        continue;
 
                     if (NotifyLine)
                     {
@@ -196,6 +204,9 @@ namespace FlatFileImport
                 if (bline is BlueprintLineDetails)
                 {
                     var pdata = _parser.GetParsedLine(parent);
+
+                    if (ParsePolicy.IgnoreData(pdata))
+                        continue;
 
                     if (NotifyLine)
                     {

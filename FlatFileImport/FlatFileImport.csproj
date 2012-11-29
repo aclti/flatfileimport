@@ -79,6 +79,8 @@
     <Compile Include="Input\RawField.cs" />
     <Compile Include="Input\RawLine.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
+    <Compile Include="Process\DefaultParsePolicy.cs" />
+    <Compile Include="Process\IProcessPolicy.cs" />
     <Compile Include="Validate\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
     <Compile Include="ISubject.cs" />
