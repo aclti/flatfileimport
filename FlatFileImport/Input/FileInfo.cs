@@ -34,11 +34,6 @@ namespace FlatFileImport.Input
             _parent = parent;
         }
 
-        ~FileInfo()
-        {
-            ClearAll();
-        }
-
         #region IFileInfo Members
 
         public string Name { get { return System.IO.Path.GetFileName(Path); } }
@@ -74,9 +69,10 @@ namespace FlatFileImport.Input
             _stream.BaseStream.Seek(0, SeekOrigin.Begin);
         }
 
+		[Obsolete("Use Dispose")]
         public void Release()
         {
-            ClearAll();
+            Dispose();
         }
 
         #endregion
@@ -96,7 +92,34 @@ namespace FlatFileImport.Input
         private void Clear()
         {
             LineNumber = 0;
-            Line = String.Empty;
+            Line       = String.Empty;
         }
-    }
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			Clear();
+
+			if (_stream != null)
+			{
+				_stream.Close();
+				_stream.Dispose();
+				_stream = null;	
+			}
+
+			if (_parent == null)
+				return;
+
+			if (Extesion.Type != FileType.Binary)
+				return;
+
+			File.Delete(_path);
+			var dir = System.IO.Path.GetDirectoryName(_path);
+			System.IO.Directory.Delete(dir);
+			_parent.Dispose();
+		}
+
+		#endregion
+	}
 }

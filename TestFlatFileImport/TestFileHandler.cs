@@ -168,7 +168,7 @@ namespace TestFlatFileImport
             Assert.AreEqual("AAAAA|108|20100401|20100415", file.Header);
             Assert.AreEqual(2, file.LineNumber);
 
-            file.Release();
+            file.Dispose();
             Assert.AreEqual(String.Empty, file.Line);
             Assert.AreEqual(0, file.LineNumber);
 

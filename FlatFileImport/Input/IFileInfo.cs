@@ -1,6 +1,8 @@
-﻿namespace FlatFileImport.Input
+﻿using System;
+
+namespace FlatFileImport.Input
 {
-    public interface IFileInfo
+    public interface IFileInfo : IDisposable
     {
         string Name { get; }
         string Path { get; }
@@ -11,6 +13,7 @@
         string Header { get; }
         bool MoveToNext();
         void Reset();
+		[Obsolete("Use Dispose")]
         void Release();
     }
 }
