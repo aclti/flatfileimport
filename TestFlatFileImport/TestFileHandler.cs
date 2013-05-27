@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
+
 using FlatFileImport.Exception;
 using FlatFileImport.Input;
 using NUnit.Framework;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace TestFlatFileImport
 {

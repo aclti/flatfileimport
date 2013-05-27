@@ -1,4 +1,5 @@
-﻿using Ionic.Zip;
+﻿using System;
+using Ionic.Zip;
 using System.Linq;
 
 namespace FlatFileImport.Input
@@ -34,11 +35,13 @@ namespace FlatFileImport.Input
                 if (entry.IsDirectory)
                     throw new System.Exception("ARQUIVO ZIP INCOMPATIVEL (Zip com diretório) | " + path);
 
-                entry.Extract(System.IO.Path.GetTempPath(), ExtractExistingFileAction.OverwriteSilently);
+	            var tempExtractDir = System.IO.Directory.CreateDirectory(String.Format("{0}FLAT-FILE-EXTRACT-{1}", System.IO.Path.GetTempPath(), DateTime.Now.Ticks));
+
+				entry.Extract(tempExtractDir.FullName, ExtractExistingFileAction.OverwriteSilently);
                 _dataFile = entry.FileName;
 
                 zip.Dispose();
-                return System.IO.Path.Combine(System.IO.Path.GetTempPath(), _dataFile);
+				return System.IO.Path.Combine(tempExtractDir.FullName, _dataFile);
             }
         }   
     }
