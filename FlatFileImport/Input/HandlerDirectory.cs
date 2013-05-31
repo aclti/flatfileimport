@@ -9,16 +9,28 @@ namespace FlatFileImport.Input
 		public IList<IHandler> Handlers { get; private set; }
 
 		private readonly IHandlerFactory _factory;
-		
-        public HandlerDirectory(string path, IHandlerFactory factory)
-        {
-			Handlers = new List<IHandler>();
-			Paths     = new List<string>();
-	        _factory  = factory;
 
-            ProcessDir(path);
-            ProcessFile();
+		public HandlerDirectory(string path)
+		{
+			Handlers = new List<IHandler>();
+			Paths = new List<string>();
+			
+			ProcessDir(path);
+			ProcessFile();
+		}
+		
+        public HandlerDirectory(string path, IHandlerFactory factory) : this(path)
+        {
+			_factory = factory;
         }
+
+		private IHandlerFactory GetFactory()
+		{
+			if (_factory == null)
+				return new HandlerFacotry();
+
+			return _factory;
+		}
 
         private void ProcessDir(string sourceDir)
         {
@@ -36,7 +48,7 @@ namespace FlatFileImport.Input
         private void ProcessFile()
         {
 			foreach (var s in Paths)
-				Handlers.Add(new HandlerProxy(s, _factory));
+				Handlers.Add(new HandlerProxy(s, GetFactory()));
         }
 	}
 }

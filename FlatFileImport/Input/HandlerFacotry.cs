@@ -11,6 +11,11 @@ namespace FlatFileImport.Input
 	{
 		private readonly ISupportedExtension _supportedExtension;
 
+		public HandlerFacotry()
+		{
+			_supportedExtension = new SupportedExtension();
+		}
+
 		public HandlerFacotry(ISupportedExtension extensions)
 		{
 			_supportedExtension = extensions;

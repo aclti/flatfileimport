@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
+
 using FlatFileImport;
 using FlatFileImport.Core;
 using FlatFileImport.Input;
-using FlatFileImport.Exception;
 
 namespace TesteImportDasn
 {
@@ -35,16 +33,18 @@ namespace TesteImportDasn
 
             IBlueprintFactoy factoy = new BlueprintFactory();
             var importer = new Importer();
-            IEnumerable<IFileInfo> handler = null;
-            IEnumerator<IFileInfo> enumerator = null;
+	        IHandlerCollection handler = null;
 
             try
             {
                 //var handler = Handler.GetHandler(Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
                 //var handler = Handler.GetHandler(Path.Combine(_path, "dasn-resumido-001.txt")) ;
                 //handler = Handler.GetHandler(@"C:\Temp\_WEBISS\_PROJETOS\ss-importer\DASN\DASN");
-                handler = Handler.GetHandler(_path);//Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
-                enumerator = handler.GetEnumerator();
+
+
+				handler = new HandlerDirectory(_path);
+				//Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
+                
                 importer.NotifyLine = true;
                 importer.RegisterObserver(view);
             }
@@ -57,15 +57,17 @@ namespace TesteImportDasn
                     file.WriteLine(String.Format("\n{0}\n", ex));
                 }
             }
-            
 
-            while (enumerator.MoveNext())
-            {
+	        if (handler == null)
+		        return;
+
+			foreach (var hand in handler.Handlers)
+			{
                 try
                 {
-                    view.FilePath = enumerator.Current.Path;
+					view.FilePath = hand.Path;
 
-                    var bPrint = factoy.GetBlueprint(typeof(Dasn), enumerator.Current);
+					var bPrint = factoy.GetBlueprint(typeof(Dasn), hand.FileInfo);
 
                     if(bPrint == null)
                     {
@@ -73,8 +75,7 @@ namespace TesteImportDasn
 
                         using (var file = new StreamWriter(path + "Versoes.txt", true))
                         {
-
-                            file.WriteLine(String.Format("\nVersão: {0} | File: {1}\n", GetVersion(enumerator.Current), enumerator.Current.Path));
+							file.WriteLine("\nVersão: {0} | File: {1}\n", GetVersion(hand.FileInfo), hand.FileInfo.Path);
                         }
 
                         continue;
@@ -82,7 +83,7 @@ namespace TesteImportDasn
                         
 
                     importer.SetBlueprint(bPrint);
-                    importer.SetFileToProcess(enumerator.Current);
+					importer.SetFileToProcess(hand.FileInfo);
                     importer.Valid();
 
                     if (importer.IsValid)
@@ -96,7 +97,7 @@ namespace TesteImportDasn
 
                     using (var file = new StreamWriter(path + "Exception.txt", true))
                     {
-                        file.WriteLine(String.Format("\n{0}\n", ex));
+                        file.WriteLine("\n{0}\n", ex);
                     }
                 }
             }
