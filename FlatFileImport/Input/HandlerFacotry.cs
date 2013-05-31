@@ -51,6 +51,11 @@ namespace FlatFileImport.Input
 			return Directory.Exists(path);
 		}
 
+		public static IHandler Handler(string path)
+		{
+			return new HandlerFacotry().Get(path);
+		}
+
 		#region IHandlerFactory Members
 
 		public IHandler Get(string path)
