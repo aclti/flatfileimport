@@ -201,5 +201,40 @@ namespace TestFlatFileImport
 			//Assert.IsTrue(handler is HandlerDirectory);
 			//Assert.AreEqual(2, handler.Count());
         }
+
+		[Test]
+		public void TestFileZipProxyLoad()
+		{
+			var handFac = new HandlerDirectory(Dasn);
+			var handlers = handFac.Handlers;
+
+
+			foreach (var handler in handlers)
+			{
+				var file = handler.FileInfo;
+			}
+
+			//var info = handler.FileInfo;
+
+			//Assert.IsNotNull(info);
+			//Assert.AreEqual(Path.GetFileName(pathFileToDelete), info.Name);
+			//Assert.AreEqual(pathFileToDelete, info.Path);
+
+			//info.MoveToNext();
+			//Assert.AreEqual("AAAAA|108|20100701|20100715", info.Line);
+			//Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
+			//Assert.AreEqual(1, info.LineNumber);
+
+			//info.MoveToNext();
+			//Assert.AreEqual("D1000|010428182009003|2|2009|RENOTINTAS COMERCIO E REPRESENTACOES LTDA|19960208|19960208|02071018801526456|01406041942879518599|20100707161153|1.0.7.0|0", info.Line);
+			//Assert.AreEqual("AAAAA|108|20100701|20100715", info.Header);
+			//Assert.AreEqual(2, info.LineNumber);
+
+			//info.Release();
+			//Assert.AreEqual(String.Empty, info.Line);
+			//Assert.AreEqual(0, info.LineNumber);
+			//File.Delete(info.Path);
+			//Assert.IsFalse(File.Exists(info.Path));
+		}
     }
 }

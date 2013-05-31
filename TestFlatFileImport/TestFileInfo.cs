@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
 using FlatFileImport.Input;
 using NUnit.Framework;
 
@@ -7,99 +7,90 @@ namespace TestFlatFileImport
 {
     public class TestFileInfo : TestAbstract
     {
+	    private IHandlerFactory _fac;
+
+		[SetUp]
+		public override void Setup()
+		{
+			base.Setup();
+			_fac = new HandlerFacotry();
+		}
+
         [Test]
         public void TestCraeteFileFInfoTextSingle()
         {
-	        Assert.Inconclusive();
-			//var path = Path.Combine(SigleDasn, "02-3105-DASN10-20100715-01.txt");
-			//var handler = Handler.GetHandler(path);
-			//var enumerator = handler.GetEnumerator();
-			//enumerator.MoveNext();
-			//var fileInfo = enumerator.Current;
+			var path = Path.Combine(SigleDasn, "02-3105-DASN10-20100715-01.txt");
+			var handler = _fac.Get(path);
+			var fileInfo = handler.FileInfo;
 
-			//Assert.AreEqual(path, fileInfo.Path);
-			//Assert.AreEqual(SigleDasn, fileInfo.Directory);
-			//Assert.AreEqual(Path.GetFileName(path), fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".txt", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Text, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|108|20100701|20100715", fileInfo.Header);
+			Assert.AreEqual(path, handler.Path);
+			Assert.AreEqual(SigleDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual(path, handler.Path);
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual(".txt", fileInfo.Extesion.Name);
+			Assert.AreEqual(FileType.Text, fileInfo.Extesion.Type);
+			Assert.AreEqual("AAAAA|108|20100701|20100715", fileInfo.Header);
         }
 
         [Test]
         public void TestCraeteFileFInfoZipSingle()
         {
-			Assert.Inconclusive();
-			//var path = Path.Combine(SigleDasn, "02-3105-DASN10-20100415-01.zip");
-			//var handler = Handler.GetHandler(path);
-			//var enumerator = handler.GetEnumerator();
-			//enumerator.MoveNext();
-			//var fileInfo = enumerator.Current;
+			var path = Path.Combine(SigleDasn, "02-3105-DASN10-20100415-01.zip");
+			var handler = _fac.Get(path);
 
-			//Assert.AreEqual(path, fileInfo.Path);
-			//Assert.AreEqual(SigleDasn, fileInfo.Directory);
-			//Assert.AreEqual(Path.GetFileName(path), fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".zip", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Binary, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|108|20100401|20100415", fileInfo.Header);
+			var fileInfo = handler.FileInfo;
+
+			Assert.AreEqual(path, handler.Path);
+			Assert.AreEqual(SigleDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual(Path.GetFileName(path),  Path.GetFileName(handler.Path));
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual("AAAAA|108|20100401|20100415", fileInfo.Header);
         }
 
         [Test]
         public void TestCraeteFileFInfoZipMulti()
         {
-			Assert.Inconclusive();
-			//var path = MultDasn;
-			//var handler = Handler.GetHandler(path);
-			//var enumerator = handler.GetEnumerator();
-            
-			//enumerator.MoveNext();
-			//var fileInfo = enumerator.Current;
+			var path = MultDasn;
+			var handlers = new HandlerDirectory(path).Handlers.ToList();
+	        var handler = handlers[0];
+			var fileInfo = handler.FileInfo;
 
-			//Assert.IsNotNull(fileInfo);
-			//Assert.AreEqual(path + "\\02-3105-DASN09-20100515-01.zip", fileInfo.Path);
-			//Assert.AreEqual(MultDasn, fileInfo.Directory);
-			//Assert.AreEqual("02-3105-DASN09-20100515-01.zip", fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".zip", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Binary, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|105|20100501|20100515", fileInfo.Header);
+			Assert.IsNotNull(fileInfo);
+			Assert.AreEqual(path + "\\02-3105-DASN09-20100515-01.zip", handler.Path);
+			Assert.AreEqual(MultDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual("02-3105-DASN09-20100515-01.zip", Path.GetFileName(handler.Path));
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual("AAAAA|105|20100501|20100515", fileInfo.Header);
 
-			//enumerator.MoveNext();
-			//fileInfo = enumerator.Current;
+			handler = handlers[1];
+			fileInfo = handler.FileInfo;
 
-			//Assert.IsNotNull(fileInfo);
-			//Assert.AreEqual(path + "\\02-3105-DASN10-20100315-01.zip", fileInfo.Path);
-			//Assert.AreEqual(MultDasn, fileInfo.Directory);
-			//Assert.AreEqual("02-3105-DASN10-20100315-01.zip", fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".zip", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Binary, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|108|20100315|20100315", fileInfo.Header);
+			Assert.IsNotNull(fileInfo);
+			Assert.AreEqual(path + "\\02-3105-DASN10-20100315-01.zip", handler.Path);
+			Assert.AreEqual(MultDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual("02-3105-DASN10-20100315-01.zip", Path.GetFileName(handler.Path));
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual("AAAAA|108|20100315|20100315", fileInfo.Header);
 
-			//enumerator.MoveNext();
-			//fileInfo = enumerator.Current;
+			handler = handlers[2];
+			fileInfo = handler.FileInfo;
 
-			//Assert.IsNotNull(fileInfo);
-			//Assert.AreEqual(path + "\\02-3105-DASN10-20100731-01.txt", fileInfo.Path);
-			//Assert.AreEqual(MultDasn, fileInfo.Directory);
-			//Assert.AreEqual("02-3105-DASN10-20100731-01.txt", fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".txt", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Text, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|108|20100716|20100731", fileInfo.Header);
+			Assert.IsNotNull(fileInfo);
+			Assert.AreEqual(path + "\\02-3105-DASN10-20100731-01.txt", handler.Path);
+			Assert.AreEqual(MultDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual("02-3105-DASN10-20100731-01.txt", Path.GetFileName(handler.Path));
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual("AAAAA|108|20100716|20100731", fileInfo.Header);
 
-			//enumerator.MoveNext();
-			//fileInfo = enumerator.Current;
+			handler = handlers[3];
+			fileInfo = handler.FileInfo;
 
-			//Assert.IsNotNull(fileInfo);
-			//Assert.AreEqual(path + "\\02-3105-DASN10-20100915-01.txt", fileInfo.Path);
-			//Assert.AreEqual(MultDasn, fileInfo.Directory);
-			//Assert.AreEqual("02-3105-DASN10-20100915-01.txt", fileInfo.Name);
-			//Assert.IsNotNull(fileInfo.Extesion);
-			//Assert.AreEqual(".txt", fileInfo.Extesion.Name);
-			//Assert.AreEqual(FileType.Text, fileInfo.Extesion.Type);
-			//Assert.AreEqual("AAAAA|108|20100901|20100915", fileInfo.Header);
+			Assert.IsNotNull(fileInfo);
+			Assert.AreEqual(path + "\\02-3105-DASN10-20100915-01.txt", handler.Path);
+			Assert.AreEqual(MultDasn, Path.GetDirectoryName(handler.Path));
+			Assert.AreEqual("02-3105-DASN10-20100915-01.txt", Path.GetFileName(handler.Path));
+			Assert.IsNotNull(fileInfo.Extesion);
+			Assert.AreEqual("AAAAA|108|20100901|20100915", fileInfo.Header);
         }
 
         [Test]

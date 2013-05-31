@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FlatFileImport.Input
 {
@@ -11,17 +12,20 @@ namespace FlatFileImport.Input
 		private readonly IHandlerFactory _factory;
 
 		public HandlerDirectory(string path)
+			: this(path, new HandlerFacotry())
 		{
-			Handlers = new List<IHandler>();
-			Paths = new List<string>();
 			
-			ProcessDir(path);
-			ProcessFile();
 		}
 		
-        public HandlerDirectory(string path, IHandlerFactory factory) : this(path)
+        public HandlerDirectory(string path, IHandlerFactory factory) 
         {
+			Handlers = new List<IHandler>();
+			Paths = new List<string>();
+
 			_factory = factory;
+
+			ProcessDir(path);
+			ProcessFile();
         }
 
 		private IHandlerFactory GetFactory()
@@ -47,8 +51,16 @@ namespace FlatFileImport.Input
 
         private void ProcessFile()
         {
+	        var ignore = ((HandlerFacotry) _factory).IgnoreExtensions;
+
 			foreach (var s in Paths)
+			{
+				if (ignore != null && ignore.Contains(Path.GetExtension(s)))
+					continue;
+
 				Handlers.Add(new HandlerProxy(s, GetFactory()));
+			}
+				
         }
 	}
 }
