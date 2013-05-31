@@ -32,13 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\nunit.framework.dll</HintPath>
+    <Reference Include="Moq">
+      <HintPath>..\Dependencies\MOQ\NET35\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.mocks, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\nunit.mocks.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,6 +49,8 @@
   <ItemGroup>
     <Compile Include="BlueprintFactory.cs" />
     <Compile Include="TestAggregate.cs" />
+    <Compile Include="TestHandlerDirectory.cs" />
+    <Compile Include="TestHandlerFactory.cs" />
     <Compile Include="TestParsedDatas.cs" />
     <Compile Include="TestBlueprintSetter.cs" />
     <Compile Include="TestOccurrence.cs" />
@@ -84,50 +85,113 @@
   <ItemGroup>
     <Content Include="Samples\Blueprints\blueprint-dasn.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Samples\Blueprints\blueprint-dasn-resumida.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\Blueprints\pipe-with-register.xml" />
+    <Content Include="Samples\Blueprints\pipe-with-register.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Samples\Blueprints\siafi-simplicaficado.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Samples\Blueprints\siafi.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\config-extension-missconfig-attributecase.xml" />
-    <Content Include="Samples\config-extension-missconfig-tagcase.xml" />
-    <Content Include="Samples\config-extension.xml" />
-    <Content Include="Samples\DataBase\siafi.sql" />
-    <Content Include="Samples\def-samples-movies.txt" />
-    <Content Include="Samples\def-samplesfiles.txt" />
-    <Content Include="Samples\defincao-siafi.txt" />
-    <Content Include="Samples\Files\Dasn\Single\02-3105-DASN10-20100715-01.txt" />
-    <Content Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100731-01.txt" />
-    <Content Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100915-01.txt" />
-    <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090723-01.txt" />
-    <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090810-01.txt" />
-    <Content Include="Samples\Files\Das\Single\02-3105-DAS-20090816-01.txt" />
-    <Content Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100715-01.txt" />
-    <Content Include="Samples\Files\movies.txt" />
-    <Content Include="Samples\sample-codigotom-posicional.txt" />
-    <Content Include="Samples\sample-movies-pipe.txt" />
+    <Content Include="Samples\config-extension-missconfig-attributecase.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\config-extension-missconfig-tagcase.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\config-extension.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\DataBase\siafi.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\def-samples-movies.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\def-samplesfiles.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\defincao-siafi.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Dasn\Single\02-3105-DASN10-20100715-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100731-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100915-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090723-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090810-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\Das\Single\02-3105-DAS-20090816-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100715-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\movies.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\regex-samples-test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\sample-codigotom-posicional.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\sample-movies-pipe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Samples\Files\Dasn\Mult\02-3105-DASN09-20100515-01.zip" />
-    <None Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100315-01.zip" />
-    <None Include="Samples\Files\Dasn\Single\02-3105-DASN10-20100415-01.zip" />
-    <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090601-01.zip" />
-    <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090602-01.zip" />
-    <None Include="Samples\Files\Das\Single\02-3105-DAS-20090722-01.zip" />
-    <None Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100415-01.zip" />
-    <None Include="Samples\Files\IgnoreExtensions\movies.foo" />
-    <None Include="Samples\Files\sample-siafi-posicional.ret" />
+    <None Include="packages.config" />
+    <None Include="Samples\Files\Dasn\Mult\02-3105-DASN09-20100515-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\Dasn\Mult\02-3105-DASN10-20100315-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\Dasn\Single\02-3105-DASN10-20100415-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090601-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\Das\Mult\02-3105-DAS-20090602-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\Das\Single\02-3105-DAS-20090722-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\IgnoreExtensions\02-3105-DASN10-20100415-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\IgnoreExtensions\movies.foo">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\sample-siafi-posicional.ret">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy $(ProjectDir)Samples /e /i /y /r $(TargetDir)Samples</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

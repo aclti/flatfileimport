@@ -7,31 +7,35 @@ namespace TestFlatFileImport
     public abstract class TestAbstract
     {
         protected string PathSamples;
-        protected string SigleDasn;
+		protected string Dasn;
+		protected string Das;
+		protected string SigleDasn;
         protected string MultDasn;
         protected string SigleDas;
         protected string MultDas;
         protected string IgnoreExtensions;
 
         [SetUp]
-        public void Setup()
+        public virtual void Setup()
         {
-            PathSamples = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\Files");
-            SigleDas = Path.Combine(PathSamples, @"Das\Single");
-            SigleDasn = Path.Combine(PathSamples, @"Dasn\Single");
-            MultDas = Path.Combine(PathSamples, @"Das\Mult");
-            MultDasn = Path.Combine(PathSamples, @"Dasn\Mult");
-            IgnoreExtensions = Path.Combine(PathSamples, @"IgnoreExtensions");
+            PathSamples      = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\Files");
+	        Das              = Path.Combine(PathSamples, "Das");
+			Dasn             = Path.Combine(PathSamples, "Dasn");
+            SigleDas         = Path.Combine(Das, "Single");
+            SigleDasn        = Path.Combine(Dasn, "Single");
+            MultDas          = Path.Combine(Das, "Mult");
+            MultDasn         = Path.Combine(Dasn, "Mult");
+            IgnoreExtensions = Path.Combine(PathSamples, "IgnoreExtensions");
         }
 
         [TearDown]
-        public void End()
+		public virtual void End()
         {
             PathSamples = String.Empty;
-            SigleDasn = String.Empty;
-            MultDasn = String.Empty;
-            SigleDas = String.Empty;
-            MultDas = String.Empty;
+            SigleDasn   = String.Empty;
+            MultDasn    = String.Empty;
+            SigleDas    = String.Empty;
+            MultDas     = String.Empty;
         }
     }
 }
