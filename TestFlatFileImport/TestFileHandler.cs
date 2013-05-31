@@ -212,6 +212,7 @@ namespace TestFlatFileImport
 			foreach (var handler in handlers)
 			{
 				var file = handler.FileInfo;
+				handler.Dispose();
 			}
 
 			//var info = handler.FileInfo;
