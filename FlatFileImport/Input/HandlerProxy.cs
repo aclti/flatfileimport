@@ -4,6 +4,7 @@
 	{
 		private readonly string _path;
 		private readonly IHandlerFactory _factory;
+		private IHandler _handler;
 
 		public HandlerProxy(string path, IHandlerFactory factory)
 		{
@@ -11,16 +12,21 @@
 			_factory = factory;
 		}
 
+		private IHandler GetHandler()
+		{
+			return _handler ?? (_handler = _factory.Get(_path));
+		}
+
 		#region IHandler Members
 
 		public string Path
 		{
-			get { return _factory.Get(_path).Path; }
+			get { return GetHandler().Path; }
 		}
 
 		public IFileInfo FileInfo
 		{
-			get { return _factory.Get(_path).FileInfo; }
+			get { return GetHandler().FileInfo; }
 		}
 
 		#endregion
@@ -29,7 +35,7 @@
 
 		public void Dispose()
 		{
-			_factory.Get(_path).Dispose();
+			GetHandler().Dispose();
 		}
 
 		#endregion
