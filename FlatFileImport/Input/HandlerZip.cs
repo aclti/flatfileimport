@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Ionic.Zip;
 using System.Linq;
 
@@ -8,17 +9,17 @@ namespace FlatFileImport.Input
     public class HandlerZip : Handler
     {
         private string _dataFile;
+	    private readonly IHandler _innerHandler;
+	    private readonly IHandlerFactory _factory;
+	    private readonly string _path;
 
-        public HandlerZip(string path) : base(path)
-        {
-            // TODO Melhorar a estrutura de parent do file info, talvez trabalhar com parent no handler também
-            var parentFileInfo = new FileInfo(path, SupportedExtension.GetFileExtension(path));
-            var file = ExtractZip(path);
-            // TODO Implementar para chamar novamente o handler;
-            var fileInfo = new FileInfo(file, SupportedExtension.GetFileExtension(file), parentFileInfo);
-            
-            FileInfos.Add(fileInfo);
-        }
+		public HandlerZip(string path, ISupportedExtension supportedExtension, IHandlerFactory factory) : base(path, supportedExtension)
+		{
+			_factory = factory;
+			_path = path;
+
+			_innerHandler = _factory.Get(ExtractZip(_path));
+		}
 
         private string ExtractZip(string path)
         {
@@ -43,6 +44,29 @@ namespace FlatFileImport.Input
                 zip.Dispose();
 				return System.IO.Path.Combine(tempExtractDir.FullName, _dataFile);
             }
-        }   
-    }
+        }
+
+		public override IFileInfo FileInfo
+		{
+			get { return _innerHandler.FileInfo; }
+		}
+
+		public override string Path
+		{
+			get { return _path; }
+		}
+
+		public override void Dispose()
+		{
+			_innerHandler.Dispose();
+
+			File.Delete(_innerHandler.Path);
+			var dir = System.IO.Path.GetDirectoryName(_innerHandler.Path);
+			
+			if (string.IsNullOrEmpty(dir))
+				return;
+
+			Directory.Delete(dir);
+		}
+	}
 }

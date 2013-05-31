@@ -7,10 +7,8 @@ namespace FlatFileImport.Input
     {
         private readonly string _path;
         private StreamReader _stream;
-        private FileExtension _extension;
-        private readonly FileInfo _parent;
 
-        public FileInfo(string path, FileExtension extension)
+	    public FileInfo(string path, FileExtension extension)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -18,7 +16,7 @@ namespace FlatFileImport.Input
             if (extension == null)
                 throw new ArgumentNullException("extension");
 
-            _extension = extension;
+            Extesion = extension;
             _path = path;
             
             _stream = new StreamReader(_path);
@@ -26,22 +24,17 @@ namespace FlatFileImport.Input
             ClearAll();
         }
 
-        public FileInfo(string path, FileExtension extension, FileInfo parent) : this(path, extension)
-        {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
-
-            _parent = parent;
-        }
-
         #region IFileInfo Members
 
+		[Obsolete("Use o Handler para obter essas informações")]
         public string Name { get { return System.IO.Path.GetFileName(Path); } }
-        public string Path { get { return _parent == null ? _path : _parent.Path; } }
+		[Obsolete("Use o Handler para obter essas informações")]
+        public string Path { get { return  _path; } }
+		[Obsolete("Use o Handler para obter essas informações")]
         public string Directory { get { return System.IO.Path.GetDirectoryName(Path); } }
-        public FileExtension Extesion { get { return _parent == null ? _extension : _parent.Extesion; } set { _extension = value; } }
+	    public FileExtension Extesion { get; set; }
 
-        public string Header { get; private set; }
+	    public string Header { get; private set; }
         public string Line { get; private set; }
         public int LineNumber { get; private set; }
 
@@ -101,23 +94,12 @@ namespace FlatFileImport.Input
 		{
 			Clear();
 
-			if (_stream != null)
-			{
-				_stream.Close();
-				_stream.Dispose();
-				_stream = null;	
-			}
-
-			if (_parent == null)
+			if (_stream == null) 
 				return;
 
-			if (Extesion.Type != FileType.Binary)
-				return;
-
-			File.Delete(_path);
-			var dir = System.IO.Path.GetDirectoryName(_path);
-			System.IO.Directory.Delete(dir);
-			_parent.Dispose();
+			_stream.Close();
+			_stream.Dispose();
+			_stream = null;
 		}
 
 		#endregion

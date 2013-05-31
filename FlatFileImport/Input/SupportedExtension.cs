@@ -7,14 +7,24 @@ using System.Xml;
 
 namespace FlatFileImport.Input
 {
-    /// <summary>
+	public interface ISupportedExtension
+	{
+		void AddExtension(string extension, FileType type);
+		void AddExtensionFromXml(string path);
+		FileExtension GetFileExtension(string path);
+		bool IsSupported(string extension, FileType type);
+		bool IsSupported(FileExtension extension);
+		ReadOnlyCollection<FileExtension> Extensions { get; }
+	}
+
+	/// <summary>
     /// Classe responsável pela extensões de arquivos suportadas para importação
     /// Valores default: .txt, .web, ret, .zip
     /// </summary>
-    public class SupportedExtension
-    {
+    public class SupportedExtension : ISupportedExtension
+	{
         private readonly List<FileExtension> _extension;
-        public ReadOnlyCollection<FileExtension> Extensions;
+		public ReadOnlyCollection<FileExtension> Extensions { get; private set; }
 
         public SupportedExtension()
         {

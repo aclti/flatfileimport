@@ -3,13 +3,19 @@ using System.IO;
 
 namespace FlatFileImport.Input
 {
-    public class HandlerDirectory : Handler
+	public class HandlerDirectory : IHandlerCollection
     {
-        private readonly List<string> _paths;
+		public IList<string> Paths { get; private set; }
+		public IList<IHandler> Handlers { get; private set; }
 
-        public HandlerDirectory(string path) : base(path)
+		private readonly IHandlerFactory _factory;
+		
+        public HandlerDirectory(string path, IHandlerFactory factory)
         {
-            _paths = new List<string>();
+			Handlers = new List<IHandler>();
+			Paths     = new List<string>();
+	        _factory  = factory;
+
             ProcessDir(path);
             ProcessFile();
         }
@@ -18,7 +24,7 @@ namespace FlatFileImport.Input
         {
             var fileEntries = Directory.GetFiles(sourceDir);
             foreach (var fileName in fileEntries)
-                _paths.Add(fileName);
+				Paths.Add(fileName);
 
             var subdirEntries = Directory.GetDirectories(sourceDir);
 
@@ -29,12 +35,8 @@ namespace FlatFileImport.Input
 
         private void ProcessFile()
         {
-            foreach (var s in _paths)
-            {
-                IEnumerable<IFileInfo> h = GetHandler(s);
-                foreach (var fileInfo in h)
-                    FileInfos.Add(fileInfo);
-            }
+			foreach (var s in Paths)
+				Handlers.Add(new HandlerProxy(s, _factory));
         }
-    }
+	}
 }

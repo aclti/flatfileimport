@@ -1,160 +1,113 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using FlatFileImport.Exception;
 
 namespace FlatFileImport.Input
 {
-    public abstract class Handler : IEnumerable<IFileInfo>, IEnumerator<IFileInfo>
-    {
-        protected static SupportedExtension SupportedExtension;
-        private readonly string _path;
-        private int _pos;
-        protected List<IFileInfo> FileInfos;
-        public static string[] IgnoreExtensions { get; set; }
+	public abstract class Handler : IHandler
+	{
+		private readonly string _path;
+		//private int _pos;
 
-        public static ReadOnlyCollection<FileExtension> Extensions { get { return SupportedExtension.Extensions; } }
-        public string Path { get { return _path; } }
+		protected ISupportedExtension SupportedExtension;
 
-        static Handler()
-        {
-            if (SupportedExtension == null)
-                SupportedExtension = new SupportedExtension();
-        }
+		#region IHandler Members
 
-        protected Handler(string path)
-        {
-            if(String.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
+		public abstract IFileInfo FileInfo { get; }
+		public abstract string Path { get; }
 
-            if (SupportedExtension == null)
-                SupportedExtension = new SupportedExtension();
+		#endregion
 
-            _path = path;
+		protected Handler(string path, ISupportedExtension supportedExtension)
+		{
+			if (String.IsNullOrEmpty(path))
+				throw new ArgumentNullException("path");
 
-            if (!IsValid())
-                throw new ArgumentException("O Path informado não é válido.");
+			_path = path;
 
-            FileInfos = new List<IFileInfo>();
-        }
+			if (!IsValid())
+				throw new ArgumentException("O Path informado não é válido.");
 
-        public static IEnumerable<IFileInfo> GetHandler(string path)
-        {
-            if (IsDirectory(path))
-                return new HandlerDirectory(path);
+			SupportedExtension = supportedExtension;
+		}
 
-            if (IgnoreExtensions != null && IgnoreExtensions.Any(e => e.ToUpper() == System.IO.Path.GetExtension(path).ToUpper()))
-                return new HandlerDummy(path);
+		private bool IsValid()
+		{
 
-            if (IsPlainText(path))
-                return new HandlerText(path);
+			var fInfo = new System.IO.FileInfo(_path);
 
-            if (IsZipFile(path))
-                return new HandlerZip(path);
+			if (fInfo.Exists)
+				return true;
 
-            throw new WrongTypeFileException(path);
-        }
+			var dInfo = new DirectoryInfo(_path);
 
-        public static void AddExtension(string extension, FileType type)
-        {
-            SupportedExtension.AddExtension(extension, type);
-        }
+			return dInfo.Exists;
+		}
 
-        public static void AddExtensionFromXml(string path)
-        {
-            SupportedExtension.AddExtensionFromXml(path);
-        }
+		#region IDisposable Members
 
-        private static bool IsPlainText(string path)
-        {
-            var ex = SupportedExtension.GetFileExtension(path);
-            return ex != null && Extensions.Any(e => e.Name == ex.Name && ex.Type == FileType.Text);
-        }
+		public abstract void Dispose();
 
-        private static bool IsZipFile(string path)
-        {
-            var ex = SupportedExtension.GetFileExtension(path);
-            return ex != null && Extensions.Any(e => e.Name == ex.Name && ex.Type == FileType.Binary && e.Name == ".zip");
-        }
+		#endregion
 
-        private static bool IsDirectory(string path)
-        {
-            return Directory.Exists(path);
-        }
+		//#region IEnumerable<IFileInfo> Members
 
-        private bool IsValid()
-        {
+		//[Obsolete]
+		//public IEnumerator<IFileInfo> GetEnumerator()
+		//{
+		//	return FileInfos.GetEnumerator();
+		//}
 
-            var fInfo = new System.IO.FileInfo(_path);
+		//#endregion
 
-            if (fInfo.Exists)
-                return true;
+		//#region IEnumerable Members
 
-            var dInfo = new DirectoryInfo(_path);
+		//[Obsolete]	
+		//IEnumerator IEnumerable.GetEnumerator()
+		//{
+		//	return FileInfos.GetEnumerator();
+		//}
 
-            return dInfo.Exists;
-        }
+		//#endregion
 
-        #region IEnumerable<IFileInfo> Members
+		//#region IEnumerator<IFileInfo> Members
 
-        public IEnumerator<IFileInfo> GetEnumerator()
-        {
-            return FileInfos.GetEnumerator();
-        }
+		//public IFileInfo Current
+		//{
+		//	get { return FileInfos[_pos]; }
+		//}
 
-        #endregion
+		//#endregion
 
-        #region IEnumerable Members
+		//#region IDisposable Members
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return FileInfos.GetEnumerator();
-        }
+		//public void Dispose()
+		//{
+		//	throw new NotImplementedException();
+		//}
 
-        #endregion
+		//#endregion
 
-        #region IEnumerator<IFileInfo> Members
+		//#region IEnumerator Members
 
-        public IFileInfo Current
-        {
-            get { return FileInfos[_pos]; }
-        }
+		//object IEnumerator.Current
+		//{
+		//	get { return FileInfos[_pos]; }
+		//}
 
-        #endregion
+		//public bool MoveNext()
+		//{
+		//	if (_pos >= FileInfos.Count - 1)
+		//		return false;
 
-        #region IDisposable Members
+		//	++_pos;
+		//	return true;
+		//}
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+		//public void Reset()
+		//{
+		//	_pos = 0;
+		//}
 
-        #endregion
-
-        #region IEnumerator Members
-
-        object IEnumerator.Current
-        {
-            get { return FileInfos[_pos]; }
-        }
-
-        public bool MoveNext()
-        {
-            if (_pos >= FileInfos.Count - 1)
-                return false;
-
-            ++_pos;
-            return true;
-        }
-
-        public void Reset()
-        {
-            _pos = 0;
-        }
-
-        #endregion
-    }
+		//#endregion
+	}
 }
