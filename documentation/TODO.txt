@@ -108,3 +108,19 @@ nos dados importados.
 
 Apenas a importação será efetuada.
 -------------------------------------------------------------------------------
+
+--	INJECT NOTIFY RULES -------------------------------------------------------
+Fazer a injeção com a regra de que forma que a notificação deverá ser feita
+-------------------------------------------------------------------------------
+
+--	NOMES E CONCEITOS ---------------------------------------------------------
+Pensar melhor sobre os conceitos dos nomes das fases:
+- O que significa importar, em relação ao programa
+- Validar a informação crua
+- Validar a informação Importada (Parsead)
+-------------------------------------------------------------------------------
+
+--	PARSED DATA ---------------------------------------------------------------
+Melhorar a estrutura de como esse dado é montado e passado. Hoje está confuso,
+deveria receber o dado completo, melhorar essa arquitetura.
+-------------------------------------------------------------------------------

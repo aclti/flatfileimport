@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace TesteImportDasn
 {
-	class CompilerPolicyTest : IComplierPolicy
+	class CompilerPolicyTest : ICompilerPolicy
 	{
 		private IList<IRawLine> _lines;
 		private string _codTom;
@@ -49,7 +49,7 @@ namespace TesteImportDasn
 			get { return "P9999"; }
 		}
 
-		public void LookUp(IList<IRawLine> rawLines)
+		public void OnChunkRead(IList<IRawLine> rawLines)
 		{
 			_lines = rawLines;
 		}

@@ -28,7 +28,7 @@ namespace FlatFileImport
 		private List<IBlueprintLine> _stack;
 		private IBlueprintLine _active;
 		private IParsePolicy _parserPolicy;
-		private IComplierPolicy _compilerPolicy;
+		private ICompilerPolicy _compilerPolicy;
 
 		public ReadOnlyCollection<IResult> Results { get { return _results.AsReadOnly(); } }
 		public bool IsValid { get { return _results.Count == 0 || _results.Count(r => r.Type == ExceptionType.Error) == 0; } }
@@ -37,7 +37,7 @@ namespace FlatFileImport
 		public bool NotifyLine { set; get; }
 		public IParsePolicy ParsePolicy { set { _parserPolicy = value; } get { return _parserPolicy ?? (_parserPolicy = new DefaultParsePolicy()); } }
 
-		public IComplierPolicy CompilerPolicy { set { _compilerPolicy = value; } get { return _compilerPolicy ?? (_compilerPolicy = new DefaultCompilerPolicy(_blueprint)); } }
+		public ICompilerPolicy CompilerPolicy { set { _compilerPolicy = value; } get { return _compilerPolicy ?? (_compilerPolicy = new DefaultCompilerPolicy(_blueprint)); } }
 
 		public Importer()
 		{
@@ -106,7 +106,7 @@ namespace FlatFileImport
 						break;
 					}
 
-					if (IsSibiling(newLine))
+					if (IsSibling(newLine))
 					{
 						_active = newLine;
 						flag = false;
@@ -114,7 +114,7 @@ namespace FlatFileImport
 
 					if (IsParent(newLine))
 					{
-						StackUp(newLine);
+						Push(newLine);
 						flag = false;
 					}
 
@@ -132,7 +132,7 @@ namespace FlatFileImport
 												 Expected = GetValuesOccorence(bline.Occurrence)
 											 });
 
-					Unstacking();
+					Pop();
 				}
 			}
 
@@ -235,25 +235,25 @@ namespace FlatFileImport
 
 			while (_file.MoveToNext())
 			{
-				var compiler = new Complier(CompilerPolicy, _blueprint);
+				var compiler = new Compiler(CompilerPolicy, _blueprint);
 
 				compiler.AddRawData(new SimpleRawLine(_file.Line, _file.LineNumber));
 
 				if (compiler.IsHead)
 					compiler.Feed(_file);
 
-				if (compiler.IsVald)
+				if (compiler.IsValid)
 					RealProcess(compiler.GetDataToImport());
 			}
 		}
 
-		private void StackUp(IBlueprintLine newLine)
+		private void Push(IBlueprintLine newLine)
 		{
 			_stack.Add(_active);
 			_active = newLine;
 		}
 
-		private void Unstacking()
+		private void Pop()
 		{
 			_active = _stack.LastOrDefault();
 			_stack.Remove(_active);
@@ -267,7 +267,7 @@ namespace FlatFileImport
 			return false;
 		}
 
-		private bool IsSibiling(IBlueprintLine newLine)
+		private bool IsSibling(IBlueprintLine newLine)
 		{
 			if (newLine.Parent == _active.Parent)
 				return true;

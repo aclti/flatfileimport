@@ -6,24 +6,24 @@ using System.Linq;
 
 namespace FlatFileImport.Process
 {
-	public class Complier
+	public class Compiler
 	{
 		private readonly IList<IRawLine> _lines;
-		private readonly IComplierPolicy _compilerPolicy;
+		private readonly ICompilerPolicy _compilerPolicy;
 		private readonly IBlueprint _bluprint;
 
-		public Complier(IComplierPolicy compilerPolicy, IBlueprint bluprint)
+		public Compiler(ICompilerPolicy compilerPolicy, IBlueprint bluprint)
 		{
 			_lines = new List<IRawLine>();
 			_compilerPolicy = compilerPolicy;
 			_bluprint = bluprint;
 		}
 
-		public bool IsVald
+		public bool IsValid
 		{
 			get
 			{
-				_compilerPolicy.LookUp(_lines);
+				_compilerPolicy.OnChunkRead(_lines);
 				return _compilerPolicy.IsValid;
 			}
 		}

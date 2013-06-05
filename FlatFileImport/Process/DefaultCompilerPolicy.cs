@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FlatFileImport.Process
 {
-	public class DefaultCompilerPolicy : IComplierPolicy
+	public class DefaultCompilerPolicy : ICompilerPolicy
 	{
 		private readonly IBlueprint _blueprint;
 
@@ -29,7 +29,7 @@ namespace FlatFileImport.Process
 			get { return _blueprint.BlueprintLines.Last(l => l.Parent == null).Name; }
 		}
 
-		public void LookUp(IList<Input.IRawLine> rawLines)
+		public void OnChunkRead(IList<Input.IRawLine> rawLines)
 		{
 			
 		}	
