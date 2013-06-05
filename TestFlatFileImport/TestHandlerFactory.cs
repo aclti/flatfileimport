@@ -21,12 +21,12 @@ namespace TestFlatFileImport
 			base.Setup();
 
 			_extension = new List<FileExtension>
-                             {
-                                 new FileExtension(".txt", FileType.Text)
-                                 , new FileExtension(".web", FileType.Text) 
-                                 , new FileExtension(".ret", FileType.Text) 
-                                 , new FileExtension(".zip", FileType.Binary)
-                             };
+							 {
+								 new FileExtension(".txt", FileType.Text)
+								 , new FileExtension(".web", FileType.Text) 
+								 , new FileExtension(".ret", FileType.Text) 
+								 , new FileExtension(".zip", FileType.Binary)
+							 };
 
 			_mockSupportedExtension = new Mock<ISupportedExtension>(MockBehavior.Strict);
 			_mockSupportedExtension.SetupGet(ex => ex.Extensions).Returns(_extension.AsReadOnly());
@@ -48,13 +48,13 @@ namespace TestFlatFileImport
 			FileExtension extension = null;
 
 			_mockSupportedExtension.Setup(ex => ex.GetFileExtension(It.IsAny<string>()))
-			                       .Callback<string>(input =>
-				                       {
-					                       extension = input.EndsWith(".zip")
-						                                   ? new FileExtension(".zip", FileType.Binary)
-						                                   : input.EndsWith(".txt") ? new FileExtension(".txt", FileType.Text) : null;
-				                       })
-			                       .Returns(() => extension);
+								   .Callback<string>(input =>
+									   {
+										   extension = input.EndsWith(".zip")
+														   ? new FileExtension(".zip", FileType.Binary)
+														   : input.EndsWith(".txt") ? new FileExtension(".txt", FileType.Text) : null;
+									   })
+								   .Returns(() => extension);
 
 
 			_target = new HandlerFacotry(_mockSupportedExtension.Object);
