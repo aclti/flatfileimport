@@ -21,12 +21,18 @@ namespace TesteImportDasn
 
         public IBlueprint GetBlueprint(object selectParam, IFileInfo toParse)
         {
-            if (!(selectParam is Type))
+            if (!(selectParam is string))
                 return null;
 
-            var type = (Type) selectParam;
+            var type = (string)selectParam;
 
-            return type == typeof(Dasn) ? GetBlueprintDasn(toParse) : null;
+			if (type.ToUpper() == "DASN")
+				return GetBlueprintDasn(toParse);
+
+	        if (type.ToUpper() == "PGDAS")
+		        return GetBlueprintDas(toParse);
+
+            return null;
         }
 
         #endregion
@@ -51,7 +57,9 @@ namespace TesteImportDasn
 
         private IBlueprint GetBlueprintDas(IFileInfo toParse)
         {
-            throw new NotImplementedException();
+			var pathXml = Path.Combine(_blueprintPath, "PGDASD-120.xml");
+			BlueprintSetter = new BlueprintSetterXml(pathXml);
+			return BlueprintSetter.GetBlueprint();
         }
 
         private string GetVersion(IFileInfo toParse)

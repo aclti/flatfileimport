@@ -139,6 +139,7 @@
     <Content Include="Samples\Files\Das\Mult\02-3105-DAS-20090810-01.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Samples\Files\Das\Single\02-3105-DAS-20090816-01-INNER.txt" />
     <Content Include="Samples\Files\Das\Single\02-3105-DAS-20090816-01.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

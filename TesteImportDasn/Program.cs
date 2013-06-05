@@ -1,12 +1,62 @@
 ﻿using System;
 using System.IO;
-
+using System.Linq;
 using FlatFileImport;
 using FlatFileImport.Core;
 using FlatFileImport.Input;
+using FlatFileImport.Process;
+using System.Collections.Generic;
 
 namespace TesteImportDasn
 {
+	class CompilerPolicyTest : IComplierPolicy
+	{
+		private IList<IRawLine> _lines;
+		private string _codTom;
+
+		public CompilerPolicyTest(string codTom)
+		{
+			_codTom = codTom;
+		}
+
+		#region IComplierPolicy Members
+
+		public bool IsValid
+		{
+			get
+			{
+				var a = _lines.FirstOrDefault(s => s.Value.StartsWith("00000"));
+				var tom = String.Format("|{0}|", _codTom);
+				if (a == null)
+					return false;
+
+				if (a.Value.Contains(tom))
+					return true;
+
+				var b = _lines.Where(s => s.Value.StartsWith("03000"));
+
+				return b.Any(d => d.Value.Contains(tom));
+			}
+		}
+
+		public string HeaderIdentifier
+		{
+			get { return "P0000"; }
+		}
+
+		public string FooterIdentifier
+		{
+			get { return "P9999"; }
+		}
+
+		public void LookUp(IList<IRawLine> rawLines)
+		{
+			_lines = rawLines;
+		}
+
+		#endregion
+	}
+
 	class Program
 	{
 		private static string _path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Samples\Files");
@@ -27,7 +77,50 @@ namespace TesteImportDasn
 			return values[1];
 		}
 
-		static void Main(string[] args)
+		private static void Main(string[] args)
+		{
+			Run_ExemploComCompilerPolicy();
+			Run_Default();
+		}
+
+		private static void Run_ExemploComCompilerPolicy()
+		{
+			IBlueprintFactoy factoy = new BlueprintFactory();
+			var importer = new Importer();
+			importer.CompilerPolicy = new CompilerPolicyTest("5401");
+			var handler = HandlerFacotry.Handler(Path.Combine(_path, "02-3105-DAS-20090816-01-INNER.txt"));
+			var view = new ViewMain();
+
+			importer.NotifyLine = true;
+			importer.RegisterObserver(view);
+
+
+			view.FilePath = handler.Path;
+
+			var bPrint = factoy.GetBlueprint("PGDAS", handler.FileInfo);
+
+			if (bPrint == null)
+			{
+				var path = AppDomain.CurrentDomain.BaseDirectory;
+
+				using (var file = new StreamWriter(path + "Versoes.txt", true))
+				{
+					file.WriteLine("\nVersão: {0} | File: {1}\n", GetVersion(handler.FileInfo), handler.FileInfo.Path);
+				}
+			}
+
+
+			importer.SetBlueprint(bPrint);
+			importer.SetFileToProcess(handler.FileInfo);
+			importer.Valid();
+
+			if (importer.IsValid)
+				importer.Process();
+
+			importer.Reset();
+		}
+
+		private static void Run_Default()
 		{
 			var view = new ViewMain();
 
@@ -44,7 +137,7 @@ namespace TesteImportDasn
 
 				handler = new HandlerDirectory(_path);
 				//Path.Combine(_path, "02-3105-DASN10-20100715-01.txt"));
-				
+
 				importer.NotifyLine = true;
 				importer.RegisterObserver(view);
 			}
@@ -67,9 +160,9 @@ namespace TesteImportDasn
 				{
 					view.FilePath = hand.Path;
 
-					var bPrint = factoy.GetBlueprint(typeof(Dasn), hand.FileInfo);
+					var bPrint = factoy.GetBlueprint("DASN", hand.FileInfo);
 
-					if(bPrint == null)
+					if (bPrint == null)
 					{
 						var path = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -80,7 +173,7 @@ namespace TesteImportDasn
 
 						continue;
 					}
-						
+
 
 					importer.SetBlueprint(bPrint);
 					importer.SetFileToProcess(hand.FileInfo);
@@ -102,36 +195,8 @@ namespace TesteImportDasn
 				}
 			}
 
-
-			// Chamando o Process
-			//var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "02-3105-DASN10-20100731-01.txt"), new FileExtension("txt", FileType.Text));
-			//var bPrint = factoy.GetBlueprint(typeof(Dasn), file);
-			//importer.SetBlueprint(bPrint);
-			//importer.SetFileToProcess(file);
-			//importer.RegisterObserver(view);
-			//importer.Process();
-			//view.ShowHeader(file.Name);
-			//view.ShowContent();
-			//view.ShowFooter();
-
-			//var file = new FlatFileImport.Input.FileInfo(Path.Combine(_path, "dasn-resumido-001.txt"), new FileExtension("txt", FileType.Text));
-			//var bPrint = factoy.GetBlueprint(typeof(Dasn), file);
-			//importer.SetBlueprint(bPrint);
-			//importer.SetFileToProcess(file);
-			//importer.RegisterObserver(view);
-
-			//importer.Valid();
-
-			//if(importer.IsValid)
-			//    importer.Process();
-
-			//view.ShowHeader(file.Name);
-			//view.ShowContent();
-			//view.ShowFooter();
-
 			Console.WriteLine("Pressione qualquer tecla para continuar.");
 			Console.ReadKey();
-
 		}
 	}
 }

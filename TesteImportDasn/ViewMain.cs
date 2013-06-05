@@ -107,7 +107,13 @@ namespace TesteImportDasn
 
         public void Notify(IParsedObjetct data)
         {
-            Console.WriteLine(data.Name + " >> " + data.GetType().Name);
+			
+            //Console.WriteLine(data.Name + " >> " + data.GetType().Name);
+
+	        var registro = data.Fields.First(d => d.Name == "REGISTRO");
+
+			if (registro.Value == "00000")
+				Console.WriteLine(data.Name + " >> " + data.Fields.First(d => d.Name == "Nome").Value + " >> " + data.Fields.First(d => d.Name == "Cod_TOM").Value);
         }
 
         #endregion

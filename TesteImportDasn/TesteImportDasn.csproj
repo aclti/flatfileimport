@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintFactory.cs" />
-    <Compile Include="Dasn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewMain.cs" />
@@ -58,30 +57,71 @@
   <ItemGroup>
     <Content Include="Samples\Blueprints\blueprint-dasn-resumida.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Samples\Blueprints\blueprint-dasn.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samples\Files\02-3105-DASN10-20100515-01.txt" />
-    <Content Include="Samples\Files\02-3105-DASN10-20100615-01.txt" />
-    <Content Include="Samples\Files\02-3105-DASN10-20100731-01.txt" />
-    <Content Include="Samples\Files\dasn-estrutura-errada-onerecord.txt" />
-    <Content Include="Samples\Files\dasn-estrutura-tworecord.txt" />
-    <Content Include="Samples\Files\dasn-estrutura-onerecord.txt" />
-    <Content Include="Samples\Files\dasn-resumido-001.txt" />
+    <Content Include="Samples\Blueprints\PGDASD-120.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\02-3105-DAS-20090816-01-INNER.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\02-3105-DASN10-20100515-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\02-3105-DASN10-20100615-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\02-3105-DASN10-20100731-01.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\dasn-estrutura-errada-onerecord.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\dasn-estrutura-tworecord.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\dasn-estrutura-onerecord.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\dasn-resumido-001.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\Files\dasn-resumido-erro-occurence.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samples\regex-samples-test.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Samples\Files\02-3105-DASN10-20100531-01.zip" />
-    <None Include="Samples\Files\02-3105-DASN10-20100630-01.zip" />
-    <None Include="Samples\Files\02-3105-DASN10-20100715-01.zip" />
-    <None Include="Samples\Files\02-3105-DASN10-20100815-01.zip" />
-    <None Include="Samples\Files\02-3105-DASN10-20100915-01.zip" />
-    <None Include="Samples\Files\02-3105-DASN10-20101001-01.zip" />
+    <None Include="Samples\Files\02-3105-DASN10-20100531-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\02-3105-DASN10-20100630-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\02-3105-DASN10-20100715-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\02-3105-DASN10-20100815-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\02-3105-DASN10-20100915-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Samples\Files\02-3105-DASN10-20101001-01.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy $(ProjectDir)Samples /e /i /y /r $(TargetDir)Samples</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
