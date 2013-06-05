@@ -68,6 +68,7 @@
     <Compile Include="Input\Enumeration.cs" />
     <Compile Include="Input\FileExtension.cs" />
     <Compile Include="Input\FileInfo.cs" />
+    <Compile Include="Input\FileInfoChunk.cs" />
     <Compile Include="Input\Handler.cs" />
     <Compile Include="Input\HandlerDirectory.cs" />
     <Compile Include="Input\HandlerDummy.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Input\IRawLine.cs" />
     <Compile Include="Input\RawField.cs" />
     <Compile Include="Input\RawLine.cs" />
+    <Compile Include="Input\SimpleRawLine.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
     <Compile Include="Process\DefaultParsePolicy.cs" />
     <Compile Include="Process\IProcessPolicy.cs" />

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="BlueprintFactory.cs" />
     <Compile Include="TestAggregate.cs" />
+    <Compile Include="TestChunkFileInfo.cs" />
     <Compile Include="TestHandlerDirectory.cs" />
     <Compile Include="TestHandlerFactory.cs" />
     <Compile Include="TestParsedDatas.cs" />
