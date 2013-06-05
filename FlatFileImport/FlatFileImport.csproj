@@ -85,7 +85,10 @@
     <Compile Include="Input\RawLine.cs" />
     <Compile Include="Input\SimpleRawLine.cs" />
     <Compile Include="Input\SupportedExtension.cs" />
+    <Compile Include="Process\Complier.cs" />
+    <Compile Include="Process\DefaultCompilerPolicy.cs" />
     <Compile Include="Process\DefaultParsePolicy.cs" />
+    <Compile Include="Process\IComplierPolicy.cs" />
     <Compile Include="Process\IProcessPolicy.cs" />
     <Compile Include="Validate\ValidateFileDir.cs" />
     <Compile Include="IObserver.cs" />
