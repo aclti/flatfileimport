@@ -235,7 +235,7 @@ namespace FlatFileImport
 
 			while (_file.MoveToNext())
 			{
-				var compiler = new Complier(CompilerPolicy);
+				var compiler = new Complier(CompilerPolicy, _blueprint);
 
 				compiler.AddRawData(new SimpleRawLine(_file.Line, _file.LineNumber));
 

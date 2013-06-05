@@ -2,13 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace FlatFileImport.Process
 {
 	public class DefaultCompilerPolicy : IComplierPolicy
 	{
-		private IBlueprint _blueprint;
+		private readonly IBlueprint _blueprint;
 
 		public DefaultCompilerPolicy(IBlueprint blueprint)
 		{
@@ -20,14 +19,19 @@ namespace FlatFileImport.Process
 
 		public bool IsValid { get { return true; } }
 
-		public IBlueprintLine Header
+		public string HeaderIdentifier
 		{
-			get { return _blueprint.BlueprintLines.First(l => l.Parent == null); }
+			get { return _blueprint.BlueprintLines.First(l => l.Parent == null).Name; }
 		}
 
-		public IBlueprintLine Footer
+		public string FooterIdentifier
 		{
-			get { return _blueprint.BlueprintLines.Last(l => l.Parent == null); }
+			get { return _blueprint.BlueprintLines.Last(l => l.Parent == null).Name; }
 		}
+
+		public void LookUp(IList<Input.IRawLine> rawLines)
+		{
+			
+		}	
 	}
 }

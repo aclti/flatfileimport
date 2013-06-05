@@ -1,15 +1,14 @@
-﻿using FlatFileImport.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using FlatFileImport.Core;
+using FlatFileImport.Input;
 
 namespace FlatFileImport.Process
 {
 	public interface IComplierPolicy
 	{
 		bool IsValid { get; }
-		IBlueprintLine Header { get; }
-		IBlueprintLine Footer { get; }
+		string HeaderIdentifier { get; }
+		string FooterIdentifier { get; }
+		void LookUp(IList<IRawLine> rawLines);
 	}
 }
