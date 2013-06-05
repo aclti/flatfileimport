@@ -8,9 +8,9 @@ namespace FlatFileImport.Validate
     public class ValidateLineSeparatedCharacter : IValidate
     {
         private IBlueprintLine _blueprintLine;
-        private IRawLine _rawDataLine;
+        private IRawLineAndFields _rawDataLine;
 
-        public ValidateLineSeparatedCharacter(IRawLine rawLine, IBlueprintLine blueprintLine)
+        public ValidateLineSeparatedCharacter(IRawLineAndFields rawLine, IBlueprintLine blueprintLine)
         {
             if (rawLine == null)
                 throw new ArgumentNullException("rawLine");

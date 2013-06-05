@@ -11,7 +11,7 @@ namespace FlatFileImport.Process
         IParsedObjetct GetParsedLine(IParsedData parent);
         IParsedObjetct GetParsedData(IParsedData parent);
         void SetBlueprintLine(IBlueprintLine blueprintLine);
-        void SetDataToParse(IRawLine rawLine);
+        void SetDataToParse(IRawLineAndFields rawLine);
         ReadOnlyCollection<IResult> Result { get; }
         bool IsValid { get; }
     }

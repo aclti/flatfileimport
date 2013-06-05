@@ -12,7 +12,7 @@ namespace FlatFileImport.Process
 {
     public class ParserPositional : IParser
     {
-        private IRawLine _rawLine;
+        private IRawLineAndFields _rawLine;
         private IBlueprintLine _blueprintLine;
         private IParsedObjetct _data;
         private Converter _converter;
@@ -26,7 +26,7 @@ namespace FlatFileImport.Process
 
         #region IParser Members
 
-        public void SetDataToParse(IRawLine rawLine)
+        public void SetDataToParse(IRawLineAndFields rawLine)
         {
             if (rawLine == null)
                 throw new ArgumentNullException("rawLine");

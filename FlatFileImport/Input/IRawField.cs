@@ -2,7 +2,7 @@
 {
     public interface IRawField
     {
-        IRawLine Parent { get; }
+        IRawLineAndFields Parent { get; }
         string Value { get; }
     }
 }

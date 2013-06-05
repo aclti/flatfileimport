@@ -4,7 +4,7 @@ namespace FlatFileImport.Input
 {
     public class RawField : IRawField
     {
-        public RawField(string rawData, IRawLine parent)
+        public RawField(string rawData, IRawLineAndFields parent)
         {
             if (rawData == null)
                 throw new ArgumentNullException("rawData");
@@ -18,7 +18,7 @@ namespace FlatFileImport.Input
 
         #region IRawField Members
 
-        public IRawLine Parent { get; private set; }
+        public IRawLineAndFields Parent { get; private set; }
         public string Value { get; private set; }
 
         #endregion

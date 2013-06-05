@@ -2,12 +2,15 @@
 
 namespace FlatFileImport.Input
 {
-    public interface IRawLine
-    {
-        int Number { get; }
-        string Value { get; }
-        ReadOnlyCollection<IRawField> RawFields { get; }
+	public interface IRawLine
+	{
+		int Number { get; }
+		string Value { get; }
+	}
 
-        void AddRawFiled(string rawValue);
-    }
+	public interface IRawLineAndFields : IRawLine
+	{
+		ReadOnlyCollection<IRawField> RawFields { get; }
+		void AddRawFiled(string rawValue);
+	}
 }

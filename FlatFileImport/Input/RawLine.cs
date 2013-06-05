@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace FlatFileImport.Input
 {
-    public class RawLine : IRawLine
+    public class RawLine : IRawLineAndFields
     {
         private List<IRawField> _rawFields;
 

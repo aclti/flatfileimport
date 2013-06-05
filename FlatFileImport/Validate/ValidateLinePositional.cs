@@ -9,9 +9,9 @@ namespace FlatFileImport.Validate
     public class ValidateLinePositional : IValidate
     {
         private IBlueprintLine _blueprintLine;
-        private IRawLine _rawDataLine;
+        private IRawLineAndFields _rawDataLine;
 
-        public ValidateLinePositional(IRawLine rawLine, IBlueprintLine blueprintLine)
+        public ValidateLinePositional(IRawLineAndFields rawLine, IBlueprintLine blueprintLine)
         {
             if (rawLine == null)
                 throw new ArgumentNullException("rawLine");
