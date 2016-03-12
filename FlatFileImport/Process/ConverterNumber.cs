@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FlatFileImport.Core;
+using System;
 using System.Globalization;
 using System.Text;
-using FlatFileImport.Core;
 
 namespace FlatFileImport.Process
 {
@@ -41,14 +41,14 @@ namespace FlatFileImport.Process
 
         private string InsertDecimalSeparator()
         {
-            var sb = new StringBuilder();
-            var sizeIntPart = BlueprintField.Size - BlueprintField.Precision;
-            var intPart = int.Parse(RawData.Substring(0, sizeIntPart)).ToString(CultureInfo.InvariantCulture);
-            sb.Append(intPart);
-            sb.Append(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-            sb.Append(RawData.Substring(sizeIntPart, BlueprintField.Precision));
+                var sb = new StringBuilder();
+                var sizeIntPart = BlueprintField.Size - BlueprintField.Precision;
+                var intPart = RawData.Substring(0, sizeIntPart);
+                sb.Append(intPart);
+                sb.Append(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                sb.Append(RawData.Substring(sizeIntPart, BlueprintField.Precision));
 
-            return decimal.Parse(sb.ToString()).ToString(CultureInfo.CurrentCulture);
+                return decimal.Parse(sb.ToString()).ToString(CultureInfo.CurrentCulture);
         }
 
         private string GetNoCultureDecimalSeparator()
